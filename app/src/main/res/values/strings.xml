@@ -1,0 +1,107 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">温榆河</string>
+    <string name="str_wyh">温榆河</string>
+    <string name="str_shared">str_shared</string>
+    <!--底部导航栏-->
+    <string name="bottom_navigation_view_home">首页</string>
+    <string name="bottom_navigation_view_scenic">景区地图</string>
+    <string name="bottom_navigation_view_mine">我的</string>
+    <string name="str_search_destination">搜索目的地</string>
+    <string name="str_search">搜索</string>
+
+    <string name="detail">详情</string>
+
+    <!--首页grid-->
+    <string name="grid_visit">游客服务</string>
+    <string name="grid_line_guide">线路导览</string>
+    <string name="grid_ar_science">AR科普</string>
+    <string name="grid_plant_wiki">景区百科</string>
+    <string name="grid_book">场馆预约</string>
+    <string name="grid_ar">AR游园</string>
+    <string name="grid_smart_car">智慧停车</string>
+    <string name="grid_smart_book">预约</string>
+
+    <!--热门推荐-->
+    <string name="str_hot_record">热门推荐</string>
+    <string name="str_hot_records">今日热门景点</string>
+
+    <!--热门推荐-->
+    <string name="str_news">新闻资讯</string>
+    <string name="str_news_sub">为您呈现丰富多彩的新闻</string>
+    <!--热门推荐-->
+    <string name="str_line_recommend">线路推荐</string>
+    <string name="str_line_recommend_tip">给您最好的游园体验</string>
+
+    <!--虚拟游园-->
+    <string name="str_ar">虚拟游园</string>
+    <string name="str_ar_sub">随时随地查找景点不迷路</string>
+
+    <string name="str_more">更多</string>
+    <string name="str_forget_password">忘记密码?</string>
+    <string name="str_login">登录</string>
+    <string name="str_my_message">我的消息</string>
+    <string name="str_my_order">我的订单</string>
+    <string name="str_car_info">车辆信息</string>
+    <string name="str_scenic_server">景区服务</string>
+    <string name="str_complaint">投诉举报</string>
+    <string name="str_tourist_server">游客服务</string>
+
+    <!--游客服务主页str-->
+    <string name="visitor_server_khjy">客户建议</string>
+    <string name="visitor_server_tsjb">投诉举报</string>
+    <string name="visitor_server_tsjy">投诉建议</string>
+    <string name="visitor_server_yljz">医疗救助</string>
+    <string name="visitor_server_ryzs">人员走失</string>
+    <string name="visitor_server_xwqs">寻物启事</string>
+    <string name="visitor_server_wzafu">无障碍服务</string>
+    <string name="visitor_server_zajb">治安举报</string>
+    <string name="visitor_server_khzx">客户咨询</string>
+    <string name="visitor_server_jbcx">举报查询</string>
+    <string name="visitor_server_weather">景区天气</string>
+    <string name="visitor_server_lscx">绿色出行</string>
+    <string name="visitor_server_gjcx">公交出行</string>
+    <string name="visitor_ai_budao">AI步道</string>
+
+
+    <string name="visitor_complaint">投诉</string>
+    <string name="submit">提交</string>
+    <string name="content">内容</string>
+    <string name="complaint_type">反馈类型</string>
+    <string name="mobile">邮箱</string>
+    <string name="contactPhone">联系电话</string>
+    <string name="contact">联系人</string>
+    <string name="add_image">添加图片</string>
+    <string name="add">添加</string>
+    <string name="hint_fill_sms_code">验证码</string>
+    <string name="str_send_sms_code">发送验证码</string>
+    <string name="str_go_send">后继续发送</string>
+    <string name="str_input_phone">请输入手机号码</string>
+    <string name="str_input_pwd">请输入密码</string>
+    <string name="str_input_pwd_again">请再次输入密码</string>
+    <string name="register">注册</string>
+    <string name="reset_pwd">重置密码</string>
+    <string name="reset_pwd_tip">验证码发送到您的手机中,请输入验证码并创建新密码</string>
+    <string name="str_go_register">还没有帐号？去注册</string>
+    <string name="input_right_phone">请输入正确的手机号码</string>
+    <string name="pwd_Inconsistent">两次密码不一致</string>
+    <string name="code_error">验证码错误</string>
+    <string name="user_info">个人信息</string>
+    <string name="confirm">确定</string>
+
+    <string name="browse_footprint">我的足迹</string>
+    <string name="str_search_history">历史搜索</string>
+    <string name="visitor_know">游客须知</string>
+    <string name="visitor_traffic">来园交通</string>
+    <string name="visitor_buy_ticket">购票须知</string>
+    <string name="visitor_help">紧急救援</string>
+    <string name="look_detail">查看详情</string>
+    <string name="push_message">消息</string>
+    <string name="line_recommend">线路推荐</string>
+    <string name="all_comment">所有评论</string>
+    <string name="write_comment">写评论</string>
+    <string name="notice">通知</string>
+    <string name="about">关于</string>
+    <string name="setting">设置</string>
+
+
+</resources>

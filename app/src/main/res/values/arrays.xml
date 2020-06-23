@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mine_item_source">
+        <item>我的足迹</item>
+        <item>意见反馈</item>
+        <item>设置</item>
+        <item>退出登录</item>
+    </string-array>
+
+
+    <string-array name="scenic_map">
+        <item>主要景点</item>
+        <item>特色展区</item>
+        <item>景区植物</item>
+        <item>商铺</item>
+        <item>服务区</item>
+        <item>厕所</item>
+        <item>停车场</item>
+
+    </string-array>
+
+    <string-array name="complaint_type">
+        <item>@string/visitor_server_khjy</item>
+        <item>@string/visitor_server_tsjb</item>
+        <item>@string/visitor_server_yljz</item>
+    <!--    <item>@string/visitor_server_ryzs</item>
+        <item>@string/visitor_server_xwqs</item>-->
+        <item>@string/visitor_server_wzafu</item>
+        <item>@string/visitor_server_zajb</item>
+        <item>@string/visitor_server_khzx</item>
+    </string-array>
+
+
+    <string-array name="english_week_string_array">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
+
+    <string-array name="chinese_week_string_array">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@mipmap/icon_scan_qr"
+        android:maxLevel="100"
+        android:minLevel="0" />
+    <item
+        android:drawable="@mipmap/icon_scan_qr"
+        android:maxLevel="200"
+        android:minLevel="101" />
+    <item
+        android:drawable="@mipmap/icon_scan_qr"
+        android:maxLevel="400"
+        android:minLevel="301" />
+    <item
+        android:drawable="@mipmap/icon_scan_qr"
+        android:maxLevel="500"
+        android:minLevel="401" />
+    <item
+        android:drawable="@mipmap/icon_scan_qr"
+        android:maxLevel="700"
+        android:minLevel="601" />
+
+</level-list>

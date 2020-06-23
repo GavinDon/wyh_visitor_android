@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!--景点地图页面tablayout-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorTabSelect" />
+            <corners android:radius="@dimen/dp_35" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorWhite" />
+            <corners android:radius="@dimen/dp_35" />
+        </shape>
+    </item>
+</selector>

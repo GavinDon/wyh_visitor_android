@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="@dimen/dp_20">
+
+    <TextView
+        android:id="@+id/openStyleTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:text="打开方式"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBaiduNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:drawableTop="@mipmap/bd_logo"
+        android:drawablePadding="@dimen/dp_8"
+        android:gravity="center_horizontal"
+        android:text="百度地图"
+        android:textColor="@color/fontSecond"
+        app:layout_constraintLeft_toLeftOf="@id/openStyleTip"
+        app:layout_constraintTop_toBottomOf="@id/openStyleTip" />
+
+    <TextView
+        android:id="@+id/tvGaodeNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_30"
+        android:drawablePadding="@dimen/dp_8"
+        android:gravity="center"
+        android:textColor="@color/fontSecond"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBaiduNav"
+        app:layout_constraintLeft_toRightOf="@id/tvBaiduNav"
+        app:layout_constraintTop_toTopOf="@id/tvBaiduNav"
+        tools:text="高德地图" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

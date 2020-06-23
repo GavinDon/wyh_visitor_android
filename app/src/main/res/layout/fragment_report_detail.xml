@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/dp_16" />
+
+
+        <TextView
+            android:id="@+id/tvReplyType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/complaint_type"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvReplyTypeTx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/underline"
+            android:paddingBottom="@dimen/dp_5"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyType" />
+
+        <TextView
+            android:id="@+id/tvReplyPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/contactPhone"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyTypeTx" />
+
+        <TextView
+            android:id="@+id/tvReplyPhoneTx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/underline"
+            android:paddingBottom="@dimen/dp_5"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyPhone" />
+
+        <TextView
+            android:id="@+id/tvReplyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/contact"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyPhoneTx" />
+
+        <TextView
+            android:id="@+id/tvReplyNameTx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/underline"
+            android:paddingBottom="@dimen/dp_5"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyName" />
+
+        <TextView
+            android:id="@+id/tvReplyEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/mobile"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyNameTx" />
+
+        <TextView
+            android:id="@+id/tvReplyEmailTx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/underline"
+            android:paddingBottom="@dimen/dp_5"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyEmail" />
+
+        <TextView
+            android:id="@+id/tvReplyContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/content"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyEmailTx" />
+
+        <TextView
+            android:id="@+id/tvReplyContentTx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/underline"
+            android:paddingBottom="@dimen/dp_5"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyContent" />
+
+        <TextView
+            android:id="@+id/tvAttachImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="附件:"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyContentTx" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvAttachImage"
+            app:spanCount="3" />
+
+        <View
+            android:id="@+id/vdivider"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/dividerColor"
+            app:layout_constraintTop_toBottomOf="@id/rvImage" />
+
+        <TextView
+            android:id="@+id/tvReplyStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="状态:"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintTop_toBottomOf="@id/vdivider" />
+
+        <TextView
+            android:id="@+id/tvReplyStatusTx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTabSelect"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="@id/tvReplyStatus"
+            app:layout_constraintLeft_toRightOf="@id/tvReplyStatus"
+            app:layout_constraintTop_toTopOf="@id/tvReplyStatus"
+            tools:text="已处理" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cslReply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/guide_start"
+            app:layout_constraintRight_toRightOf="@id/guide_end"
+            app:layout_constraintTop_toBottomOf="@id/tvReplyStatus">
+
+            <TextView
+                android:id="@+id/tvReplyTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="处理时间"
+                android:textColor="@color/fontMajor"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvReplyTimeTx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/underline"
+                android:paddingBottom="@dimen/dp_5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvReplyTime" />
+
+
+            <TextView
+                android:id="@+id/tvReplyContent2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="处理结果"
+                android:textColor="@color/fontMajor"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvReplyTimeTx" />
+
+            <TextView
+                android:id="@+id/tvReplyContent2Tx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/underline"
+                android:paddingBottom="@dimen/dp_5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvReplyContent2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

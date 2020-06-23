@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NineGridView">
+        <!--图片间隔 dp单位-->
+        <attr name="spaceGap" format="integer|reference" />
+        <!--一行显示几张图片-->
+        <attr name="columnNum" format="integer|reference" />
+        <attr name="maxRow" format="integer|reference" />
+        <!--是显示图片还是添加图片-->
+        <attr name="mode" format="enum">
+            <enum name="add_mode" value="0" />
+            <enum name="fill_mode" value="1" />
+        </attr>
+        <!--添加图片的drawable-->
+        <attr name="add_image" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="VerticalLayout">
+        <attr name="itemDataSource" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SendSmsView">
+        <attr name="background" format="reference" />
+        <attr name="textColor" format="color" />
+        <attr name="editPadding" format="dimension|reference" />
+        <attr name="android:textSize" format="dimension|reference" />
+        <attr name="leftDrawable" format="reference" />
+        <attr name="etPhoneId" format="reference" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ExpandableTextView">
+        <attr name="maxCollapsedLines" format="integer" />
+        <attr name="animDuration" format="integer" />
+        <attr name="animAlphaStart" format="float" />
+        <attr name="expandDrawable" format="reference" />
+        <attr name="collapseDrawable" format="reference" />
+        <attr name="expandText" format="string" />
+        <attr name="collapseText" format="string" />
+        <attr name="haveAnim" format="boolean" />
+    </declare-styleable>
+</resources>

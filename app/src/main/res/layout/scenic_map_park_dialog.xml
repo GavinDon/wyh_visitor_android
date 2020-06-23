@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llScenicHole"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.gavindon.mvvm_lib.widgets.bubblelayout.BubbleLayout
+        android:id="@+id/scenicBl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        app:bl_arrowDirection="bottom_center"
+        app:bl_arrowHeight="8dp"
+        app:bl_arrowPosition="16dp"
+        app:bl_arrowWidth="8dp"
+        app:bl_bubbleColor="@color/white"
+        app:bl_cornersRadius="@dimen/dp_16"
+        app:bl_strokeColor="@color/white"
+        app:bl_strokeWidth="1dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/infoWindowTvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/fontMajor"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/app_name" />
+
+            <ImageView
+                android:id="@+id/ivBubbleSubscriber"
+                android:layout_width="@dimen/dp_31"
+                android:layout_height="@dimen/dp_31"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:background="@drawable/infowindow_sound"
+                android:padding="@dimen/dp_5"
+                android:src="@mipmap/ic_subscriber"
+                android:visibility="gone"
+                app:layout_constraintRight_toLeftOf="@+id/infoWindowIvBubbleNav"
+                app:layout_constraintTop_toTopOf="@+id/infoWindowTvName" />
+
+            <ImageView
+                android:id="@+id/infoWindowIvBubbleNav"
+                android:layout_width="@dimen/dp_31"
+                android:layout_height="@dimen/dp_31"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:background="@drawable/infowindow_nav"
+                android:padding="@dimen/dp_5"
+                android:src="@mipmap/icnav2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/infoWindowTvName" />
+
+            <TextView
+                android:id="@+id/infoWindowTvRule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:drawableStart="@drawable/yellow_dot"
+                android:drawablePadding="@dimen/dp_4"
+                android:gravity="center_vertical"
+                android:text="收费规则:6元/小时"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintLeft_toLeftOf="@id/infoWindowTvName"
+                app:layout_constraintTop_toBottomOf="@id/infoWindowTvName" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cslPark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/infoWindowIvBubbleNav"
+                app:layout_constraintTop_toBottomOf="@+id/infoWindowTvRule">
+
+                <TextView
+                    android:id="@+id/infoWindowTvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:maxLength="30"
+                    android:maxLines="2"
+                    android:text="共有车位:"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/infoWindowTVTotalNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123"
+                    android:textColor="#557FD4"
+                    android:textSize="@dimen/sp_22"
+                    app:layout_constraintBottom_toBottomOf="@id/infoWindowTvTotal"
+                    app:layout_constraintLeft_toRightOf="@id/infoWindowTvTotal"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/infoWindowTvRetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:maxLength="30"
+                    android:maxLines="2"
+                    android:text="剩余车位:"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintBottom_toBottomOf="@id/infoWindowTvTotal"
+                    app:layout_constraintRight_toLeftOf="@id/infoWindowTvRetailNum"
+                    app:layout_constraintTop_toTopOf="@id/infoWindowTvTotal" />
+
+                <TextView
+                    android:id="@+id/infoWindowTvRetailNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:text="123"
+                    android:textColor="#EABE2D"
+                    android:textSize="@dimen/sp_22"
+                    app:layout_constraintBottom_toBottomOf="@id/infoWindowTvTotal"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/llToilet"
+                layout="@layout/info_window_toilet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="@id/infoWindowIvBubbleNav"
+                app:layout_constraintTop_toBottomOf="@+id/infoWindowTvRule" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.gavindon.mvvm_lib.widgets.bubblelayout.BubbleLayout>
+
+
+</LinearLayout>

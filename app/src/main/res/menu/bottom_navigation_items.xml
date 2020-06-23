@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fragment_home"
+        android:icon="@drawable/bottom_home"
+        android:title="@string/bottom_navigation_view_home" />
+    <item
+        android:id="@+id/fragment_scenic"
+        android:icon="@drawable/bottom_map"
+        android:title="@string/bottom_navigation_view_scenic" />
+
+    <item
+        android:id="@+id/fragment_mine"
+        android:icon="@drawable/bottom_mine"
+        android:title="@string/bottom_navigation_view_mine" />
+</menu>

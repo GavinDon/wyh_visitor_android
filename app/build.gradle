@@ -1,0 +1,190 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'bugly'
+apply from: 'tinker-support.gradle'
+
+def dc = rootProject.ext.defaultConfig
+def version = loadVersionProperty()
+bugly {
+    appId = "4fa626abc1" // 注册时分配的App ID
+    appKey = "3f33743e-1496-4531-9c7c-7f69e552e563" // 注册时分配的App Key
+    appPackage = "com.stxx.wyhvisitorandroid"
+}
+android {
+    compileSdkVersion dc.compileSdkVersion
+    buildToolsVersion = dc.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.stxx.wyhvisitorandroid"
+        multiDexEnabled true
+        minSdkVersion dc.minSdkVersion
+        targetSdkVersion dc.targetSdkVersion
+        versionCode Integer.parseInt(version[0])
+        versionName version[1]
+        ndk { abiFilters "armeabi-v7a", "armeabi" }
+        /*  externalNativeBuild {
+              cmake {
+                  cppFlags "-fexceptions"
+                  abiFilters "armeabi-v7a"
+              }
+          }*/
+        resConfigs "zh", "en"
+        def filesAuthorityValue = applicationId + ".files"
+        buildConfigField("int", "source", "0")
+        buildConfigField("String", "baseUrl", "\"http://manage.wenyuriverpark.com:8894\"")
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "5ab70a3331b4a48026a4cc5c", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
+    }
+    signingConfigs {
+        release {
+            Properties buildPro = loadJks()
+            keyAlias buildPro["keyAlias"]
+            keyPassword buildPro["keyPassword"]
+            storeFile file(buildPro["storeFile"])
+            storePassword buildPro["storePassword"]
+
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+    aaptOptions {
+        noCompress '.unity3d', '.ress', '.resource', '.obb', 'vuforia/wyhapp.dat', 'vuforia/wyhapp.xml'
+    }
+
+    /*   externalNativeBuild {
+           cmake {
+               path "src/main/cpp/CMakeLists.txt"
+               version "3.10.2"
+           }
+       }*/
+
+/*    flavorDimensions 'version'
+
+    productFlavors {
+        local {
+            dimension 'version'
+            signingConfig signingConfigs.release
+            buildConfigField("String", "baseUrl", "\"http://manage.wenyuriverpark.com:8894\"")
+        }
+        offical {
+            dimension 'version'
+            applicationIdSuffix '.offical'
+            versionNameSuffix '-offical'
+            signingConfig signingConfigs.release
+            buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894/\"")
+        }
+    }*/
+    splits {
+    }
+    sourceSets {
+        main {
+//           java.srcDirs = ['local/java','offical/java']
+            jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs', '../WYH20.03.30/libs'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        jumboMode = true
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+}
+
+
+def loadJks() {
+    def properties = new Properties()
+    def jksConfigFile = rootProject.file('jks_config.properties').newDataInputStream()
+    //分割=转换成map
+    properties.load(jksConfigFile)
+    return properties
+}
+
+def loadVersionProperty() {
+    def versionFile = rootProject.file("version.properties")
+    def properties = new Properties()
+    def version = ["1", "1.0.1"]
+    if (versionFile.exists() && versionFile.canRead()) {
+        def fis = new FileInputStream(versionFile)
+        properties.load(fis)
+        version[0] = properties.get("VERSION_CODE")
+        version[1] = properties.get("VERSION_NAME")
+    }
+    return version
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.google.android.material:material:1.1.0"
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
+    implementation project(path: ':mvvm_lib')
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation('com.alibaba.android:vlayout:1.2.8@aar') {
+        transitive = true
+    }
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
+    implementation 'com.google.android:flexbox:2.0.1'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+    implementation 'q.rorbin:badgeview:1.1.3'
+    implementation 'com.github.lvtanxi:BaseVLayoutAdapterHelper:1.0.2'
+    implementation 'cn.bingoogolapple:bga-banner:3.0.0@aar'
+    implementation 'com.huawei.hms:scan:1.1.3.300'
+    implementation 'com.haibin:calendarview:3.6.7'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.1'
+    implementation 'com.tencent.tbs.tbssdk:sdk:43903'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.4.5'
+    implementation 'com.tencent.tinker:tinker-android-lib:1.9.14'
+    implementation "com.android.support:multidex:1.0.3"
+    implementation 'com.github.promeg:tinypinyin:2.0.3'
+//    implementation project(path: ':uiasr')
+//    implementation project(path: ':uidialog')
+//    implementation project(path: ':core')
+    implementation project(':WYH20.03.30')
+    implementation 'com.github.zhpanvip:BannerViewPager:3.1.2'
+    implementation 'cn.jiguang.sdk:jpush:3.6.0'  // 此处以JPush 3.6.0 版本为例。
+    implementation 'cn.jiguang.sdk:jcore:2.3.4'  // 此处以JCore 2.3.4 版本为例。
+
+
+}

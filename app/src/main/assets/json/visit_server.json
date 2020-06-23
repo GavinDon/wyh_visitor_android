@@ -1,0 +1,104 @@
+[
+  {
+    "name": "景区服务",
+    "showType": 0
+  },
+  {
+    "name": "医疗救助",
+    "showType": 1,
+    "iconRes": "ic_yljz"
+  },
+  {
+    "name": "无障碍服务",
+    "showType": 1,
+    "iconRes": "ic_wzafw"
+  },
+  {
+    "name": "投诉建议",
+    "showType": 1,
+    "iconRes": "ic_tsjb"
+  },
+  {
+    "name": "寻人寻物",
+    "showType": 1,
+    "iconRes": "ic_xwqs"
+  },
+  {
+    "name": "治安举报",
+    "showType": 1,
+    "iconRes": "ic_zajb"
+  },
+  {
+    "name": "客户咨询",
+    "showType": 1,
+    "iconRes": "ic_khzx"
+  },
+  {
+    "name": "游玩助手",
+    "showType": 0
+  },
+  {
+    "name": "景区导览",
+    "showType": 1,
+    "iconRes": "ic_jqdl"
+  },
+  {
+    "name": "找厕所",
+    "showType": 1,
+    "iconRes": "ic_wc"
+  },
+  {
+    "name": "景区百科",
+    "showType": 1,
+    "iconRes": "ic_pzsh"
+  },
+  {
+    "name": "景区天气",
+    "showType": 1,
+    "iconRes": "ic_weather"
+  },
+  {
+    "name": "周边美食",
+    "showType": 1,
+    "iconRes": "ic_zbms"
+  },
+  {
+    "name": "推荐路线",
+    "showType": 1,
+    "iconRes": "ic_tjlx"
+  },
+  {
+    "name": "AI导游",
+    "showType": 1,
+    "iconRes": "ai_dy"
+  },
+  {
+    "name": "AI步道",
+    "showType": 1,
+    "iconRes": "ic_mine"
+  },
+  {
+    "name": "交通出行",
+    "showType": 0
+  },
+  {
+    "name": "绿色出行",
+    "showType": 1,
+    "iconRes": "ic_khjy"
+  },
+  {
+    "name": "公交出行",
+    "showType": 1,
+    "iconRes": "ic_bus"
+  },
+  {
+    "name": "停车场",
+    "showType": 1,
+    "iconRes": "ic_park"
+  },
+  {
+    "name": "充电桩",
+    "showType": 1,
+    "iconRes": "ic_charge"
+  }
+]

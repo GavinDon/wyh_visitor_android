@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dp_10"
+    android:layout_marginTop="@dimen/dp_5">
+
+
+    <ImageView
+        android:id="@+id/adaIvServerPoint"
+        android:layout_width="@dimen/dp_82"
+        android:layout_height="@dimen/dp_82"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/default_icon" />
+
+    <TextView
+        android:id="@+id/adaTvServerPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_2"
+        android:textColor="@color/fontSecond"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintLeft_toRightOf="@id/adaIvServerPoint"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/app_name" />
+
+    <TextView
+        android:id="@+id/adaTvServerPointIntroduce"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/adaTvServerPoint"
+        app:layout_constraintRight_toLeftOf="@+id/adaIvNav"
+        tools:text="aaaaahfafafalfjslfjslfjsfjslfjsaaaaahfafafalfjslfjslfjsfjslfjslfjlasfjalfjlasfja" />
+
+    <include
+        android:id="@+id/adaLlToilet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/adaTvServerPoint"
+        layout="@layout/info_window_toilet" />
+
+    <TextView
+        android:id="@+id/adaTvScenicTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/adaTvServerPoint"
+        tools:text="剩余车位" />
+
+    <TextView
+        android:id="@+id/adaTvScenicRetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/adaTvScenicTotal"
+        app:layout_constraintLeft_toRightOf="@id/adaTvScenicTotal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/adaTvScenicTotal"
+        tools:text="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/adaIvNav"
+        android:layout_width="@dimen/dp_34"
+        android:layout_height="@dimen/dp_34"
+        android:padding="@dimen/dp_10"
+        android:src="@mipmap/ic_navi"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="StatusView">
+        <attr name="empty_view" format="reference" />
+        <attr name="network_view" format="reference" />
+        <attr name="retry_view" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DonButton">
+        <!--backGroundColor-->
+        <attr name="normalBackgroundColor" format="color|reference" />
+        <attr name="pressBackgroundColor" format="color|reference" />
+        <attr name="unableBackgroundColor" format="color|reference" />
+        <attr name="checkBackgroundColor" format="color|reference" />
+        <!--text color-->
+        <attr name="normalTextColor" format="color|reference" />
+        <attr name="pressTextColor" format="color|reference" />
+        <attr name="unableTextColor" format="color|reference" />
+        <attr name="checkTextColor" format="color|reference" />
+
+
+        <attr name="circleRadius" format="reference|dimension" />
+    </declare-styleable>
+</resources>

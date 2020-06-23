@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar" />
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@android:color/transparent"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabTextAppearance="@style/tablayout"
+        app:tabTextColor="@color/grey_500" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_gravity="start|bottom"
+                android:layout_marginHorizontal="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_80"
+                app:cardCornerRadius="@dimen/dp_16"
+                app:cardElevation="@dimen/dp_3">
+
+                <ImageButton
+                    android:id="@+id/ivMoveToScenicCenterLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/dp_6"
+                    android:src="@mipmap/icon_move_map_current" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_gravity="start|bottom"
+                android:layout_marginHorizontal="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_38"
+                app:cardCornerRadius="@dimen/dp_16"
+                app:cardElevation="@dimen/dp_3">
+
+                <ImageButton
+                    android:id="@+id/ivMoveToCenterLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/dp_6"
+                    android:src="@mipmap/icon_move_current" />
+            </androidx.cardview.widget.CardView>
+
+
+        </FrameLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollBottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/dp_260"
+            app:layout_behavior="com.stxx.wyhvisitorandroid.widgets.BottomSheetBehavior3">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/llScenicShowArrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#0DFDD655"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/ivScenicShowArrow"
+                        android:layout_width="@dimen/dp_38"
+                        android:layout_height="@dimen/dp_38"
+                        android:layout_gravity="center"
+                        app:lottie_rawRes="@raw/bounce_line" />
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvServerPoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:paddingTop="@dimen/dp_10"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llScenicShowArrow" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/llBubbleDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tvBubbleTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:text="@string/add_image"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_18"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvBubbleNav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_5"
+                        android:drawableEnd="@mipmap/icnav2"
+                        android:gravity="center"
+                        android:text="导航"
+                        android:textColor="#707070"
+                        android:textSize="@dimen/sp_13"
+                        app:layout_constraintBottom_toBottomOf="@id/tvBubbleTitle"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvBubbleTitle" />
+
+                    <ImageView
+                        android:id="@+id/ivScenicDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_180"
+                        android:layout_marginHorizontal="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/banner"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvBubbleTitle" />
+
+
+                    <TextView
+                        android:id="@+id/tvScenicDetail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp_15"
+                        android:textColor="@color/fontSecond"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ivScenicDetail" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</LinearLayout>
+
+
+
+
+
+

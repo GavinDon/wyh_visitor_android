@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dp_14">
+
+    <RelativeLayout
+        android:id="@+id/rlPush"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="@dimen/dp_14">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="推送通知"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchCompatPush"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlPlaySound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingVertical="@dimen/dp_14">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="播放语音"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchCompatPlaySound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/toggleRobot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="打开AI机器人"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchToggleRobot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexClearCache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除缓存"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tvCacheSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0kb"
+            android:textColor="@color/fontSecond"
+            android:textSize="@dimen/sp_16" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexCheckVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="检查新版本"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tvVersionNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:text="1.1"
+            android:textColor="@color/fontSecond"
+            android:textSize="@dimen/sp_16" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexAboutUs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tvAbout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:textColor="@color/fontSecond"
+            android:textSize="@dimen/sp_16" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+</LinearLayout>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/multi_fragment_root"
+    app:startDestination="@id/fragment_home">
+
+    <!--home-->
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.stxx.wyhvisitorandroid.view.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_visitor_server"
+            app:destination="@id/fragment_visitor_server" />
+        <action
+            android:id="@+id/action_news_detail"
+            app:destination="@id/fragment_scenic_news_detail" />
+        <action
+            android:id="@+id/action_vegetation_wiki"
+            app:destination="@id/fragment_vegetation_wiki" />
+        <action
+            android:id="@+id/action_scenic_comment"
+            app:destination="@id/fragment_scenic_comment" />
+
+    </fragment>
+
+    <!--景区景点-->
+    <fragment
+        android:id="@+id/fragment_scenic"
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment"
+        tools:layout="@layout/fragment_scenic" />
+
+
+    <!--我的-->
+    <fragment
+        android:id="@+id/fragment_mine"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.MineFragment"
+        tools:layout="@layout/fragment_mine">
+        <action
+            android:id="@+id/action_user_info"
+            app:destination="@id/fragment_user_info" />
+        <action
+            android:id="@+id/action_browse_record"
+            app:destination="@id/fragment_browse_record" />
+        <action
+            android:id="@+id/action_scenic_server"
+            app:destination="@id/fragment_scenic_server" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_visitor_server"
+        android:name="com.stxx.wyhvisitorandroid.view.home.VisitorServerFragment"
+        tools:layout="@layout/fragment_visitor_server">
+        <action
+            android:id="@+id/action_complaint"
+            app:destination="@id/fragment_complaint" />
+
+        <action
+            android:id="@+id/action_report_result_query"
+            app:destination="@id/fragment_report_result_query" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_complaint"
+        android:name="com.stxx.wyhvisitorandroid.view.home.ComplaintFragment"
+        tools:layout="@layout/fragment_complaint" />
+    <fragment
+        android:id="@+id/fragment_report_detail"
+        android:name="com.stxx.wyhvisitorandroid.view.home.ReportResultDetailFragment"
+        tools:layout="@layout/fragment_report_detail" />
+
+    <fragment
+        android:id="@+id/fragment_user_info"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.UserInfoFragment"
+        tools:layout="@layout/fragment_user_info" />
+
+    <fragment
+        android:id="@+id/fragment_fix"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.FixUserInfoFragment"
+        tools:layout="@layout/dialog_update_userinfo" />
+
+    <fragment
+        android:id="@+id/fragment_scenic_news_detail"
+        android:name="com.stxx.wyhvisitorandroid.view.home.ScenicNewsDetailFragment"
+        tools:layout="@layout/fragment_scenic_news_detail" />
+    <fragment
+        android:id="@+id/fragment_vegetation_wiki"
+        android:name="com.stxx.wyhvisitorandroid.view.home.VegetationWikiFragment"
+        tools:layout="@layout/fragment_vegetaion_wiki" />
+    <fragment
+        android:id="@+id/fragment_scenic_comment"
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.ScenicCommentFragment"
+        tools:layout="@layout/fragment_scenic_comment" />
+
+    <fragment
+        android:id="@+id/fragment_report_result_query"
+        android:name="com.stxx.wyhvisitorandroid.view.home.ReportResultQueryFragment"
+        tools:layout="@layout/fragment_report_result_query" />
+
+    <fragment
+        android:id="@+id/fragment_browse_record"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.BrowseRecordFragment"
+        tools:layout="@layout/fragment_browse_record" />
+
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="com.stxx.wyhvisitorandroid.view.home.SearchFragment"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/fragment_scenic_server"
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.ScenicServerFragment"
+        tools:layout="@layout/fragment_scenic_server" />
+
+    <fragment
+        android:id="@+id/fragment_scenic_server_second"
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.ScenicServerSecondFragment"
+        tools:layout="@layout/fragment_scenic_server_second" />
+
+    <activity
+        android:id="@+id/login_activity"
+        android:name="com.stxx.wyhvisitorandroid.view.login.LoginActivity"
+        tools:layout="@layout/activity_login" />
+
+    <fragment
+        android:id="@+id/fragment_push_message"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.PushMessageFragment"
+        tools:layout="@layout/fragment_push_message" />
+    <fragment
+        android:id="@+id/fragment_bdasr"
+        android:name="com.stxx.wyhvisitorandroid.view.asr.BaiDuAsrFragment"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/fragment_webview"
+        android:name="com.stxx.wyhvisitorandroid.view.WebViewFragment"
+        android:label="webViewFragment"
+        tools:layout="@layout/fragment_webview" />
+    <fragment
+        android:id="@+id/fragment_webview_notitle"
+        android:name="com.stxx.wyhvisitorandroid.view.WebViewNoTitleFragment"
+        tools:layout="@layout/fragment_webview_notitle" />
+
+    <fragment
+        android:id="@+id/fragment_line_recommend"
+        android:name="com.stxx.wyhvisitorandroid.view.more.LineRecommendFragment"
+        tools:layout="@layout/comment_recyclerview" />
+    <fragment
+        android:id="@+id/fragment_news_all"
+        android:name="com.stxx.wyhvisitorandroid.view.more.NewsFragment"
+        tools:layout="@layout/comment_recyclerview" />
+    <fragment
+        android:id="@+id/fragment_asr"
+        android:name="com.stxx.wyhvisitorandroid.view.asr.BaiDuAsrFragment"
+        android:label="asrFragment"
+        tools:layout="@layout/fragment_asr" />
+
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.SettingFragment"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/fragment_route_plant"
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.RoutePlanFragment"
+        tools:layout="@layout/fragment_route_plan" />
+    <fragment
+        android:id="@+id/fragment_write_comment"
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.WriteCommentFragment"
+        tools:layout="@layout/fragment_write_comment" />
+    <fragment
+        android:id="@+id/fragment_hot_recommend_more"
+        android:name="com.stxx.wyhvisitorandroid.view.more.HotRecommendMoreFragment"
+        tools:layout="@layout/comment_recyclerview" />
+
+    <fragment
+        android:id="@+id/fragment_notice_detail"
+        android:name="com.stxx.wyhvisitorandroid.view.more.NoticeDetailFragment"
+        tools:layout="@layout/fragment_notice" />
+
+    <dialog
+        android:id="@+id/dialog_sure_cancel"
+        android:name="com.stxx.wyhvisitorandroid.view.dialog.DialogSureCancel"
+        tools:layout="@layout/dialog_loading" />
+    <fragment
+        android:id="@+id/fragment_about"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.AboutFragment"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/fragment_RobotWebViewFragment"
+        android:name="com.stxx.wyhvisitorandroid.view.splash.RobotWebViewFragment"
+        tools:layout="@layout/fragment_webview" />
+
+</navigation>

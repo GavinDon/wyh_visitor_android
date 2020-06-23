@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.stxx.wyhvisitorandroid.view.login.LoginActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivLoginTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_184"
+            android:scaleType="fitXY"
+            android:src="@mipmap/bg_login_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_89"
+            android:layout_height="@dimen/dp_89"
+            android:src="@mipmap/ic_icon"
+            app:layout_constraintCircle="@id/ivLoginTitle"
+            app:layout_constraintCircleAngle="180"
+            app:layout_constraintCircleRadius="@dimen/dp_92"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivLoginTitle" />
+
+        <TextView
+            android:id="@+id/tvWyhStr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_67"
+            android:text="温榆河公园"
+            android:textColor="#1D0C07"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivLoginTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_26"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_marginEnd="@dimen/dp_26"
+            android:hint="用户名/手机号"
+            android:theme="@style/loginLabel"
+            app:errorEnabled="true"
+            app:counterMaxLength="11"
+            app:errorTextAppearance="@style/loginLabelError"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWyhStr">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@mipmap/ic_login_account"
+                android:drawablePadding="@dimen/dp_12"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="11"
+                android:paddingStart="@dimen/dp_8"
+                android:textSize="@dimen/sp_16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutPassWord"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_26"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_26"
+            android:hint="密码"
+            android:theme="@style/loginLabel"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputLayoutAccount"
+            app:passwordToggleEnabled="true">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@mipmap/ic_login_pwd"
+                android:drawablePadding="@dimen/dp_12"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/dp_8"
+                android:maxLength="20"
+                android:textSize="@dimen/sp_16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvForget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:padding="@dimen/dp_10"
+            android:text="@string/str_forget_password"
+            android:textColor="#FDD655"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputLayoutPassWord" />
+
+        <com.gavindon.mvvm_lib.widgets.DonButton
+            android:id="@+id/btnLogin"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_52"
+            android:layout_marginLeft="@dimen/dp_52"
+            android:layout_marginTop="@dimen/dp_38"
+            android:layout_marginRight="@dimen/dp_52"
+            android:elevation="@dimen/dp_3"
+            android:text="@string/str_login"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_24"
+            app:circleRadius="@dimen/dp_26"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvForget"
+            app:normalBackgroundColor="#FDD655"
+            app:pressBackgroundColor="#CDDC39" />
+
+        <TextView
+            android:id="@+id/tvGoRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:paddingVertical="@dimen/dp_5"
+            android:text="@string/str_go_register"
+            android:textColor="#FDD655"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="@dimen/dp_12"
+    android:layout_marginTop="@dimen/dp_10"
+    android:background="@drawable/shape_notice"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/marquee_zuix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:paddingVertical="@dimen/dp_8"
+        android:text="最新"
+        android:textColor="@color/fontSecond"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/marquee_zix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/bg_notice"
+        android:paddingVertical="@dimen/dp_1"
+        android:paddingStart="@dimen/dp_3"
+        android:paddingEnd="@dimen/dp_8"
+        android:text="资讯"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14" />
+
+
+    <AdapterViewFlipper
+        android:id="@+id/marquee_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_weight="1"
+        android:autoStart="true"
+        android:flipInterval="4000"
+        android:inAnimation="@animator/flipper_in"
+        android:outAnimation="@animator/flipper_out" />
+
+</LinearLayout>
