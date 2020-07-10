@@ -44,6 +44,8 @@ import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
 import com.huawei.hms.hmsscankit.ScanKitActivity
+import com.huawei.hms.hmsscankit.ScanUtil
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.ScenicMapServerPointAdapter
@@ -186,7 +188,12 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             it.findNavController().navigate(R.id.fragment_push_message, null, navOption)
         }
         ibScanQr.setOnClickListener {
-            startActivity<ScanKitActivity>()
+//            startActivity<ScanKitActivity>()
+            ScanUtil.startScan(
+                this.activity,
+                SCAN_CODE,
+                HmsScanAnalyzerOptions.Creator().create()
+            )
         }
         //搜索
         llSearchDestination.setOnClickListener {

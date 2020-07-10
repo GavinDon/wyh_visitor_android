@@ -23,6 +23,9 @@ const val NOTIFY_ID_FENCE = 1
 const val NOTIFY_ID_SOUND = 2
 const val NOTIFY_ID_DOWNLOAD = 3
 
+//扫码request_code
+const val SCAN_CODE = 0X01
+
 
 //跳转到热门推荐、新闻资讯等详情页面bundle key
 const val BUNDLE_DETAIL = "detail"

@@ -86,3 +86,11 @@ file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\rel
 sha1=79dc80a87efa0f811b3934732104bf0f19aa828a
 appId=4fa626abc1
 
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=ed06e156f5446878c529623f10cded10eac2844d
+appId=4fa626abc1
+
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=02dc213f5bbe6f9d442cbb3807c136d900b48ece
+appId=4fa626abc1
+

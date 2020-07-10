@@ -3,38 +3,30 @@ package com.stxx.wyhvisitorandroid.view.splash
 import android.app.Activity
 import android.content.Intent
 import android.media.AudioManager
-import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.addCallback
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.*
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import androidx.navigation.ui.NavigationUI
-import cn.jpush.android.api.JPushInterface
-import com.baidu.mapapi.CoordType
-import com.baidu.mapapi.SDKInitializer
-import com.baidu.speech.asr.SpeechConstant
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneHeight
 import com.gavindon.mvvm_lib.utils.phoneWidth
+import com.huawei.hms.hmsscankit.ScanUtil
+import com.huawei.hms.ml.scan.HmsScan
 import com.orhanobut.logger.Logger
-import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.BUNDLE_SELECT_TAB
 import com.stxx.wyhvisitorandroid.OPEN_ROBOT_SP
+import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.SCAN_CODE
 import com.stxx.wyhvisitorandroid.base.BaseActivity
-import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
-import com.stxx.wyhvisitorandroid.navOption
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
 import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment
 import com.stxx.wyhvisitorandroid.widgets.SuspensionDragView
-import com.tencent.bugly.Bugly
 import kotlinx.android.synthetic.main.fragment_multi_root.*
-import kotlinx.android.synthetic.main.fragment_webview_notitle.*
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.toast
-import java.util.*
 
 /**
  * description: 多fragment根activity
@@ -165,83 +157,14 @@ class MultiFragments : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        running = false
-        if (requestCode == 2) {
-            var message = "对话框的识别结果："
-            if (resultCode == Activity.RESULT_OK) {
-                val results: ArrayList<*>? = data!!.getStringArrayListExtra("results")
-                if (results != null && results.size > 0) {
-                    message += results[0]
-                }
-                when {
-                    message.contains("百科") -> {
-                        navController.navigate(R.id.fragment_vegetation_wiki)
-                    }
-                    message.contains("景点") -> {
-                        navController.navigate(R.id.fragment_scenic)
-                    }
-                    message.contains("历史") -> {
-                        navController.navigate(R.id.fragment_search)
-                    }
-                    message.contains("返回") -> {
-                        navController.navigateUp()
-                    }
-                    message.contains("厕所") -> {
-                        navController.navigate(
-                            R.id.fragment_scenic,
-                            bundleOf(BUNDLE_SELECT_TAB to ScenicMApPointEnum.TOILET.ordinal)
-                        )
-                    }
-                    message.contains("卫生间") -> {
-                        navController.navigate(
-                            R.id.fragment_scenic,
-                            bundleOf(BUNDLE_SELECT_TAB to ScenicMApPointEnum.TOILET.ordinal)
-                        )
-                    }
-                    message.contains("服务区") -> {
-                        navController.navigate(
-                            R.id.fragment_scenic,
-                            bundleOf(BUNDLE_SELECT_TAB to ScenicMApPointEnum.SERVICE_AREA.ordinal)
-                        )
-                    }
-                    message.contains("商铺") -> {
-                        navController.navigate(
-                            R.id.fragment_scenic,
-                            bundleOf(BUNDLE_SELECT_TAB to ScenicMApPointEnum.SHOP.ordinal)
-                        )
-                    }
-                    message.contains("景区植物") -> {
-                        navController.navigate(
-                            R.id.fragment_scenic,
-                            bundleOf(BUNDLE_SELECT_TAB to ScenicMApPointEnum.SCENIC_PLANT.ordinal)
-                        )
-                    }
-
-
-                    else -> {
-                        try {
-                            val assetFileDescriptor = resources.assets.openFd("asr.mp3")
-                            val player = MediaPlayer()
-                            if (!player.isPlaying) {
-                                player.setDataSource(
-                                    assetFileDescriptor.fileDescriptor,
-                                    assetFileDescriptor.startOffset,
-                                    assetFileDescriptor.length
-                                )
-                                player.prepare()
-                                player.start()
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-
-                    }
-                }
-
-            } else {
-                message += "没有结果"
-            }
-//            MyLogger.info(message)
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return
+        }
+        if (requestCode == SCAN_CODE) {
+            val obj = data.getParcelableExtra(ScanUtil.RESULT) as HmsScan
+            val intent = Intent(this, DisPlayActivity::class.java)
+            intent.putExtra("SCAN_RESULT", obj)
+            startActivity(intent)
         }
     }
 
