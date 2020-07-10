@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.baidu.geofence.GeoFence
+import com.stxx.wyhvisitorandroid.NOTIFY_ID_FENCE
 import com.stxx.wyhvisitorandroid.R
 
 /**
@@ -24,8 +25,10 @@ class GeoBroadCast : BroadcastReceiver() {
 
     //进入或者未进入园区
     var status: Int? = null
+
     //是否允许提示已经进入园区
     private var isInitEntry = true
+
     //是否允许提示没进入园区
     private var isInitOut = true
 
@@ -89,7 +92,7 @@ class GeoBroadCast : BroadcastReceiver() {
                 NotificationChannel(channelId, "围栏", NotificationManager.IMPORTANCE_DEFAULT)
             notifyManager.createNotificationChannel(notificationChannel)
         }
-        notifyManager.notify(1, notification)
+        notifyManager.notify(NOTIFY_ID_FENCE, notification)
     }
 
 }

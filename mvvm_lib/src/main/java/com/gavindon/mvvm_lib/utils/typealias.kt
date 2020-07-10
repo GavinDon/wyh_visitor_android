@@ -1,6 +1,5 @@
 package com.gavindon.mvvm_lib.utils
 
-import com.gavindon.mvvm_lib.base.MVVMBaseViewModel
 import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.Resource
 import com.gavindon.mvvm_lib.net.SingleLiveEvent

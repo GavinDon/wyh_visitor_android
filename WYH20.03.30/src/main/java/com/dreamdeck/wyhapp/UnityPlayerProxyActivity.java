@@ -1,6 +1,5 @@
 package com.dreamdeck.wyhapp;
 
-import com.unity3d.player.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +15,7 @@ public class UnityPlayerProxyActivity extends Activity
         Log.w("Unity", "UnityPlayerNativeActivity has been deprecated, please update your AndroidManifest to use UnityPlayerActivity instead");
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(this, com.dreamdeck.wyhapp.UnityPlayerActivity.class);
+        Intent intent = new Intent(this, com.dreamdeck.wyhapp.UnityPlayerActivity2.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         Bundle extras = getIntent().getExtras();
         if (extras != null)

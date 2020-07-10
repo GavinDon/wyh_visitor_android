@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.NotificationManagerCompat.IMPORTANCE_HIGH
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.stxx.wyhvisitorandroid.NOTIFY_ID_SOUND
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
 import org.jetbrains.anko.runOnUiThread
@@ -35,8 +36,8 @@ class PlaySoundService : Service() {
     private val player by lazy { MediaPlayer() }
     private var currentLocation: Int = 0
 
-    private val notifyId = 100
     private val channelId = "com.stxx.wyh"
+
     //
     private val channelName = "语音讲解"
     private val broadCastRequestCode = 1
@@ -46,10 +47,13 @@ class PlaySoundService : Service() {
 
     //广播接收的action
     private val playAction = "com.stxx.play"
+
     //关闭
     private val closeAction = "com.stxx.close"
+
     //浮动窗口
     private val floatAction = "com.stxx.float"
+
     //处理点击事件广播
     private val receiver by lazy { PendingIntentBroadCast() }
 
@@ -84,6 +88,7 @@ class PlaySoundService : Service() {
     companion object {
         //点击某条的数据
         const val SOUND_SOURCE = "sound"
+
         //所有可播放的数据
         const val ALL_SOUND = "all_sound"
     }
@@ -183,7 +188,7 @@ class PlaySoundService : Service() {
             player.pause()
             currentLocation = player.currentPosition
             customRemoteViews.setImageViewResource(R.id.ivPlayButton, R.mipmap.ic_play)
-            startForeground(notifyId, notification)
+            startForeground(NOTIFY_ID_SOUND, notification)
 
         }
     }
@@ -195,7 +200,7 @@ class PlaySoundService : Service() {
                 player.start()
             }
             customRemoteViews.setImageViewResource(R.id.ivPlayButton, R.mipmap.ic_pause)
-            startForeground(notifyId, notification)
+            startForeground(NOTIFY_ID_SOUND, notification)
 
         }
     }
@@ -242,7 +247,7 @@ class PlaySoundService : Service() {
                 enableVibration(true)
             }
         }
-        startForeground(notifyId, notification)
+        startForeground(NOTIFY_ID_SOUND, notification)
 
     }
 

@@ -97,6 +97,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     private var bottomSheetBehavior: BottomSheetBehavior3<NestedScrollView>? = null
     private var mapLoaded = false
+
     //当前经纬度
     private var currentLatitude: Double? = null
     private var currentLongitude: Double? = null
@@ -389,7 +390,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         mapView.showZoomControls(false)
         val map = mapView.map
         map.setOnMapLoadedCallback(this)
-        map.setMaxAndMinZoomLevel(19f, 15f)
+        map.setMaxAndMinZoomLevel(17f, 15f)
         val builder = MapStatus.Builder()
         builder.zoom(SaveMapObj.mapZoom)
         builder.target(SaveMapObj.target)
@@ -403,13 +404,12 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
             override fun onMapPoiClick(p0: MapPoi?) {
                 Log.i("customLocation", p0.toString())
-                Log.i("customLocation", "p0p0ppppp")
             }
         })
         val tilePair = object : FileTileProvider() {
             override fun getMinDisLevel(): Int = 14
 
-            override fun getMaxDisLevel(): Int = 19
+            override fun getMaxDisLevel(): Int = 18
 
             override fun getTile(x: Int, y: Int, z: Int): Tile? {
 
@@ -422,13 +422,14 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         }
 
         val urlTileProvider = object : UrlTileProvider() {
-            override fun getMinDisLevel(): Int = 3
-            override fun getMaxDisLevel(): Int = 21
+            override fun getMinDisLevel(): Int = 14
+            override fun getMaxDisLevel(): Int = 19
+
             // "http://online1.map.bdimg.com/tile/?qt=vtile&x={x}&y={y}&z={z}&styles=pl&scaler"
             //            + "=1&udt=20190528";
             //http://223.221.37.181:8082/tiles/15/tile6330_2367.png
             override fun getTileUrl(): String {
-
+                //  val fileDir = "tiles/${z}/tile${x}_${y}.png"
                 /*    "http://online1.map.bdimg.com/tile/?qt=vtile&x={x}&y={y}&z={z}&styles=pl&scaler" + "=1&udt=20190528";
                     "http://223.221.37.181:8082/tiles?z={z}&x={x}_y={y}.png"*/
                 return "http://223.221.37.181:8082/tiles?z={z}&tile\"x={x}\"_\"&y={y}\".png"
@@ -1026,8 +1027,10 @@ object SaveMapObj {
     //second  true表示bottomSheet hidden false表示show
     var needSaveState: Pair<Int, Boolean>? = null
     var bottomState: Int = -1
+
     //onDestroyView时地图的绽放级别
     var mapZoom = 17f
+
     //onDestroyView时保存地图的中心点
     var target: LatLng = LatLng(40.082681, 116.474134)
     var geoBroadCastStatus: Int? = null

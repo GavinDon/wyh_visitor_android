@@ -2,7 +2,6 @@ package com.gavindon.mvvm_lib.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import java.util.logging.Logger
 
 /**
  * description:判断是否安装导航

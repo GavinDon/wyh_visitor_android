@@ -1,6 +1,7 @@
 package com.baidu.aip.asrwakeup3.core.wakeup.listener;
 
 import android.os.Handler;
+
 import com.baidu.aip.asrwakeup3.core.recog.IStatus;
 import com.baidu.aip.asrwakeup3.core.wakeup.WakeUpResult;
 

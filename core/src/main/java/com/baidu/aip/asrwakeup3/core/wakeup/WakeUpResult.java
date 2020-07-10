@@ -2,6 +2,7 @@ package com.baidu.aip.asrwakeup3.core.wakeup;
 
 import com.baidu.aip.asrwakeup3.core.util.MyLogger;
 import com.baidu.speech.asr.SpeechConstant;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

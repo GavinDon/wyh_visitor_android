@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.View;
+
 import com.baidu.aip.asrwakeup3.core.recog.IStatus;
 import com.baidu.aip.asrwakeup3.uiasr.params.AllRecogParams;
 import com.baidu.aip.asrwakeup3.uiasr.params.CommonRecogParams;

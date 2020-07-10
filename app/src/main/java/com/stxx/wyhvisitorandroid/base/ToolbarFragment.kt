@@ -12,7 +12,6 @@ import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.R
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.toolbar_title.*
 
 /**
  * description:统一标题栏Fragment

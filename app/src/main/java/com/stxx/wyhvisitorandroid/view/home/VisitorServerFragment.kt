@@ -7,10 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.dreamdeck.wyhapp.UnityPlayerActivity
 import com.gavindon.mvvm_lib.utils.GsonUtil
-import com.gavindon.mvvm_lib.utils.SpUtils
-import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.*
@@ -23,7 +20,6 @@ import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
 import com.stxx.wyhvisitorandroid.mplusvm.ComplaintVm
 import kotlinx.android.synthetic.main.fragment_visitor_server.*
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream

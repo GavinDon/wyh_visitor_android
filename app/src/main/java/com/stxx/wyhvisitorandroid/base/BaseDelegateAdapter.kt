@@ -10,13 +10,7 @@ import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
-import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.mario.baseadapter.holder.VBaseHolder
-import com.mario.baseadapter.listener.OnItemChildClickListener
-import com.mario.baseadapter.listener.OnItemClickListener
-import com.orhanobut.logger.Logger
 
 
 /**

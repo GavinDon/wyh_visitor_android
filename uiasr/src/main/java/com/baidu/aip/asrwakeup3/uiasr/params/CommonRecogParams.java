@@ -3,10 +3,10 @@ package com.baidu.aip.asrwakeup3.uiasr.params;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+
 import com.baidu.aip.asrwakeup3.core.util.FileUtil;
 import com.baidu.aip.asrwakeup3.core.util.MyLogger;
 import com.baidu.aip.asrwakeup3.uiasr.R;
-import com.baidu.speech.asr.SpeechConstant;
 
 import java.util.ArrayList;
 import java.util.Arrays;

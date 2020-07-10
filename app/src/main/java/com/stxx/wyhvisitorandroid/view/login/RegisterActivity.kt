@@ -7,9 +7,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
-import com.stxx.wyhvisitorandroid.view.ar.ArUnityActivity
 import kotlinx.android.synthetic.main.activity_register.*
-import org.jetbrains.anko.startActivity
 import java.util.regex.Pattern
 
 class RegisterActivity : BaseActivity() {

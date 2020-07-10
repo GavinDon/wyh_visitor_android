@@ -5,6 +5,7 @@ package com.baidu.aip.asrwakeup3.core.recog.listener;
  */
 
 import android.util.Log;
+
 import com.baidu.aip.asrwakeup3.core.recog.IStatus;
 import com.baidu.aip.asrwakeup3.core.recog.RecogResult;
 

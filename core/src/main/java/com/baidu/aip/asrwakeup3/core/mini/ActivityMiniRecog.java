@@ -15,7 +15,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.baidu.aip.asrwakeup3.core.R;
-import com.baidu.aip.asrwakeup3.core.inputstream.InFileStream;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;

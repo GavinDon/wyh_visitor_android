@@ -2,19 +2,13 @@ package com.gavindon.mvvm_lib.utils.clearCache;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Environment;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.UUID;
 

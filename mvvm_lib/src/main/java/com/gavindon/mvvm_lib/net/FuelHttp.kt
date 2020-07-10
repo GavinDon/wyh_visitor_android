@@ -1,6 +1,5 @@
 package com.gavindon.mvvm_lib.net
 
-import android.content.Context
 import com.gavindon.mvvm_lib.utils.GsonUtil
 import com.gavindon.mvvm_lib.utils.Parameters
 import com.gavindon.mvvm_lib.utils.onFailed
@@ -12,19 +11,13 @@ import com.github.kittinunf.fuel.httpUpload
 import com.github.kittinunf.fuel.rx.rxResponseString
 import com.google.gson.JsonSyntaxException
 import com.orhanobut.logger.Logger
-import com.trello.rxlifecycle3.RxLifecycle
-import com.trello.rxlifecycle3.android.RxLifecycleAndroid
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.exceptions.OnErrorNotImplementedException
-import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.schedulers.Schedulers
 import java.io.File
-import java.lang.Exception
 import java.lang.reflect.Type
 
 

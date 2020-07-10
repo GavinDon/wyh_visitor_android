@@ -4,16 +4,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
-import com.gavindon.mvvm_lib.net.IHttpRequest
-import com.gavindon.mvvm_lib.net.http
-import com.gavindon.mvvm_lib.utils.GsonUtil
-import com.gavindon.mvvm_lib.utils.onFailed
-import com.gavindon.mvvm_lib.utils.onSuccessT
-import com.google.gson.JsonSyntaxException
 import com.orhanobut.logger.Logger
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.reflect.Type
 
 /**
  * description:

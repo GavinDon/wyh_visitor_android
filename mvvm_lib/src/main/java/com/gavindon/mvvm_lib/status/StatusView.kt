@@ -5,13 +5,10 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.annotation.LayoutRes
-import androidx.core.view.GravityCompat
 import androidx.core.view.children
 import com.gavindon.mvvm_lib.R
 import com.gavindon.mvvm_lib.widgets.DonButton
-import org.jetbrains.anko.matchParent
 
 
 /**

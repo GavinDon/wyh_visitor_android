@@ -3,6 +3,9 @@ package com.stxx.wyhvisitorandroid
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Outline
 import android.os.Build
 import android.text.InputFilter
@@ -12,6 +15,7 @@ import android.view.ViewOutlineProvider
 import android.widget.EditText
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.showSoftInputWord
@@ -63,6 +67,17 @@ fun SwipeRefreshLayout.showRefreshIcon() {
     this.setColorSchemeResources(R.color.colorTabSelect)
 }
 
+val Context.fileProviderAuth: String
+    get() {
+        val metadata =
+            packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+        var fileProvider = metadata.metaData.getString("file_provider")
+        if (fileProvider.isNullOrEmpty()) {
+            fileProvider = "com.stxx.wyhvisitorandroid.FileProvider"
+        }
+        return fileProvider
+    }
+
 /**
  * 可加载多少页数据
  */
@@ -92,32 +107,21 @@ fun EditText.getFocus(str: String) {
     this.context?.showToast(str)
 }
 
+
 /**
- * @param origin_lon 原点经度
- * @param origin_lat 原点纬度
- * @param azimuth 偏移角度
- * @param distance 延伸距离
+ * 检查是否有安装AR科普的包
  */
-fun azimuth_offset(
-    origin_lon: Double,
-    origin_lat: Double,
-    azimuth: Int?,
-    distance: Double
-): Array<Double> {
-    val lonlat = arrayOf<Double>()
-    if (azimuth != null && azimuth == 0 && distance > 0) {
-        lonlat[0] =
-            origin_lon + distance * Math.sin(azimuth * Math.PI / 180) * 180 / (Math.PI * 6371229 * Math.cos(
-                origin_lat * Math.PI / 180
-            ))
-        lonlat[1] =
-            origin_lat + distance * Math.cos(azimuth * Math.PI / 180) / (Math.PI * 6371229 / 180)
-    } else {
-        lonlat[0] = origin_lon
-        lonlat[1] = origin_lat
+val checkInstallAr: PackageInfo?
+    get() {
+        val packageManager = MVVMBaseApplication.appContext.packageManager
+        var arPackageInfo: PackageInfo? = null
+        try {
+            arPackageInfo = packageManager.getPackageInfo("com.stxx.wyh_unity_ar", 0)
+
+        } catch (ex: PackageManager.NameNotFoundException) {
+        }
+        return arPackageInfo
     }
-    return lonlat
-}
 
 
 /**
@@ -153,7 +157,7 @@ class SpaceEmjFilter : InputFilter {
         if (source == " ") {
             return ""
         }
-        if (isEmoji2(source.toString())) {
+        if (isEmoji(source.toString())) {
             MVVMBaseApplication.appContext.showToast("不可以输入表情")
             return ""
         }
@@ -183,21 +187,7 @@ class SpecialCharFilter : InputFilter {
 
 }
 
-/**
- * 判断是否是表情
- */
-fun isEmoji(string: String): Boolean {
-    val p =
-        Pattern.compile(
-            "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
-            Pattern.UNICODE_CASE or Pattern.CASE_INSENSITIVE
-        )
-
-    val matcher = p.matcher(string)
-    return matcher.matches()
-}
-
-fun isEmoji2(str: String): Boolean {
+fun isEmoji(str: String): Boolean {
     str.forEachIndexed { index, _ ->
         val codePoint = Character.codePointAt(str, index)
         return (codePoint in 0x0080..0x02AF) ||

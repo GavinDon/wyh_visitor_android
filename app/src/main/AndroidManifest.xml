@@ -28,7 +28,7 @@
     <!--录音权限-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name="com.stxx.wyhvisitorandroid.base.MyApplication"
@@ -67,9 +67,9 @@
         <meta-data
             android:name="android.notch_support"
             android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
-        <activity
-            android:name=".view.ar.ArUnityActivity"
-            android:process=":neobearAR" />
+        <!-- <activity
+             android:name=".view.ar.ArUnityActivity"
+             android:process=":neobearAR" />-->
         <activity android:name=".view.ar.WNaviGuideActivity" />
         <activity
             android:name=".view.login.LoginActivity"
@@ -91,6 +91,9 @@
         <meta-data
             android:name="com.baidu.speech.SECRET_KEY"
             android:value="nUUGVMpCGlvHNTrvoV5yy8rjNHWuTONv" />
+        <meta-data
+            android:name="file_provider"
+            android:value="${FILE_PROVIDER}" />
 
         <!--        <activity android:name="com.huawei.hms.hmsscankit.ScanKitActivity" />-->
 
@@ -123,6 +126,9 @@
             android:process=":remote" />
         <service
             android:name=".service.PlaySoundService"
+            android:exported="false" />
+        <service
+            android:name=".service.DownLoadAppService"
             android:exported="false" />
 
 

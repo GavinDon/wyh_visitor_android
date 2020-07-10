@@ -1,7 +1,8 @@
 package com.stxx.wyhvisitorandroid.adapter
 
-import android.content.res.AssetManager
+import android.content.Intent
 import android.graphics.Typeface
+import android.os.Handler
 import android.util.SparseIntArray
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
@@ -22,10 +22,14 @@ import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.dreamdeck.wyhapp.UnityPlayerActivity
 import com.gavindon.mvvm_lib.net.*
 import com.gavindon.mvvm_lib.net.BR
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.rx.rxBytes
+import com.github.kittinunf.fuel.rx.rxResponse
+import com.github.kittinunf.fuel.rx.rxResponseTriple
 import com.mario.baseadapter.holder.VBaseHolderHelper
+import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
@@ -35,13 +39,15 @@ import com.stxx.wyhvisitorandroid.base.VBaseViewHolder
 import com.stxx.wyhvisitorandroid.bean.*
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import com.stxx.wyhvisitorandroid.service.DownLoadAppService
 import com.stxx.wyhvisitorandroid.transformer.RoundedCornersTransformation
 import com.stxx.wyhvisitorandroid.transformer.ScaleInOutTransformer
 import com.zhpan.bannerview.BannerViewPager
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.constants.PageStyle
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.startActivity
+import java.io.File
+import java.io.FileOutputStream
 
 
 /**
@@ -337,12 +343,6 @@ class GridAdapter(
                     it.findNavController().navigate(R.id.action_visitor_server, null, navOption)
                 }
                 R.string.grid_smart_car -> {
-                    /*         it.findNavController().navigate(
-                                 R.id.fragment_webview, bundleOf(
-                                     "url" to "pages/trip/home",
-                                     "title" to R.string.grid_smart_car
-                                 ), navOption
-                             )*/
                     it.findNavController().navigate(
                         R.id.fragment_scenic, bundleOf(
                             BUNDLE_SELECT_TAB to ScenicMApPointEnum.PARK.ordinal,
@@ -352,8 +352,19 @@ class GridAdapter(
                     )
                 }
                 R.string.grid_ar_science -> {
-//                    it.findNavController().navigate(R.id.fragment_scenic)
-                    it.context.startActivity<UnityPlayerActivity>()
+//                    it.context.startActivity<UnityPlayerActivity2>()
+                    if (checkInstallAr != null) {
+                        it.context.startActivity(Intent().run {
+                            setClassName(
+                                "com.stxx.wyh_unity_ar",
+                                "com.stxx.wyh_unity_ar.UnityPlayerActivity"
+                            )
+                        })
+                    } else {
+                        val intent = Intent(it.context, DownLoadAppService::class.java)
+                        it.context.startService(intent)
+                        DownLoadAppService.REQUEST_CANCEL
+                    }
                 }
                 R.string.grid_book -> {
                     val token = judgeLogin()
@@ -445,7 +456,11 @@ class LineRecommendAdapter(
  * 列表标题
  * @param isLine 是否是线路推荐点击更多事件 true为线路推荐
  */
-class TitleAdapter(@StringRes val titleRes: Int, @StringRes val titleResSub: Int, val isLine: Boolean = false) :
+class TitleAdapter(
+    @StringRes val titleRes: Int,
+    @StringRes val titleResSub: Int,
+    val isLine: Boolean = false
+) :
     OnlyShowDelegateAdapter(
         R.layout.vlayout_title
     ) {

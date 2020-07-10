@@ -6,7 +6,6 @@ import com.gavindon.mvvm_lib.utils.GsonUtil
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
-import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONException
 import java.lang.reflect.Type
 

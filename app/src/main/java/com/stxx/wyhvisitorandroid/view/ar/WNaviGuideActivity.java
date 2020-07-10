@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
-import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -22,9 +21,7 @@ import com.baidu.platform.comapi.walknavi.WalkNaviModeSwitchListener;
 import com.baidu.platform.comapi.walknavi.widget.ArCameraView;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
-import com.gavindon.mvvm_lib.base.MVVMBaseApplication;
 import com.stxx.wyhvisitorandroid.view.asr.Auth;
-import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment;
 
 /**
  * @author 53089

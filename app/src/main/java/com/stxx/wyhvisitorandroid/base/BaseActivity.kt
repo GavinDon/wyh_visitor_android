@@ -1,18 +1,14 @@
 package com.stxx.wyhvisitorandroid.base
 
 import android.content.Context
-import android.os.Bundle
 import com.gavindon.mvvm_lib.base.BindContextViewModelFactory
 import com.gavindon.mvvm_lib.base.MVVMBaseActivity
 import com.gavindon.mvvm_lib.base.MVVMBaseViewModel
 import com.gavindon.mvvm_lib.base.ViewModelProviders
 import com.gavindon.mvvm_lib.net.*
-import com.gavindon.mvvm_lib.utils.onSuccess
 import com.gavindon.mvvm_lib.utils.onSuccessT
 import com.gavindon.mvvm_lib.widgets.showToast
-import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.R
-import org.jetbrains.anko.toast
 
 /**
  * description:

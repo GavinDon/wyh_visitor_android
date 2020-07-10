@@ -1,6 +1,7 @@
 package com.baidu.aip.asrwakeup3.uiasr.params;
 
 import android.content.SharedPreferences;
+
 import com.baidu.speech.asr.SpeechConstant;
 
 import java.util.Arrays;

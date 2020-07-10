@@ -1,6 +1,5 @@
 package com.gavindon.mvvm_lib.base
 
-import android.app.Service
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
@@ -14,22 +13,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import com.gavindon.mvvm_lib.R
 import com.gavindon.mvvm_lib.base.my_interface.IView
 import com.gavindon.mvvm_lib.status.StatusView
-import com.gavindon.mvvm_lib.utils.GsonUtil
-import com.gavindon.mvvm_lib.utils.onFailed
-import com.gavindon.mvvm_lib.utils.onSuccessT
-import com.google.gson.JsonSyntaxException
-import com.orhanobut.logger.Logger
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.reflect.Type
 
 /**
  * description:

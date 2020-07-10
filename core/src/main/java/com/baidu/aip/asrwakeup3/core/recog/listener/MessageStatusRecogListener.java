@@ -3,6 +3,7 @@ package com.baidu.aip.asrwakeup3.core.recog.listener;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 import com.baidu.aip.asrwakeup3.core.recog.RecogResult;
 import com.baidu.speech.asr.SpeechConstant;
 

@@ -18,9 +18,6 @@ import com.baidu.speech.asr.SpeechConstant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Logger;
 
 import static com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog.ERROR_NONE;
 
