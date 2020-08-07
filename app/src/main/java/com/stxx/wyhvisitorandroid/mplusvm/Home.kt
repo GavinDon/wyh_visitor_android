@@ -31,12 +31,12 @@ class HomeVm : MVVMBaseViewModel() {
 
     private val model: HomeRepositories = HomeRepositories(mComDis)
     private val homeLiveData = SingleLiveEvent<Resource<BR<List<*>>>>()
+
     //保存首页所有的数据,在切换页面时不再请求数据（pair（int,any）Int保存的是adapter的view ID）
     internal val homeData = mutableListOf<Pair<Int, Any>>()
 
     private val mCompositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
-    private val homeLiveData2 = SingleLiveEvent<BR<Any>>()
 
     fun getHomes(
         isRefresh: Boolean
@@ -63,17 +63,17 @@ class HomeVm : MVVMBaseViewModel() {
         val notice = Fuel.get(ApiService.NOTICE_URL)
             .rxResponseObject(gsonDeserializer<BR<List<NoticeResp>>>()).toObservable()
 
+        val ar720 = Fuel.get(ApiService.AR720_URL, listOf("pageSize" to 3))
+            .rxResponseObject(gsonDeserializer<BR<List<Ar720Resp>>>()).toObservable()
+
+
 
 
         mCompositeDisposable.add(
             //使用mergeDelayError处理合并请求当有错误发生时保留到list中
             // 直到所有数据发射完成再走onError
-            Observable.mergeDelayError(
-                news,
-                horRecommend,
-                line,
-                notice
-            ).compose(RxScheduler.applyScheduler())
+            Observable.mergeArrayDelayError(news, horRecommend, line, notice, ar720)
+                .compose(RxScheduler.applyScheduler())
                 .subscribe({
                     if (null != it) {
                         homeLiveData.value = create(it)
@@ -184,6 +184,16 @@ class HomeVm : MVVMBaseViewModel() {
 
         return hotLiveDataMore
     }
+
+    val arMoreLiveData = singLiveData<List<Ar720Resp>>()
+    fun getArMOre(): singLiveData<List<Ar720Resp>> {
+        model.fetchArMore({
+            arMoreLiveData.value = create(it)
+        }, {
+            arMoreLiveData.value = create(it)
+        })
+        return arMoreLiveData
+    }
 }
 
 
@@ -227,13 +237,30 @@ class HomeRepositories(private val mComDis: CompositeDisposable) : MVVMBaseModel
         onFailed: onFailed
     ) {
         val typeToken = object : TypeToken<BR<List<HotRecommendResp>>>() {}.type
-        mComDis.add(http!!.getWithoutLoading(ApiService.HOT_RECOMMEND, param)
-            .parse2<BR<List<HotRecommendResp>>>(typeToken, {
-                onSuccess.invoke(it)
-            }, {
-                onFailed(it)
-            })
+        mComDis.add(
+            http!!.getWithoutLoading(ApiService.HOT_RECOMMEND, param)
+                .parse2<BR<List<HotRecommendResp>>>(typeToken, {
+                    onSuccess.invoke(it)
+                }, {
+                    onFailed(it)
+                })
         )
+    }
+
+    /**
+     * 获取Ar720资源
+     */
+    fun fetchArMore(onSuccess: onSuccessT<BR<List<Ar720Resp>>>, onFailed: onFailed) {
+        val typeToken = object : TypeToken<BR<List<Ar720Resp>>>() {}.type
+        mComDis.add(
+            http!!.getWithoutLoading(ApiService.AR720_URL, listOf("pageSize" to 999))
+                .parse2<BR<List<Ar720Resp>>>(typeToken, {
+                    onSuccess(it)
+                }, {
+                    onFailed(it)
+                })
+        )
+
     }
 
 

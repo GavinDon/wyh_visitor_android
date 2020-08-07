@@ -94,3 +94,23 @@ file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\rel
 sha1=02dc213f5bbe6f9d442cbb3807c136d900b48ece
 appId=4fa626abc1
 
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=d54785fe18257cd84475ed4587bd8f77d491387d
+appId=4fa626abc1
+
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=d54785fe18257cd84475ed4587bd8f77d491387d
+appId=4fa626abc1
+
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=d54785fe18257cd84475ed4587bd8f77d491387d
+appId=4fa626abc1
+
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=257de4fea3bfff1de6b9124a79ec4d0c1d38202d
+appId=4fa626abc1
+
+file=D:\work\Android\WorkSpace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=09cfcab278f6e00885666d4dc11555cee3155cbd
+appId=4fa626abc1
+

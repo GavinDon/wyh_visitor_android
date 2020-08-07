@@ -179,7 +179,10 @@
         android:id="@+id/fragment_notice_detail"
         android:name="com.stxx.wyhvisitorandroid.view.more.NoticeDetailFragment"
         tools:layout="@layout/fragment_notice" />
-
+    <fragment
+        android:id="@+id/fragment_ar_more"
+        android:name="com.stxx.wyhvisitorandroid.view.more.ArMoreFragment"
+        tools:layout="@layout/fragment_ar_more" />
     <dialog
         android:id="@+id/dialog_sure_cancel"
         android:name="com.stxx.wyhvisitorandroid.view.dialog.DialogSureCancel"

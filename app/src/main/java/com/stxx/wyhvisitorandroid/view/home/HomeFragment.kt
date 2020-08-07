@@ -1,7 +1,5 @@
 package com.stxx.wyhvisitorandroid.view.home
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.lifecycle.Observer
@@ -21,11 +19,8 @@ import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ImmersionBar.getStatusBarHeight
-import com.huawei.hms.hmsscankit.ScanKitActivity
 import com.huawei.hms.hmsscankit.ScanUtil
-import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.SCAN_CODE
 import com.stxx.wyhvisitorandroid.adapter.*
@@ -38,7 +33,6 @@ import com.stxx.wyhvisitorandroid.navOption
 import io.reactivex.exceptions.CompositeException
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.title_bar.*
-import org.jetbrains.anko.support.v4.intentFor
 
 
 /**
@@ -61,6 +55,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var hotRecommendAdapter: HotRecommendAdapter
     private lateinit var noticeAdapter: NoticeAdapter
+    private lateinit var ar720Adapter: Ar720Adapter
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
@@ -121,8 +116,8 @@ class HomeFragment : BaseFragment() {
 
 
         /*AR游园*/
-        val arAdapter = ArAdapter(R.layout.view_ar_visit)
-        delegateAdapter.addAdapter(arAdapter)
+        ar720Adapter = Ar720Adapter(R.layout.view_ar_visit)
+        delegateAdapter.addAdapter(ar720Adapter)
 
         //搜索
         llSearchDestination.setOnClickListener {
@@ -191,6 +186,10 @@ class HomeFragment : BaseFragment() {
                         noticeAdapter.setSingerLayoutData(data as List<NoticeResp>)
                         homeVm.homeData.add(Pair(R.layout.home_notice, data))
                     }
+                    is Ar720Resp -> {
+                        ar720Adapter.setSingerLayoutData(data as List<Ar720Resp>)
+                        homeVm.homeData.add(Pair(R.layout.view_ar_visit, data))
+                    }
                 }
             } else if (it is ErrorSource) {
                 val e = it.e
@@ -247,6 +246,10 @@ class HomeFragment : BaseFragment() {
                     R.layout.home_notice -> {
                         noticeAdapter.setSingerLayoutData(it.second as List<NoticeResp>)
                     }
+                    R.layout.view_ar_visit -> {
+                        ar720Adapter.setSingerLayoutData(it.second as List<Ar720Resp>)
+                    }
+
 
                 }
             }
@@ -260,40 +263,4 @@ class HomeFragment : BaseFragment() {
             resources.displayMetrics
         ).toInt()
 
-    inner class ArAdapter(
-        mLayoutId: Int
-    ) : OnlyShowDelegateAdapter(mLayoutId) {
-        override fun onBindViewHolder(holder: BaseDelegateVH, position: Int) {
-            val arRv = holder.getView<RecyclerView>(R.id.rvArRecommend)
-            arRv?.apply {
-                setItemViewCacheSize(10)
-                setRecycledViewPool(recycledViewPool)
-                recycledViewPool.setMaxRecycledViews(0, 10)
-                layoutManager?.isItemPrefetchEnabled = true
-                adapter = ArHorizontalAdapter(
-                    R.layout.card_ar_visit,
-                    mutableListOf(R.mipmap.ar1, R.mipmap.ar2, R.mipmap.ar3)
-                )
-            }
-
-        }
-    }
-
-    class ArHorizontalAdapter(layoutResId: Int, data: MutableList<Int>?) :
-        BaseQuickAdapter<Int, BaseViewHolder>(layoutResId, data) {
-        override fun convert(holder: BaseViewHolder, item: Int) {
-            holder.setImageResource(R.id.ivAr, item)
-                .itemView.setOnClickListener {
-                    this.context?.showToast("敬请期待")
-                    /*it.findNavController().navigate(
-                        R.id.fragment_webview,
-                        bundleOf(
-                            "url" to "http://117.159.4.206:8888/720vr/",
-                            "title" to R.string.grid_ar
-                        )
-                        , navOption
-                    )*/
-                }
-        }
-    }
 }

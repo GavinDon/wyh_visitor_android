@@ -45,7 +45,14 @@ class WebViewFragment : BaseFragment() {
             x5WebView.loadUrl("${WebViewUrl.WEB_BASE}${url}")
             Logger.i("${WebViewUrl.WEB_BASE}${url}")
         }
-        app_tv_Title.text = getString(arguments?.getInt(WEB_VIEW_TITLE) ?: R.string.app_name)
+        //获取title
+        val title = arguments?.get(WEB_VIEW_TITLE)
+        val strTitle = if (title is String) {
+            title
+        } else {
+            getString(arguments?.getInt(WEB_VIEW_TITLE) ?: R.string.app_name)
+        }
+        app_tv_Title.text = strTitle
 
         toolbar_back.setOnClickListener {
             if (x5WebView?.canGoBack() == true) {

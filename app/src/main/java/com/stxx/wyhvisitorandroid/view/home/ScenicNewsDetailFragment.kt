@@ -71,7 +71,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 initView(
                     detailData.imgurl,
                     detailData.title,
-                    detailData.content?:"",
+                    detailData.content ?: "",
                     detailData.gmt_modfy
                 )
             }
@@ -113,11 +113,11 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
         http?.getWithoutLoading(url, listOf("id" to id))
     }
 
-    private fun initView(url: String, title: String, content: String, key: String) {
+    private fun initView(url: String, title: String, content: String?, key: String) {
         ImageLoader.with().load(url).into(ivNewsDetailHead)
         tvNewsDetailTitle.text = title
         tvNewsDetailDate.text = key
-        HtmlUtil().show(this.context, content, Handler {
+        HtmlUtil().show(this.context, content ?: "暂无内容", Handler {
             //        tvNewsDetailContent.text = it.obj.toString()
             tvNewsDetailContent?.text = it.obj as Spanned
             return@Handler false
@@ -181,7 +181,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
     }*/
 
     override fun setStatusBar() {
-        titleBar.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+        titleBar.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.white))
         titleBar.layoutParams.height = getStatusBarHeight(this.requireContext())
         ImmersionBar.with(this)
             .fitsSystemWindows(false)

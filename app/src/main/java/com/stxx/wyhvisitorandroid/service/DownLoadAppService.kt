@@ -112,7 +112,7 @@ class DownLoadAppService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
         } else {
-            dialog.window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG)
+            dialog.window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
         }
         dialog.setOnShowListener { dialogs ->
             val negativeButton =

@@ -150,4 +150,6 @@ data class NoticeResp(
     val type: String? = null
 ) : Serializable
 
+//720
+data class Ar720Resp(val pid: Int, val imgurl: String, val name: String)
 

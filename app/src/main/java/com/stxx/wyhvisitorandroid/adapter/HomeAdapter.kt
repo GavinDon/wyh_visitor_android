@@ -12,12 +12,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -32,6 +36,7 @@ import com.mario.baseadapter.holder.VBaseHolderHelper
 import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
+import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
 import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
 import com.stxx.wyhvisitorandroid.base.OnlyShowDelegateAdapter
 import com.stxx.wyhvisitorandroid.base.VBaseAdapter
@@ -46,6 +51,7 @@ import com.zhpan.bannerview.BannerViewPager
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.constants.PageStyle
 import org.jetbrains.anko.dip
+import org.w3c.dom.Text
 import java.io.File
 import java.io.FileOutputStream
 
@@ -224,13 +230,13 @@ class HotRecommendAdapter(
             it.findNavController().navigate(R.id.fragment_hot_recommend_more, null, navOption)
         }
 
-        val rv = holder.getView<RecyclerView>(R.id.rvHotRecommend)
-        rv.apply {
-            setRecycledViewPool(recycledViewPool)
-            recycledViewPool.setMaxRecycledViews(0, 10)
-//            adapter = HotHorizontalAdapter(R.layout.card_hot_recommend, singleData?.toMutableList())
-            rv.smoothScrollToPosition(1)
-        }
+        /* val rv = holder.getView<RecyclerView>(R.id.rvHotRecommend)
+         rv.apply {
+             setRecycledViewPool(recycledViewPool)
+             recycledViewPool.setMaxRecycledViews(0, 10)
+ //            adapter = HotHorizontalAdapter(R.layout.card_hot_recommend, singleData?.toMutableList())
+             rv.smoothScrollToPosition(1)
+         }*/
     }
 
     inner class BannerAdpater : BaseBannerAdapter<HotRecommendResp, BannerViewHolder>() {
@@ -272,37 +278,6 @@ class HotRecommendAdapter(
             ).into(iv)
         }
     }
-
-    inner class HotHorizontalAdapter(
-        layoutResId: Int,
-        data: MutableList<HotRecommendResp>?
-    ) :
-        BaseQuickAdapter<HotRecommendResp, BaseViewHolder>(layoutResId, data) {
-        override fun convert(holder: BaseViewHolder, item: HotRecommendResp) {
-            holder.setText(
-                R.id.tvScenicSummary,
-                HtmlCompat.fromHtml(item.content ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT)
-            ).setText(R.id.tvScenicName, item.title)
-            val iv = holder.getView<ImageView>(R.id.ivScenicPic)
-            ImageLoader.with().load(item.imgurl).transForm(
-                RoundedCornersTransformation(
-                    20,
-                    0,
-                    RoundedCornersTransformation.CornerType.TOP
-                )
-            ).into(iv)
-            holder.itemView.setOnClickListener {
-                it.findNavController()
-                    .navigate(R.id.action_news_detail, bundleOf("detail" to item), navOption)
-            }
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.card_hot_recommend, parent, false)
-            return BaseViewHolder(itemView)
-        }
-    }
 }
 
 
@@ -337,7 +312,7 @@ class GridAdapter(
         holder.getView<ImageView>(R.id.ivGrid)
             ?.setImageResource(homeGridSource.valueAt(position))
         holder.setText(R.id.tvStatement, homeGridSource.keyAt(position))
-        holder.getView<LinearLayout>(R.id.llHomeGrid)?.setOnClickListener {
+        holder.getView<ConstraintLayout>(R.id.llHomeGrid)?.setOnClickListener {
             when (homeGridSource.keyAt(position)) {
                 R.string.grid_visit -> {
                     it.findNavController().navigate(R.id.action_visitor_server, null, navOption)
@@ -451,6 +426,45 @@ class LineRecommendAdapter(
         }
     }
 }
+
+class Ar720Adapter(layoutId: Int) : VBaseAdapter<Ar720Resp>(layoutId) {
+
+    override fun convert(holder: VBaseViewHolder<Ar720Resp>, item: Ar720Resp?) {
+        val rv = holder.getView<RecyclerView>(R.id.rvArRecommend)
+        val more = holder.getView<TextView>(R.id.arTvMore)
+        rv.adapter = AR720RowAdapter(R.layout.card_ar_visit, singleData as MutableList<Ar720Resp>?)
+        (rv.adapter as AR720RowAdapter).setOnItemClickListener { _, view, position ->
+            //获取720 场景id
+            val scenicId = singleData?.get(position)?.pid ?: 1
+            val name = singleData?.get(position)?.name
+            view.findNavController()
+                .navigate(
+                    R.id.fragment_webview,
+                    bundleOf(
+                        Pair(WEB_VIEW_URL, "${AR_720}?id=$scenicId"),
+                        Pair(WEB_VIEW_TITLE, name)
+                    ),
+                    navOption
+                )
+        }
+        more.setOnClickListener {
+            it.findNavController().navigate(R.id.fragment_ar_more, null, navOption)
+        }
+    }
+}
+
+class AR720RowAdapter(layoutResId: Int, data: MutableList<Ar720Resp>?) :
+    BaseQuickAdapter<Ar720Resp, BaseViewHolder>(layoutResId, data) {
+    override fun convert(holder: BaseViewHolder, item: Ar720Resp) {
+        holder.setText(R.id.adaArTVName, item.name)
+        val imageView = holder.getView<ImageView>(R.id.adaArIv)
+        ImageLoader.with().load(item.imgurl).into(imageView)
+
+
+    }
+
+}
+
 
 /**
  * 列表标题
