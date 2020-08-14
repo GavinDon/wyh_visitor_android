@@ -7,6 +7,7 @@ import com.baidu.mapapi.SDKInitializer
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.HttpFrame
 import com.gavindon.mvvm_lib.net.HttpManager
+import com.quyuanfactory.artmap.ArtMap
 import com.stxx.wyhvisitorandroid.BuildConfig
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
@@ -43,6 +44,7 @@ class MyApplication : MVVMBaseApplication() {
         //极光推送
         JPushInterface.setDebugMode(true)
         JPushInterface.init(this)
+        ArtMap.Init(this)
     }
 
     override fun attachBaseContext(base: Context?) {

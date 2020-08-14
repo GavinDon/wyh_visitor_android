@@ -10,6 +10,7 @@ import android.graphics.Outline
 import android.os.Build
 import android.text.InputFilter
 import android.text.Spanned
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.EditText
@@ -218,6 +219,8 @@ fun isEmoji(str: String): Boolean {
     }
     return false
 }
+
+
 
 
 

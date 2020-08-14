@@ -168,11 +168,6 @@ class MultiFragments : BaseActivity() {
         }
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun permissionForResult() {
     }
 }

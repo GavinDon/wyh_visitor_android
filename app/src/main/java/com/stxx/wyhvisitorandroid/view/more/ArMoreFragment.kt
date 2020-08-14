@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gavindon.mvvm_lib.net.SuccessSource
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
@@ -43,11 +44,12 @@ class ArMoreFragment : ToolbarFragment() {
         arMoreRv.adapter = moreAdapter
         moreAdapter.setOnItemClickListener { adapter, view, position ->
             val data = adapter.getItem(position) as Ar720Resp
+            Logger.i("${AR_720}?id=${data.pid}")
             view.findNavController()
                 .navigate(
                     R.id.fragment_webview, bundleOf(
                         WEB_VIEW_TITLE to data.name,
-                        WEB_VIEW_URL to AR_720
+                        WEB_VIEW_URL to "${AR_720}${data.pid}"
                     ), navOption
                 )
         }

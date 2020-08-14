@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/dp_5"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/robot" />
+        app:lottie_rawRes="@raw/robot_blue" />
 
     <TextView
         android:id="@+id/botLeft"
@@ -24,7 +24,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/dp_5"
         android:layout_marginEnd="@dimen/dp_58"
-        android:background="@color/orange_50"
         android:paddingHorizontal="@dimen/dp_9"
         android:paddingVertical="@dimen/dp_6"
         android:textSize="@dimen/sp_16"

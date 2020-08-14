@@ -43,7 +43,6 @@ import com.gavindon.mvvm_lib.utils.phoneWidth
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
-import com.huawei.hms.hmsscankit.ScanKitActivity
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import com.orhanobut.logger.Logger
@@ -61,7 +60,6 @@ import com.stxx.wyhvisitorandroid.widgets.BottomSheetBehavior3
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -880,10 +878,10 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
 
     private fun goWalkNav(pointData: ServerPointResp) {
-        if (geoBroadCast.status == GeoFence.INIT_STATUS_IN) {
+        if (geoBroadCast.status == GeoFence.STATUS_IN || geoBroadCast.status == GeoFence.INIT_STATUS_IN) {
             //进入园区则使用园区导航
             findNavController().navigate(
-                R.id.fragment_route_plant,
+                R.id.fragment_ar_nav,
                 bundleOf(Pair(BUNDLE_SCENIC_DETAIL, pointData)),
                 navOption
             )

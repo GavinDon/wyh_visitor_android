@@ -173,7 +173,7 @@ class BannerAdapter(
                                 }
                                 is RealPeopleNum -> {
                                     //入园人数
-                                    nowPeople.text = data.same_day_num_total.toString()
+                                    nowPeople.text = data.real_time_num_total.toString()
                                 }
                             }
                         }
@@ -441,7 +441,7 @@ class Ar720Adapter(layoutId: Int) : VBaseAdapter<Ar720Resp>(layoutId) {
                 .navigate(
                     R.id.fragment_webview,
                     bundleOf(
-                        Pair(WEB_VIEW_URL, "${AR_720}?id=$scenicId"),
+                        Pair(WEB_VIEW_URL, "${AR_720}${scenicId}"),
                         Pair(WEB_VIEW_TITLE, name)
                     ),
                     navOption

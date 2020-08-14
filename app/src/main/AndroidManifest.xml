@@ -176,6 +176,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.splash.DisPlayActivity" />
+        <activity android:name=".view.scenic.ArNavActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

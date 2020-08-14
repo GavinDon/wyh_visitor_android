@@ -65,7 +65,7 @@ object ApiService {
 
     //电子地图服务点
     const val SCENIC_MAP_POINT = "complex/findSrvicePoint"
-    const val SCENIC_MAP_POINT_ID = "/complex/findSrvicePointById"
+    const val SCENIC_MAP_POINT_ID = "complex/findSrvicePointById"
 
     //查询停车场 不传查全部0.通用停车场1.一类停车场2.二类停车场)
     const val PARK_LST_URL = "complex/findParkingInfo"
@@ -117,6 +117,7 @@ object ApiService {
 
 object WebViewUrl {
     const val WEB_BASE = "http://manage.wenyuriverpark.com:8082/h5/#/"
+//    const val WEB_BASE = "https://tourist.wenyuriverpark.com/app/h5/#/"
 
     //医疗求助
     const val MEDICAL = "pages/service/tourist/hospital?device=1"
@@ -155,5 +156,6 @@ object WebViewUrl {
     const val AI_BUDAO = "https://aiot.ucanuup.cn/mapp/wenyh/"
 
     //720
-    const val AR_720 = "http://manage.wenyuriverpark.com:8082/web/index720.html"
+//    const val AR_720 = "http://manage.wenyuriverpark.com:8082/web/index720.html"
+    const val AR_720 = "http://116.117.157.183:28183/vr/index.html#node_"
 }

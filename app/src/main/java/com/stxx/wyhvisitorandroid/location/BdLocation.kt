@@ -40,7 +40,9 @@ class BdLocation(private val locationListener: BDAbstractLocationListener) : Lif
     }
 
     fun startLocation() {
-        mLocationClient.start()
+        if (!mLocationClient.isStarted) {
+            mLocationClient.start()
+        }
     }
 
 
