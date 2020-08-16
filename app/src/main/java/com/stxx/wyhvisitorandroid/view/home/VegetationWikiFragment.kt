@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 
  */
 class VegetationWikiFragment : ToolbarFragment() {
-    override val toolbarName: Int = R.string.grid_plant_wiki
+    override val toolbarName: Int = R.string.grid_scenic_wiki
     override val layoutId: Int = R.layout.fragment_vegetaion_wiki
     override val mStatusViewId: Int = R.id.vegetationStatus
 

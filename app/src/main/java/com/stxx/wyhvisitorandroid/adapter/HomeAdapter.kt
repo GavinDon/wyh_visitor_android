@@ -2,36 +2,26 @@ package com.stxx.wyhvisitorandroid.adapter
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.os.Handler
 import android.util.SparseIntArray
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterViewFlipper
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import androidx.core.util.set
 import androidx.core.view.ViewCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gavindon.mvvm_lib.net.*
 import com.gavindon.mvvm_lib.net.BR
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.rx.rxBytes
-import com.github.kittinunf.fuel.rx.rxResponse
-import com.github.kittinunf.fuel.rx.rxResponseTriple
 import com.mario.baseadapter.holder.VBaseHolderHelper
 import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
@@ -51,9 +41,6 @@ import com.zhpan.bannerview.BannerViewPager
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.constants.PageStyle
 import org.jetbrains.anko.dip
-import org.w3c.dom.Text
-import java.io.File
-import java.io.FileOutputStream
 
 
 /**
@@ -287,28 +274,34 @@ class HotRecommendAdapter(
 class GridAdapter(
     mLayoutId: Int,
     layoutHelper: LayoutHelper
-) : OnlyShowDelegateAdapter(mLayoutId, layoutHelper, 5) {
+) : OnlyShowDelegateAdapter(mLayoutId, layoutHelper, 8) {
 
-    private val homeGridSource = SparseIntArray(5)
+    private val homeGridSource = SparseIntArray(8)
 
+    //ar科普 植物百科 智慧停车 全景游园 虚拟游园 景区百科  AI步道 游客服务
     init {
         homeGridSource.apply {
-            put(R.string.grid_visit, R.mipmap.grid_visit_server)
-//            put(R.string.grid_line_guide, R.mipmap.grid_line_guide)
-            put(R.string.grid_ar_science, R.mipmap.grid_ar)
-            put(R.string.grid_book, R.mipmap.grid_line_guide)
-            put(R.string.grid_plant_wiki, R.mipmap.grid_plant_wiki)
-//            put(R.string.grid_ar, R.mipmap.grid_ar)
-            put(R.string.grid_smart_car, R.mipmap.grid_smart_cart)
-//            put(R.string.str_hot_record, R.mipmap.grid_line_guide)
-//            put(R.string.str_news, R.mipmap.grid_plant_wiki)
-////            put(R.string.grid_ar, R.mipmap.grid_ar)
-//            put(R.string.visitor_ai_budao, R.mipmap.grid_smart_cart)
+            append(R.string.grid_visit, R.mipmap.grid_visit_server)
+            //ar科普
+            append(R.string.grid_ar_science, R.mipmap.grid_ar)
+            //植物百科
+            append(R.string.grid_plant_wiki, R.mipmap.grid_plant_wiki)
+            //智慧停车
+            append(R.string.grid_smart_car, R.mipmap.grid_smart_cart)
+            //全景游园
+            append(R.string.full_ar, R.mipmap.grid_vr)
+            //虚拟游园
+            append(R.string.str_ar, R.mipmap.grid_virtual)
+            //景区百科
+            append(R.string.grid_scenic_wiki, R.mipmap.grid_scenic_wiki)
+            //AI步道
+            append(R.string.visitor_ai_budao, R.mipmap.grid_ar_budao)
         }
     }
 
     override fun onBindViewHolder(holder: BaseDelegateVH, position: Int) {
 
+        Logger.d(homeGridSource)
         holder.getView<ImageView>(R.id.ivGrid)
             ?.setImageResource(homeGridSource.valueAt(position))
         holder.setText(R.id.tvStatement, homeGridSource.keyAt(position))
@@ -354,7 +347,7 @@ class GridAdapter(
                         it.findNavController().navigate(R.id.login_activity, null, navOption)
                     }
                 }
-                R.string.grid_plant_wiki -> {
+                R.string.grid_scenic_wiki -> {
                     it.findNavController()
                         .navigate(R.id.action_vegetation_wiki, null, navOption)
                 }

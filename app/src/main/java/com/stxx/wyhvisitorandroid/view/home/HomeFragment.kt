@@ -86,7 +86,7 @@ class HomeFragment : BaseFragment() {
         delegateAdapter.addAdapter(noticeAdapter)
 
         /*grid*/
-        val gridLayoutHelper = GridLayoutHelper(5)
+        val gridLayoutHelper = GridLayoutHelper(4)
         val gridAdapter = GridAdapter(R.layout.view_home_grid, gridLayoutHelper)
         gridLayoutHelper.setAutoExpand(true)
         delegateAdapter.addAdapter(gridAdapter)
