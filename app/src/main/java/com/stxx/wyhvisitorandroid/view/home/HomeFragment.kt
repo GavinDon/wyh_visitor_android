@@ -57,6 +57,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var noticeAdapter: NoticeAdapter
     private lateinit var ar720Adapter: Ar720Adapter
 
+
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         //建立委托LayoutManger
@@ -89,6 +90,7 @@ class HomeFragment : BaseFragment() {
         val gridLayoutHelper = GridLayoutHelper(4)
         val gridAdapter = GridAdapter(R.layout.view_home_grid, gridLayoutHelper)
         gridLayoutHelper.setAutoExpand(true)
+        gridAdapter.addItems(loadGridData())
         delegateAdapter.addAdapter(gridAdapter)
 
         /*hotRecommends*/
@@ -100,7 +102,7 @@ class HomeFragment : BaseFragment() {
         delegateAdapter.addAdapter(titleAdapter)
 
         val newsHelper = LinearLayoutHelper(12.dpToPx)
-        newsHelper.marginTop = 10.dpToPx
+//        newsHelper.marginTop = 10.dpToPx
         newsAdapter = NewsAdapters(R.layout.card_home_news, newsHelper)
         delegateAdapter.addAdapter(newsAdapter)
 
@@ -110,7 +112,6 @@ class HomeFragment : BaseFragment() {
         delegateAdapter.addAdapter(lineTitleAdapter)
 
         val lineRecommendHelper = LinearLayoutHelper(12.dpToPx)
-        lineRecommendHelper.marginTop = 17.dpToPx
         lineRecommendAdapter = LineRecommendAdapter(R.layout.card_home_news, lineRecommendHelper)
         delegateAdapter.addAdapter(lineRecommendAdapter)
 
@@ -148,6 +149,26 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    private fun loadGridData(): List<GridBean> {
+        //AI步道
+        //ar科普
+        //植物百科
+        //智慧停车
+        //全景游园
+        //虚拟游园
+        //景区百科
+        //ar科普 植物百科 智慧停车 全景游园 虚拟游园 景区百科  AI步道 游客服务
+        return listOf(
+            GridBean(R.string.grid_ar_science, R.mipmap.grid_ar),
+            GridBean(R.string.grid_plant_wiki, R.mipmap.grid_plant_wiki),
+            GridBean(R.string.grid_smart_car, R.mipmap.grid_smart_cart),
+            GridBean(R.string.full_ar, R.mipmap.grid_vr),
+            GridBean(R.string.str_ar, R.mipmap.grid_virtual),
+            GridBean(R.string.grid_scenic_wiki, R.mipmap.grid_scenic_wiki),
+            GridBean(R.string.visitor_ai_budao, R.mipmap.grid_ar_budao),
+            GridBean(R.string.grid_visit, R.mipmap.grid_visit_server)
+        )
+    }
 
     override fun setStatusBar() {
         titleBar?.layoutParams?.height = getStatusBarHeight(this)

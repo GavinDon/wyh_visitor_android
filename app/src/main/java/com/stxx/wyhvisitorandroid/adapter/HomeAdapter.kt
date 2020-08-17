@@ -2,6 +2,7 @@ package com.stxx.wyhvisitorandroid.adapter
 
 import android.content.Intent
 import android.graphics.Typeface
+import android.os.Bundle
 import android.util.SparseIntArray
 import android.view.View
 import android.widget.AdapterViewFlipper
@@ -20,12 +21,15 @@ import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.dreamdeck.wyhapp.UnityPlayerActivity
+import com.dreamdeck.wyhapp.UnityPlayerActivity2
 import com.gavindon.mvvm_lib.net.*
 import com.gavindon.mvvm_lib.net.BR
 import com.mario.baseadapter.holder.VBaseHolderHelper
 import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
+import com.stxx.wyhvisitorandroid.WebViewUrl.AI_BUDAO
 import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
 import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
 import com.stxx.wyhvisitorandroid.base.OnlyShowDelegateAdapter
@@ -41,6 +45,8 @@ import com.zhpan.bannerview.BannerViewPager
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.constants.PageStyle
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.startActivity
+import java.util.HashMap
 
 
 /**
@@ -271,47 +277,21 @@ class HotRecommendAdapter(
 /**
  * 首页网格布局
  */
-class GridAdapter(
-    mLayoutId: Int,
-    layoutHelper: LayoutHelper
-) : OnlyShowDelegateAdapter(mLayoutId, layoutHelper, 8) {
-
-    private val homeGridSource = SparseIntArray(8)
-
-    //ar科普 植物百科 智慧停车 全景游园 虚拟游园 景区百科  AI步道 游客服务
-    init {
-        homeGridSource.apply {
-            append(R.string.grid_visit, R.mipmap.grid_visit_server)
-            //ar科普
-            append(R.string.grid_ar_science, R.mipmap.grid_ar)
-            //植物百科
-            append(R.string.grid_plant_wiki, R.mipmap.grid_plant_wiki)
-            //智慧停车
-            append(R.string.grid_smart_car, R.mipmap.grid_smart_cart)
-            //全景游园
-            append(R.string.full_ar, R.mipmap.grid_vr)
-            //虚拟游园
-            append(R.string.str_ar, R.mipmap.grid_virtual)
-            //景区百科
-            append(R.string.grid_scenic_wiki, R.mipmap.grid_scenic_wiki)
-            //AI步道
-            append(R.string.visitor_ai_budao, R.mipmap.grid_ar_budao)
-        }
-    }
-
-    override fun onBindViewHolder(holder: BaseDelegateVH, position: Int) {
-
-        Logger.d(homeGridSource)
-        holder.getView<ImageView>(R.id.ivGrid)
-            ?.setImageResource(homeGridSource.valueAt(position))
-        holder.setText(R.id.tvStatement, homeGridSource.keyAt(position))
-        holder.getView<ConstraintLayout>(R.id.llHomeGrid)?.setOnClickListener {
-            when (homeGridSource.keyAt(position)) {
+class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
+    com.mario.baseadapter.VBaseAdapter<GridBean>(layoutId, layoutHelper) {
+    override fun convert(helper: VBaseHolderHelper, t: GridBean, position: Int) {
+        helper.setText(R.id.tvStatement, helper.convertView.context.getString(t.strId))
+        helper.setImageResource(R.id.ivGrid, t.imgId)
+        helper.setItemChildClickListener(R.id.llHomeGrid)
+        helper.addOnItemChildClickListener { view, _ ->
+            when (t.strId) {
                 R.string.grid_visit -> {
-                    it.findNavController().navigate(R.id.action_visitor_server, null, navOption)
+                    //游客服务
+                    view.findNavController().navigate(R.id.action_visitor_server, null, navOption)
                 }
                 R.string.grid_smart_car -> {
-                    it.findNavController().navigate(
+                    //智慧停车
+                    view.findNavController().navigate(
                         R.id.fragment_scenic, bundleOf(
                             BUNDLE_SELECT_TAB to ScenicMApPointEnum.PARK.ordinal,
                             BUNDLE_IS_ROBOT to true
@@ -320,49 +300,68 @@ class GridAdapter(
                     )
                 }
                 R.string.grid_ar_science -> {
-//                    it.context.startActivity<UnityPlayerActivity2>()
-                    if (checkInstallAr != null) {
-                        it.context.startActivity(Intent().run {
-                            setClassName(
-                                "com.stxx.wyh_unity_ar",
-                                "com.stxx.wyh_unity_ar.UnityPlayerActivity"
-                            )
-                        })
-                    } else {
-                        val intent = Intent(it.context, DownLoadAppService::class.java)
-                        it.context.startService(intent)
-                        DownLoadAppService.REQUEST_CANCEL
-                    }
+                    view.context.startActivity<UnityPlayerActivity2>()
+                    //ar科普
+                    /*      if (checkInstallAr != null) {
+                              view.context.startActivity(Intent().run {
+                                  setClassName(
+                                      "com.stxx.wyh_unity_ar",
+                                      "com.stxx.wyh_unity_ar.UnityPlayerActivity"
+                                  )
+                              })
+                          } else {
+                              val intent = Intent(view.context, DownLoadAppService::class.java)
+                              view.context.startService(intent)
+                              DownLoadAppService.REQUEST_CANCEL
+                          }*/
                 }
                 R.string.grid_book -> {
                     val token = judgeLogin()
                     if (token.isNotEmpty()) {
-                        it.findNavController().navigate(
+                        view.findNavController().navigate(
                             R.id.fragment_webview, bundleOf(
                                 "url" to "${WebViewUrl.BOOK}&token=$token",
                                 "title" to R.string.grid_smart_book
                             ), navOption
                         )
                     } else {
-                        it.findNavController().navigate(R.id.login_activity, null, navOption)
+                        view.findNavController().navigate(R.id.login_activity, null, navOption)
                     }
                 }
                 R.string.grid_scenic_wiki -> {
-                    it.findNavController()
+                    //景区百科
+                    view.findNavController()
                         .navigate(R.id.action_vegetation_wiki, null, navOption)
                 }
-                R.string.grid_ar -> {
-                    it.findNavController().navigate(
-                        R.id.fragment_webview,
+                R.string.str_ar -> {
+                    //720虚拟游园
+                    view.findNavController()
+                        .navigate(R.id.fragment_ar_more, null, navOption)
+                }
+                R.string.visitor_ai_budao -> {
+                    view.findNavController().navigate(
+                        R.id.fragment_webview_notitle,
                         bundleOf(
-                            "url" to "http://117.159.4.206:8888/720vr/",
-                            "title" to R.string.grid_ar
+                            "url" to AI_BUDAO,
+                            "title" to R.string.visitor_ai_budao
                         )
                         , navOption
                     )
                 }
+                R.string.grid_plant_wiki -> {
+                    view.findNavController().navigate(R.id.fragment_plant_wiki, null, navOption)
+                }
             }
         }
+
+    }
+
+    private fun navigatorWebView(view: View, bundle: Bundle) {
+        view.findNavController().navigate(
+            R.id.fragment_webview,
+            bundle
+            , navOption
+        )
     }
 }
 
@@ -379,8 +378,6 @@ class NewsAdapters(
 
         Picasso.get().load(t?.imgurl).resizeDimen(R.dimen.dp_92, R.dimen.dp_82)
             .transform(RoundedCornersTransformation(20, 0)).into(iv)
-
-
 
         helper.convertView?.setOnClickListener {
             val extra = FragmentNavigatorExtras(iv to ViewCompat.getTransitionName(iv)!!)

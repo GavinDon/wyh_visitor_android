@@ -91,6 +91,9 @@ data class PushMessageResp(
     val type: String
 ) : Serializable
 
+/**
+ * 景区百科
+ */
 data class VegetationWikiResp(
     val code: String,
     val content: String,
@@ -101,6 +104,24 @@ data class VegetationWikiResp(
     val synopsis: String,
     val video: Any,
     val voice: Any
+) : Serializable
+
+/**
+ * 植物百科
+ */
+data class PlantWikiResp(
+    val explain: String,
+    val gmt_modified: String,
+    val id: Int,
+    val imgurl: String,
+    val introduction: String,
+    val is_deleted: String,
+    val lngLat: List<Any>,
+    val name: String,
+    val position: String,
+    val type: String,
+    val x: String,
+    val y: String
 ) : Serializable
 
 /**
@@ -154,4 +175,6 @@ data class NoticeResp(
 
 //720
 data class Ar720Resp(val pid: Int, val imgurl: String, val name: String)
+
+data class GridBean(val strId: Int, val imgId: Int)
 

@@ -45,7 +45,7 @@
         android:id="@+id/rvArRecommend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_12"
         android:orientation="horizontal"
         android:layout_marginEnd="@dimen/dp_10"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

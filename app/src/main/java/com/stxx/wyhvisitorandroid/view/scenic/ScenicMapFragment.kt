@@ -846,20 +846,20 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
             if (pointData.manInfo != null) {
                 manRetailNumber.text =
-                    "剩余数:${pointData.manInfo.sum - pointData.manInfo.occupation}/${pointData.manInfo.sum}"
+                    "剩余:${pointData.manInfo.sum - pointData.manInfo.occupation}/${pointData.manInfo.sum}"
             } else {
                 cslMan.visibility = View.GONE
             }
             if (pointData.woMenInfo != null) {
                 cslWoman.visibility = View.VISIBLE
                 womanRetailNumber.text =
-                    "剩余数:${pointData.woMenInfo.sum - pointData.woMenInfo.occupation}/${pointData.woMenInfo.sum}"
+                    "剩余:${pointData.woMenInfo.sum - pointData.woMenInfo.occupation}/${pointData.woMenInfo.sum}"
             } else {
                 cslWoman.visibility = View.GONE
             }
             if (pointData.thirdInfo != null) {
                 brRetailNumber.text =
-                    "剩余数:${pointData.thirdInfo.sum - pointData.thirdInfo.occupation}/${pointData.thirdInfo.sum}"
+                    "剩余:${pointData.thirdInfo.sum - pointData.thirdInfo.occupation}/${pointData.thirdInfo.sum}"
             } else {
                 cslBarrierFree.visibility = View.GONE
             }

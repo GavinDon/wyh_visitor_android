@@ -91,6 +91,10 @@
         android:name="com.stxx.wyhvisitorandroid.view.home.VegetationWikiFragment"
         tools:layout="@layout/fragment_vegetaion_wiki" />
     <fragment
+        android:id="@+id/fragment_plant_wiki"
+        android:name="com.stxx.wyhvisitorandroid.view.home.PlantWikiFragment"
+        tools:layout="@layout/fragment_vegetaion_wiki" />
+    <fragment
         android:id="@+id/fragment_scenic_comment"
         android:name="com.stxx.wyhvisitorandroid.view.scenic.ScenicCommentFragment"
         tools:layout="@layout/fragment_scenic_comment" />

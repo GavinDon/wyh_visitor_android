@@ -98,7 +98,6 @@ class VegetationWikiAdapter(layoutResId: Int, data: MutableList<VegetationWikiRe
         holder.setText(R.id.adaTvVegetationTitle, item.name)
             .setText(R.id.adaTvVegetationOpenTime, item.content)
             .setText(R.id.adaTvVegetationTip, item.synopsis)
-//            .setText(R.id.adaTvScenicLevel, item.name)
         ImageLoader.with().load(item.img).transForm(RoundedCornersTransformation(20, 0))
             .into(holder.getView(R.id.adaIvVegetationWiki))
     }

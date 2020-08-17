@@ -3,24 +3,26 @@ package com.stxx.wyhvisitorandroid.view
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gyf.immersionbar.ImmersionBar
 import com.orhanobut.logger.Logger
-import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.WEB_VIEW_TITLE
-import com.stxx.wyhvisitorandroid.WEB_VIEW_URL
-import com.stxx.wyhvisitorandroid.WebViewUrl
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import kotlinx.android.synthetic.main.fragment_webview.*
+import kotlinx.android.synthetic.main.fragment_webview.progressBar
+import kotlinx.android.synthetic.main.fragment_webview.x5WebView
+import kotlinx.android.synthetic.main.fragment_webview_notitle.*
 import java.util.*
 
 
@@ -75,7 +77,17 @@ class WebViewFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (this.activity as MultiFragments).dragView?.dragView?.visibility = View.VISIBLE
+        val parent = x5WebView.parent
+        if (parent is ViewGroup) {
+            parent.removeView(x5WebView)
+            x5WebView.removeAllViews()
+            x5WebView.destroy()
+        }
+        if (SpUtils.get(BUNDLE_IS_ROBOT, true)) {
+            (this.activity as MultiFragments).dragView?.dragView?.visibility = View.VISIBLE
+        } else {
+            (this.activity as MultiFragments).dragView?.dragView?.visibility = View.GONE
+        }
     }
 
     /**

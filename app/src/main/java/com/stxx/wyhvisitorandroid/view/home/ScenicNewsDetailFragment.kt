@@ -93,6 +93,14 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                     detailData.gmt_modfy
                 )
             }
+            is PlantWikiResp -> {
+                initView(
+                    detailData.imgurl,
+                    detailData.name,
+                    detailData.introduction,
+                    detailData.gmt_modified
+                )
+            }
         }
 
 

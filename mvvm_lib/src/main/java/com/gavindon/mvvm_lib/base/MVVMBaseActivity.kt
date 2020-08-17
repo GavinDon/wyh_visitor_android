@@ -2,6 +2,8 @@ package com.gavindon.mvvm_lib.base
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.annotation.IdRes
@@ -32,6 +34,13 @@ abstract class MVVMBaseActivity : AppCompatActivity(), IView {
         }
     }
 
+    override fun getResources(): Resources {
+        val res = super.getResources()
+        val config = Configuration()
+        config.setToDefaults()
+        res.updateConfiguration(config, res.displayMetrics)
+        return res
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

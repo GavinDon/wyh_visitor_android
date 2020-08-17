@@ -1,6 +1,8 @@
 package com.stxx.wyhvisitorandroid.base
 
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.baidu.mapapi.SDKInitializer
@@ -64,4 +66,6 @@ class MyApplication : MVVMBaseApplication() {
         QbSdk.initX5Environment(this, null)
 
     }
+
+
 }

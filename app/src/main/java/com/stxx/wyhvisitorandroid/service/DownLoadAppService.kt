@@ -97,7 +97,7 @@ class DownLoadAppService : Service() {
 
     private fun showDialog() {
         val builder =
-            AlertDialog.Builder(this, R.style.downloadDialog)
+            AlertDialog.Builder(MVVMBaseApplication.getCurActivity()!!, R.style.downloadDialog)
                 .setTitle("下载")
                 .setMessage(dialogMessage)
                 .setPositiveButton(R.string.confirm) { dialog, _ ->
@@ -109,11 +109,11 @@ class DownLoadAppService : Service() {
 
                 }
         val dialog = builder.create()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+   /*     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
         } else {
             dialog.window?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
-        }
+        }*/
         dialog.setOnShowListener { dialogs ->
             val negativeButton =
                 (dialogs as AlertDialog).getButton(AlertDialog.BUTTON_NEGATIVE)

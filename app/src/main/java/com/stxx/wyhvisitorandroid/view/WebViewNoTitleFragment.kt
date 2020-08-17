@@ -3,6 +3,7 @@ package com.stxx.wyhvisitorandroid.view
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -13,8 +14,15 @@ import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
+import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
+import kotlinx.android.synthetic.main.fragment_webview_notitle.progressBar
+import kotlinx.android.synthetic.main.fragment_webview_notitle.x5WebView
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar.app_tv_Title
+import kotlinx.android.synthetic.main.toolbar.frame_layout_title
+import kotlinx.android.synthetic.main.toolbar.titleBar
+import kotlinx.android.synthetic.main.toolbar.toolbar_back
 
 /**
  * description:提供的webView 不带标题栏需要自已添加一个标题栏
@@ -76,6 +84,16 @@ class WebViewNoTitleFragment : BaseFragment() {
                 progressBar?.progress = 0
             }
             super.onProgressChanged(p0, p1)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val parent = x5WebView.parent
+        if (parent is ViewGroup) {
+            parent.removeView(x5WebView)
+            x5WebView.removeAllViews()
+            x5WebView.destroy()
         }
     }
 }

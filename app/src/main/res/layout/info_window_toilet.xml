@@ -57,7 +57,7 @@
             app:layout_constraintBottom_toBottomOf="@id/infowWindowManIV"
             app:layout_constraintLeft_toLeftOf="@id/infoWindowTotalToilet"
             app:layout_constraintTop_toBottomOf="@id/infoWindowTotalToilet"
-            tools:text="剩余数:11" />
+            tools:text="剩余:11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -109,7 +109,7 @@
             app:layout_constraintBottom_toBottomOf="@id/inwoWindowWomanIv"
             app:layout_constraintLeft_toRightOf="@id/inwoWindowWomanIv"
             app:layout_constraintTop_toTopOf="@id/inwoWindowWomanIv"
-            tools:text="剩余数:11" />
+            tools:text="剩余:11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,7 +161,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/infoWindowBrTotalToilet"
             app:layout_constraintTop_toBottomOf="@id/infoWindowBrTotalToilet"
-            tools:text="剩余数:11" />
+            tools:text="剩余:11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
