@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,10 +27,10 @@ import androidx.core.app.ActivityCompat;
 
 import com.quyuanfactory.artmap.ArtMap;
 import com.quyuanfactory.artmap.ArtMapARView;
+import com.quyuanfactory.artmap.ArtMapMark;
 import com.quyuanfactory.artmap.ArtMapPoi;
 import com.quyuanfactory.artmap.ArtMapView;
 import com.stxx.wyhvisitorandroid.R;
-import com.stxx.wyhvisitorandroid.view.splash.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ import java.util.List;
  * Created by liNan on  2020/8/20 18:44
  */
 public class ArNavActivity2 extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = ArNavActivity2.class.getSimpleName();
 
     private Context mContext;
     private ArtMapView mMapView;
@@ -93,6 +95,7 @@ public class ArNavActivity2 extends AppCompatActivity {
     }
 
     private void init() {
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         setContentView(R.layout.activity_ar_nav);
 
         mIconWeiZhi[0] = getResources().getDrawable(R.drawable.weizhi);
@@ -132,9 +135,7 @@ public class ArNavActivity2 extends AppCompatActivity {
                             }
                             boolean _on = ArtMap.isLocated();
                             butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
-                            if (_on) {
-                                Toast.makeText(getApplicationContext(), "定位已打开，长按可关闭！", Toast.LENGTH_SHORT).show();
-                            }
+                            //if(_on){Toast.makeText(getApplicationContext(), "定位已打开，长按可关闭！", Toast.LENGTH_SHORT).show();}
                         }
                     });
                     return;
@@ -144,9 +145,7 @@ public class ArNavActivity2 extends AppCompatActivity {
                 if (!on) {
                     boolean _on = ArtMap.isLocated();
                     butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
-                    if (_on) {
-                        Toast.makeText(getApplicationContext(), "定位已打开，长按可关闭！", Toast.LENGTH_SHORT).show();
-                    }
+                    //if(_on){Toast.makeText(getApplicationContext(), "定位已打开，长按可关闭！", Toast.LENGTH_SHORT).show();}
                 }
             }//end click
         });
@@ -188,7 +187,7 @@ public class ArNavActivity2 extends AppCompatActivity {
                 if (ArtMap.isRouted()) {
                     ArtMap.CancelRoute();
                 }
-                ArtMap.SearchRoute(curPoi);
+                //ArtMap.SearchRoute(curPoi);
             }
         });
 
@@ -199,6 +198,12 @@ public class ArNavActivity2 extends AppCompatActivity {
             }
         });
 
+//        findViewById(R.id.butTest).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ArtMap.WalkNext();
+//            }
+//        });
 
         butNavClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,10 +241,18 @@ public class ArNavActivity2 extends AppCompatActivity {
                 }
             }
         });
+
         ArtMap.SetCallBack(new ArtMap.CallBack() {
             @Override
             public void mapLoaded(boolean ret) {
                 //open location
+                butLocation.performClick();
+
+                //Search Route
+                Intent intent = getIntent();
+                ArtMapMark start = (ArtMapMark) intent.getSerializableExtra("start");
+                ArtMapMark end = (ArtMapMark) intent.getSerializableExtra("stop");
+                ArtMap.SearchRoute(start, end);
             }
 
             @Override
@@ -306,6 +319,8 @@ public class ArNavActivity2 extends AppCompatActivity {
         });
 
         resetHeight();
+
+
     }
 
     private int getContextH(Context context) {
@@ -350,7 +365,7 @@ public class ArNavActivity2 extends AppCompatActivity {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) botCtrl.getLayoutParams();
                 layoutParams.bottomMargin = value;
                 botCtrl.setLayoutParams(layoutParams);
-                ArtMap.SetBotPading(value - MGBOT);
+                //ArtMap.SetBotPading(value-MGBOT);
             }
         });//end ani
         animatorBot.start();
@@ -381,7 +396,7 @@ public class ArNavActivity2 extends AppCompatActivity {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) botCtrl.getLayoutParams();
             layoutParams.bottomMargin = MGNAV + MGBOT;
             botCtrl.setLayoutParams(layoutParams);
-            ArtMap.SetBotPading(MGNAV);
+            //ArtMap.SetBotPading(MGNAV);
         }
 
         //Open AR
@@ -405,10 +420,12 @@ public class ArNavActivity2 extends AppCompatActivity {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) botCtrl.getLayoutParams();
             layoutParams.bottomMargin = 0;
             botCtrl.setLayoutParams(layoutParams);
-            ArtMap.SetBotPading(-MGBOT);
+            //ArtMap.SetBotPading(-MGBOT);
         }
 
         ArtMap.GoHome();
+
+        finish();
     }
 
     @Override
@@ -582,6 +599,16 @@ public class ArNavActivity2 extends AppCompatActivity {
         return permissionsList.isEmpty();
     }
 
+//    @RequiresApi(api = Build.VERSION_CODES.M)
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d(TAG, "onActivityResult->requestCode: "+requestCode+" ret: "+resultCode);
+//        if (requestCode == LOCATION_PERMISSION_REQ_CODE) {
+//            boolean ret = checkPermission();
+//            if(null != cbPermission){cbPermission.onResult(ret);}
+//         }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

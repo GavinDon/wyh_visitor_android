@@ -178,6 +178,6 @@ dependencies {
     implementation 'com.github.zhpanvip:BannerViewPager:3.1.2'
     implementation 'cn.jiguang.sdk:jpush:3.6.0'  // 此处以JPush 3.6.0 版本为例。
     implementation 'cn.jiguang.sdk:jcore:2.3.4'  // 此处以JCore 2.3.4 版本为例。
-
+//    implementation(name: 'artmap', ext: 'aar')
 
 }

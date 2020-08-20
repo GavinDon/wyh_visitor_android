@@ -46,6 +46,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import com.orhanobut.logger.Logger
+import com.quyuanfactory.artmap.ArtMapMark
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.ScenicMapServerPointAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
@@ -60,7 +61,6 @@ import com.stxx.wyhvisitorandroid.widgets.BottomSheetBehavior3
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -187,7 +187,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             it.findNavController().navigate(R.id.fragment_push_message, null, navOption)
         }
         ibScanQr.setOnClickListener {
-//            startActivity<ScanKitActivity>()
+            //            startActivity<ScanKitActivity>()
             ScanUtil.startScan(
                 this.activity,
                 SCAN_CODE,
@@ -877,8 +877,15 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         }
     }
 
-
     private fun goWalkNav(pointData: ServerPointResp) {
+        val end = ArtMapMark("B", 116.46517524751016, 40.07349224993583, 1)
+        val beg = ArtMapMark("A", 116.47708886355713, 40.08153794200041, 1)
+        val intent = Intent(this.context, ArNavActivity2::class.java)
+        intent.putExtra("start", beg)
+        intent.putExtra("stop", end)
+        startActivity(intent)
+        return
+
         if (geoBroadCast.status == GeoFence.STATUS_IN || geoBroadCast.status == GeoFence.INIT_STATUS_IN) {
             //进入园区则使用园区导航
             findNavController().navigate(

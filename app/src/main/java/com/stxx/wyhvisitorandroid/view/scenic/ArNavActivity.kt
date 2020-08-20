@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.gavindon.mvvm_lib.utils.requestPermission
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quyuanfactory.artmap.ArtMap
@@ -17,6 +18,7 @@ import com.quyuanfactory.artmap.ArtMapPoi
 import com.stxx.wyhvisitorandroid.R
 import kotlinx.android.synthetic.main.fragment_ar_nav.*
 import org.jetbrains.anko.find
+import org.jetbrains.anko.matchParent
 
 
 /**
@@ -25,7 +27,7 @@ import org.jetbrains.anko.find
  */
 class ArNavActivity : AppCompatActivity() {
 
-    //marker点击回调数据
+   /* //marker点击回调数据
     private var curPoi: ArtMapPoi? = null
 
 
@@ -36,9 +38,7 @@ class ArNavActivity : AppCompatActivity() {
     private val bottomSheetDialog by lazy {
         val bottomSheetDialog = BottomSheetDialog(this, R.style.bstDialog)
         bottomSheetDialog.setContentView(bottomNavView)
-        bottomSheetDialog.window?.clearFlags(FLAG_DITHER)
-        bottomSheetDialog.window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        bottomSheetDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bottomSheetDialog.window?.decorView?.layoutParams?.height=300
         return@lazy bottomSheetDialog
     }
 
@@ -62,9 +62,9 @@ class ArNavActivity : AppCompatActivity() {
 
     private fun requestLocation() {
         //开启定位
-        Handler().postDelayed({
+        *//*Handler().postDelayed({
             ArtMap.EnableLocation(true)
-        }, 300)
+        }, 300)*//*
         //进行导航
         btnNav.setOnClickListener {
             showBottomNav()
@@ -118,9 +118,9 @@ class ArNavActivity : AppCompatActivity() {
         }
     }
 
-    /**
+    *//**
      * 控制是否可以下滑关闭bottomSheetDialog
-     */
+     *//*
     private fun controlBottomCanClose(close: Boolean = true) {
         bottomSheetDialog.let {
             it.setCancelable(close)
@@ -128,29 +128,31 @@ class ArNavActivity : AppCompatActivity() {
         }
     }
 
-    /**
+    *//**
      * 回调处理
-     */
+     *//*
     private fun mapCallback() {
-/*        ArtMap.SetCallBack(object : ArtMap.CallBack {
-            override fun poiClicked(p0: ArtMapPoi?) {
-                curPoi = ArtMapPoi(p0)
-            }
-
+        ArtMap.SetCallBack(object : ArtMap.CallBack {
             override fun arClicked(p0: String?) {
             }
 
             override fun arLoaded(p0: Boolean) {
-                Logger.i(p0.toString())
             }
 
-            override fun Routed(ret: Boolean) {
-                Logger.i(ret.toString())
+            override fun poiClicked(p0: ArtMapPoi?) {
+            }
+
+            override fun Routed(p0: Boolean) {
             }
 
             override fun Navigated(p0: Float, p1: Float, p2: String?) {
             }
-        })*/
+
+            override fun mapLoaded(p0: Boolean) {
+                if (p0) ArtMap.EnableLocation(true)
+            }
+
+        })
     }
 
     override fun onPause() {
@@ -168,6 +170,6 @@ class ArNavActivity : AppCompatActivity() {
         ArtMap.Destroy()
         artmapview?.onDestroy()
 
-    }
+    }*/
 
 }
