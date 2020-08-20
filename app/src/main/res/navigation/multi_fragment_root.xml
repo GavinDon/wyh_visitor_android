@@ -201,6 +201,6 @@
         tools:layout="@layout/fragment_webview" />
     <activity
         android:id="@+id/fragment_ar_nav"
-        android:name="com.stxx.wyhvisitorandroid.view.scenic.ArNavActivity" />
+        android:name="com.stxx.wyhvisitorandroid.view.scenic.ArNavActivity2" />
 
 </navigation>

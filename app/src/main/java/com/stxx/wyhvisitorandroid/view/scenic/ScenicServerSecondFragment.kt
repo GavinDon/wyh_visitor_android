@@ -37,7 +37,11 @@ class ScenicServerSecondFragment : ToolbarFragment() {
             .observe(this, Observer {
                 handlerResponseData(it, { resp ->
                     if (!resp.data.isNullOrEmpty()) {
-                        HtmlUtil().show(this.context, resp.data[0].content, handler)
+                        var newData = ""
+                        for (i in resp.data) {
+                            newData += i.content
+                        }
+                        HtmlUtil().show(this.context, newData, handler)
                         tvScenicServerDetail.movementMethod =
                             LinkMovementMethod.getInstance()
                     }

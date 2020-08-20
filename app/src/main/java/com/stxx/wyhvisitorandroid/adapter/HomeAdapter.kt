@@ -19,10 +19,10 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.dreamdeck.wyhapp.UnityPlayerActivity
-import com.dreamdeck.wyhapp.UnityPlayerActivity2
 import com.gavindon.mvvm_lib.net.*
 import com.gavindon.mvvm_lib.net.BR
 import com.mario.baseadapter.holder.VBaseHolderHelper
@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.WebViewUrl.AI_BUDAO
 import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
+import com.stxx.wyhvisitorandroid.WebViewUrl.VR
 import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
 import com.stxx.wyhvisitorandroid.base.OnlyShowDelegateAdapter
 import com.stxx.wyhvisitorandroid.base.VBaseAdapter
@@ -300,7 +301,7 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                     )
                 }
                 R.string.grid_ar_science -> {
-                    view.context.startActivity<UnityPlayerActivity2>()
+                    view.context.startActivity<UnityPlayerActivity>()
                     //ar科普
                     /*      if (checkInstallAr != null) {
                               view.context.startActivity(Intent().run {
@@ -333,8 +334,8 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                     view.findNavController()
                         .navigate(R.id.action_vegetation_wiki, null, navOption)
                 }
-                R.string.str_ar -> {
-                    //720虚拟游园
+                R.string.full_ar -> {
+                    //全景游园
                     view.findNavController()
                         .navigate(R.id.fragment_ar_more, null, navOption)
                 }
@@ -350,6 +351,14 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                 }
                 R.string.grid_plant_wiki -> {
                     view.findNavController().navigate(R.id.fragment_plant_wiki, null, navOption)
+                }
+                R.string.str_ar -> {
+                    view.findNavController().navigate(
+                        R.id.fragment_webview, bundleOf(
+                            "url" to VR,
+                            "title" to R.string.str_ar
+                        ), navOption
+                    )
                 }
             }
         }
@@ -376,8 +385,11 @@ class NewsAdapters(
 
         val iv = helper.getImageView(R.id.ivNewsPic)
 
-        Picasso.get().load(t?.imgurl).resizeDimen(R.dimen.dp_92, R.dimen.dp_82)
-            .transform(RoundedCornersTransformation(20, 0)).into(iv)
+        Picasso.get().load(t?.imgurl)
+            .transform(RoundedCornersTransformation(20, 0))
+            .resizeDimen(R.dimen.dp_98, R.dimen.dp_84)
+            .centerCrop()
+            .into(iv)
 
         helper.convertView?.setOnClickListener {
             val extra = FragmentNavigatorExtras(iv to ViewCompat.getTransitionName(iv)!!)
@@ -404,9 +416,10 @@ class LineRecommendAdapter(
 
         val iv = helper.getImageView(R.id.ivNewsPic)
 
-        Picasso.get().load(t?.imgurl).resizeDimen(R.dimen.dp_92, R.dimen.dp_82)
-            .transform(RoundedCornersTransformation(20, 0)).into(iv)
-
+        Picasso.get().load(t?.imgurl)
+            .transform(RoundedCornersTransformation(20, 0))
+            .resizeDimen(R.dimen.dp_98, R.dimen.dp_84)
+            .centerCrop().into(iv)
 
 
         helper.convertView?.setOnClickListener {

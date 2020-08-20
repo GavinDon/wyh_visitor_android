@@ -19,7 +19,7 @@ class NoticeDetailFragment : ToolbarFragment() {
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         val detail = arguments?.getString("detail").toString()
-        HtmlUtil().show(this.requireContext(), detail, Handler {
+        HtmlUtil().show(this.context, detail, Handler {
             tvNoticeDetail.text = it.obj as Spanned
             return@Handler false
         })

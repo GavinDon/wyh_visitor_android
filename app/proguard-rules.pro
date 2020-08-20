@@ -481,10 +481,8 @@
   -dontwarn cn.jiguang.**
   -keep class cn.jiguang.** { *; }
   -keep class com.stxx.wyhvisitorandroid.view.asr.**{*;}
-   #AR科普
-  -keep class bitter.jnibridge.* { *; }
-  -keep class com.unity3d.player.* { *; }
-  -keep class org.fmod.* { *; }
+
+
 
 
 

@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_16"
                         android:layout_weight="1"
-                        android:text="@string/all_comment"
+                        android:text="所有评论(0)"
                         android:textColor="@color/fontMajor"
                         android:textSize="@dimen/sp_16" />
 

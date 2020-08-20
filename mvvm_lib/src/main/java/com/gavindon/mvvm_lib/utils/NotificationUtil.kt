@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import java.lang.reflect.Field
@@ -88,6 +89,22 @@ class NotificationUtil {
                 localIntent.putExtra("app_uid", context.applicationInfo.uid)
             }
             context.startActivity(localIntent)
+        }
+
+        fun openSetting() {
+            val localIntent = Intent()
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//8.0及以上
+                    localIntent.action = Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS
+                    localIntent.putExtra(Settings.EXTRA_APP_PACKAGE, "com.stxx.wyhvisitorandroid")
+//                    localIntent.putExtra(Settings.EXTRA_CHANNEL_ID, CHANNEL_ID)
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0以上到8.0以下
+                    localIntent.putExtra("app_package", context.applicationInfo.packageName)
+                }
+                context.startActivity(localIntent)
+            } catch (e: Exception) {
+
+            }
         }
     }
 }

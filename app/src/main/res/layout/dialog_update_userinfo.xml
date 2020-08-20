@@ -93,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginTop="@dimen/dp_6"
-        android:text="tips:不可输入表情、空格、特殊字符!" />
+        android:textColor="@color/yellow"
+        android:text="不可输入表情、空格、特殊字符!" />
 
 </LinearLayout>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <!--调起导航ui-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cslNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/tvNavScenicName"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_50"
+            android:background="@drawable/shape_bottom_nav"
+            android:gravity="center"
+            android:textColor="@color/semi"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="活力东湖" />
+
+        <ImageButton
+            android:id="@+id/ibNavClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingHorizontal="@dimen/dp_10"
+            android:paddingVertical="@dimen/dp_5"
+            android:src="@mipmap/close"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue2_600"
+            android:drawablePadding="@dimen/dp_5"
+            android:paddingVertical="@dimen/dp_10"
+            android:text="导航"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18"
+            app:drawableLeftCompat="@mipmap/ic_navi"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvNavScenicName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--导航实时信息-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cslNaving"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_70"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/navExitContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvNavExit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/dp_8"
+                android:text="@string/str_exit"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16"
+                app:drawableTopCompat="@mipmap/ic_delete_menu" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/vertical_line"
+            android:paddingVertical="@dimen/dp_5"
+            app:layout_constraintLeft_toRightOf="@id/navExitContainer" />
+
+        <TextView
+            android:id="@+id/tvNavInfo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_2"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toRightOf="@id/navExitContainer"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="全程剩余：250km" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

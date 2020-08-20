@@ -116,8 +116,8 @@ object ApiService {
 }
 
 object WebViewUrl {
-    const val WEB_BASE = "http://manage.wenyuriverpark.com:8082/h5/#/"
-//    const val WEB_BASE = "https://tourist.wenyuriverpark.com/app/h5/#/"
+    const val WEB_BASE = "https://tourist.wenyuriverpark.com/h5/#/"
+//    const val WEB_BASE = "https://tourist.wenyuriverpark.com/app"
 
     //医疗求助
     const val MEDICAL = "pages/service/tourist/hospital?device=1"
@@ -153,9 +153,12 @@ object WebViewUrl {
     const val CAR_INFO = "pages/user/trip/trip"
 
     /*三方*/
-    const val AI_BUDAO = "https://aiot.ucanuup.cn/mapp/wenyh/"
+    const val AI_BUDAO = "https://aiot.ucanuup.cn/mapp/aioth5/?parkCode=WenYuHePark"
 
-    //720
+    //全景游园
 //    const val AR_720 = "http://manage.wenyuriverpark.com:8082/web/index720.html"
     const val AR_720 = "http://116.117.157.183:28183/vr/index.html#node_"
+
+    //虚拟游园
+    const val VR = "http://116.117.157.183:28183/3da/"
 }

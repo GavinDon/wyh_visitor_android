@@ -8,10 +8,14 @@ import android.os.Handler
 import android.os.Message
 import android.text.Html
 import android.util.AttributeSet
+import android.view.Gravity
+import android.view.Gravity.CENTER_VERTICAL
+import android.view.Gravity.CLIP_HORIZONTAL
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.get
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.gavindon.mvvm_lib.utils.phoneWidth
@@ -20,8 +24,10 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.graphics.HtmlTagHandler
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import org.jetbrains.anko.dip
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.DecimalFormat
 import kotlin.concurrent.thread
 
 /**
@@ -85,40 +91,123 @@ class HtmlUtil {
         const val what = 1
     }
 
+    /*  fun show(context: Context?, content: String, handler: Handler) {
+          if (context != null) {
+              val message = Message.obtain()
+              val horizontalMargin = context.dip(16) * 2
+              thread {
+                  val imageGetter = Html.ImageGetter {
+                      var drawable: Drawable? = null
+                      try {
+                          drawable = Glide.with(context).load(it).submit().get()
+                          if (drawable != null) {
+                              var w = drawable.minimumWidth
+                              var h = drawable.minimumHeight
+                              val matrix = Matrix()
+                              if (w > 0) {
+                                  val scale = (phoneWidth - horizontalMargin).toFloat() / w
+                                  //                            val scale = BigDecimal(phoneWidth).div(BigDecimal(w)).toFloat()
+                                  Logger.i("scale=${scale}")
+                                  matrix.postScale(scale, scale)
+                                  val bitmap = drawable.toBitmap()
+                                  val matrixBitmap = Bitmap.createBitmap(
+                                      bitmap,
+                                      0,
+                                      0,
+                                      w,
+                                      h,
+                                      matrix,
+                                      true
+                                  )
+                                  drawable = BitmapDrawable(context.resources, matrixBitmap)
+                                  drawable.setBounds(
+                                      0,
+                                      0,
+                                      drawable.minimumWidth,
+                                      drawable.minimumHeight
+                                  )
+                              }
+                          } else {
+                              return@ImageGetter null
+                          }
+                      } catch (e: Exception) {
+                          e.printStackTrace()
+                      }
+                      return@ImageGetter drawable
+                  }
+
+                  val spannable =
+                      HtmlCompat.fromHtml(
+                          content,
+                          HtmlCompat.FROM_HTML_MODE_COMPACT,
+                          imageGetter,
+                          HtmlTagHandler()
+                      )
+                  message.what = what
+                  message.obj = spannable
+                  handler.sendMessage(message)
+              }
+          }
+      }*/
     fun show(context: Context?, content: String, handler: Handler) {
         if (context != null) {
+            //左右边距
+            val horizontalMargin = context.dip(16) * 2
             val message = Message.obtain()
             thread {
                 val imageGetter = Html.ImageGetter {
-                    var drawable: Drawable? = null
+                    var drawable2: Drawable? = null
                     try {
-                        drawable = Glide.with(context).load(it).submit().get()
-                        if (drawable != null) {
-                            val w = drawable.minimumWidth
-                            val matrix = Matrix()
-                            val scale = BigDecimal(phoneWidth).div(BigDecimal(w)).toFloat()
-                            Logger.i("scale=${scale}")
-                            matrix.postScale(scale, scale)
-                            val bitmap = drawable.toBitmap()
-                            val matrixBitmap = Bitmap.createBitmap(
-                                bitmap,
-                                0,
-                                0,
-                                bitmap.width,
-                                bitmap.height,
-                                matrix,
-                                true
-                            )
-                            drawable = BitmapDrawable(context.resources, matrixBitmap)
-                            drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
+                        val mBitmap = Picasso.get().load(it).get()
 
-                        } else {
-                            return@ImageGetter null
+                        if (mBitmap != null) {
+                            val width = mBitmap.width
+                            val height = mBitmap.height
+                            //获取图片占屏幕比例
+                            val scale = (phoneWidth - horizontalMargin).toFloat() / width
+
+                            //使用Matrix进行bitmap缩放
+                            val matrix = Matrix()
+                            matrix.postScale(scale, scale)
+                            if (width > 0) {
+                                //创建新的bitmap,使用原bitmap的宽高
+                                val pBitmap =
+                                    Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, true)
+                                //转换成imageGetter需要的drawable
+                                drawable2 = BitmapDrawable(context.resources, pBitmap)
+                                //drawable 必须setBounds
+                                drawable2.setBounds(
+                                    0, 0, drawable2.minimumWidth, drawable2.minimumHeight
+                                )
+                            } else {
+                                return@ImageGetter null
+                            }
                         }
+//                        if (drawable != null) {
+//                            val w = drawable.minimumWidth
+//                            val matrix = Matrix()
+//                            val scale = BigDecimal(phoneWidth).div(BigDecimal(w)).toFloat()
+//                            Logger.i("scale=${scale}")
+//                            matrix.postScale(scale, scale)
+//                            val bitmap = drawable.toBitmap()
+//                            val matrixBitmap = Bitmap.createBitmap(
+//                                bitmap,
+//                                0,
+//                                0,
+//                                bitmap.width,
+//                                bitmap.height,
+//                                matrix,
+//                                true
+//                            )
+//                            drawable = BitmapDrawable(context.resources, matrixBitmap)
+//                            drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
+//                        } else {
+//                            return@ImageGetter null
+//                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    return@ImageGetter drawable
+                    return@ImageGetter drawable2
                 }
 
                 val spannable =

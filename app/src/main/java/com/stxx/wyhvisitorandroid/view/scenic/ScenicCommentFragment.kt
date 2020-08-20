@@ -143,7 +143,7 @@ class ScenicCommentFragment : BaseFragment() {
         tvCommentDetailDate.text = detailData?.gmt_create
         tvCommentDetailContent.text = detailData?.introduction
         toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
-        toolbar.title = detailData?.name
+//        toolbar.title = detailData?.name
     }
 
     /**

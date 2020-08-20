@@ -60,6 +60,7 @@ import com.stxx.wyhvisitorandroid.widgets.BottomSheetBehavior3
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -395,7 +396,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         mapView.showZoomControls(false)
         val map = mapView.map
         map.setOnMapLoadedCallback(this)
-        map.setMaxAndMinZoomLevel(17f, 15f)
+        map.setMaxAndMinZoomLevel(18f, 15f)
         val builder = MapStatus.Builder()
         builder.zoom(SaveMapObj.mapZoom)
         builder.target(SaveMapObj.target)

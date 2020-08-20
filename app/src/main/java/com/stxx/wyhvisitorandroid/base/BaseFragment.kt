@@ -116,7 +116,7 @@ abstract class BaseFragment : MVVMBaseFragment() {
 
     inline fun <reified V : MVVMBaseViewModel> getContextViewModel(): V? {
         return if (this.context != null) {
-            BindContextViewModelFactory.getInstance(this.context!!)!!.create(V::class.java)
+            BindContextViewModelFactory.getInstance(this.requireContext())!!.create(V::class.java)
         } else {
             null
         }

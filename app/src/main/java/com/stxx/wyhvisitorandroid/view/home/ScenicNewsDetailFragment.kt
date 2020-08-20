@@ -124,7 +124,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
     private fun initView(url: String, title: String, content: String?, key: String) {
         ImageLoader.with().load(url).into(ivNewsDetailHead)
         tvNewsDetailTitle.text = title
-        tvNewsDetailDate.text = key
+//        tvNewsDetailDate.text = key
         HtmlUtil().show(this.context, content ?: "暂无内容", Handler {
             //        tvNewsDetailContent.text = it.obj.toString()
             tvNewsDetailContent?.text = it.obj as Spanned

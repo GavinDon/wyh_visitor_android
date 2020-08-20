@@ -3,13 +3,20 @@ package com.stxx.wyhvisitorandroid.view.scenic
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.FLAG_DITHER
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.gavindon.mvvm_lib.utils.requestPermission
-import com.orhanobut.logger.Logger
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quyuanfactory.artmap.ArtMap
 import com.quyuanfactory.artmap.ArtMapPoi
 import com.stxx.wyhvisitorandroid.R
 import kotlinx.android.synthetic.main.fragment_ar_nav.*
+import org.jetbrains.anko.find
 
 
 /**
@@ -20,6 +27,30 @@ class ArNavActivity : AppCompatActivity() {
 
     //marker点击回调数据
     private var curPoi: ArtMapPoi? = null
+
+
+    //导航弹出框
+    private val bottomNavView by lazy { layoutInflater.inflate(R.layout.bottom_nav, null, false) }
+
+    //init bottomDialog
+    private val bottomSheetDialog by lazy {
+        val bottomSheetDialog = BottomSheetDialog(this, R.style.bstDialog)
+        bottomSheetDialog.setContentView(bottomNavView)
+        bottomSheetDialog.window?.clearFlags(FLAG_DITHER)
+        bottomSheetDialog.window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        bottomSheetDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return@lazy bottomSheetDialog
+    }
+
+    //提示是否导航
+    private val navView by lazy {
+        bottomNavView.find<ConstraintLayout>(R.id.cslNav)
+    }
+
+    //正在导航
+    private val navingView by lazy {
+        bottomNavView.find<ConstraintLayout>(R.id.cslNaving)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +67,7 @@ class ArNavActivity : AppCompatActivity() {
         }, 300)
         //进行导航
         btnNav.setOnClickListener {
+            showBottomNav()
             requestPermission(android.Manifest.permission.CAMERA) {
                 if (curPoi != null) {
                     if (ArtMap.isRouted()) ArtMap.CancelRoute()
@@ -49,11 +81,58 @@ class ArNavActivity : AppCompatActivity() {
 
     }
 
+
+    private fun showBottomNav() {
+        //进行导航按钮
+        val tvStartNav = bottomNavView.findViewById<TextView>(R.id.tvNav)
+        //未进行导航,关闭
+        val btnClose = bottomNavView.findViewById<ImageButton>(R.id.ibNavClose)
+        //导航景点名
+        val tvScenicName = bottomNavView.findViewById<TextView>(R.id.tvNavScenicName)
+        //退出导航
+        val tvExitNav = bottomNavView.findViewById<TextView>(R.id.tvNavExit)
+//        val navingView = bottomNavView.find<ConstraintLayout>(R.id.cslNaving)
+//        val navView = bottomNavView.find<ConstraintLayout>(R.id.cslNav)
+        bottomSheetDialog.window?.findViewById<FrameLayout>(R.id.design_bottom_sheet)
+            ?.setBackgroundResource(android.R.color.transparent)
+
+        bottomSheetDialog.window?.findViewById<FrameLayout>(R.id.design_bottom_sheet)
+        btnClose.setOnClickListener {
+            controlBottomCanClose(true)
+            bottomSheetDialog.dismiss()
+
+        }
+        tvStartNav.setOnClickListener {
+            controlBottomCanClose(false)
+            navingView.visibility = View.VISIBLE
+            navView.visibility = View.GONE
+        }
+        tvExitNav.setOnClickListener {
+            controlBottomCanClose(true)
+            bottomSheetDialog.dismiss()
+        }
+
+        if (!bottomSheetDialog.isShowing) {
+            bottomSheetDialog.show()
+            controlBottomCanClose(false)
+        }
+    }
+
+    /**
+     * 控制是否可以下滑关闭bottomSheetDialog
+     */
+    private fun controlBottomCanClose(close: Boolean = true) {
+        bottomSheetDialog.let {
+            it.setCancelable(close)
+            it.setCanceledOnTouchOutside(close)
+        }
+    }
+
     /**
      * 回调处理
      */
     private fun mapCallback() {
-        ArtMap.SetCallBack(object : ArtMap.CallBack {
+/*        ArtMap.SetCallBack(object : ArtMap.CallBack {
             override fun poiClicked(p0: ArtMapPoi?) {
                 curPoi = ArtMapPoi(p0)
             }
@@ -71,7 +150,7 @@ class ArNavActivity : AppCompatActivity() {
 
             override fun Navigated(p0: Float, p1: Float, p2: String?) {
             }
-        })
+        })*/
     }
 
     override fun onPause() {

@@ -24,7 +24,7 @@ import org.jetbrains.anko.support.v4.toast
  * Created by liNan on  2020/7/30 09:19
  */
 class ArMoreFragment : ToolbarFragment() {
-    override val toolbarName = R.string.str_ar
+    override val toolbarName = R.string.full_ar
     override val layoutId = R.layout.fragment_ar_more
 
     private lateinit var mViewModel: HomeVm

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/mapCtrl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <com.quyuanfactory.artmap.ArtMapARView
+                android:id="@+id/artmaparview"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:visibility="gone"></com.quyuanfactory.artmap.ArtMapARView>
+
+            <com.quyuanfactory.artmap.ArtMapView
+                android:id="@+id/artmapview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"></com.quyuanfactory.artmap.ArtMapView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/botCtrl"
+            android:layout_width="match_parent"
+            android:layout_height="218dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-112dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp">
+
+                <ImageButton
+                    android:id="@+id/butHome"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/home" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/butWeiZi"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="0dp"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/weizhi" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relNavCtrl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bkrel"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text=""
+                    android:textAlignment="center" />
+
+                <ImageButton
+                    android:id="@+id/butClose"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/close" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/butNavto"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bknavto"
+                android:scaleType="centerInside"
+                android:visibility="visible"
+                app:srcCompat="@drawable/nav" />
+
+            <RelativeLayout
+                android:id="@+id/relNavto"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bkrelnavto"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/lineNavtoMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtNavtoMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:gravity="bottom|center_horizontal"
+                        android:text="继续当前导航"
+                        android:textAlignment="center"
+                        android:textColor="#3086FF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtNavtoTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="3dp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:text="全程剩余:4公里 1小时"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lineNavtoClose"
+                    android:layout_width="52dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:paddingTop="8dp"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/close" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:gravity="top"
+                        android:text="退出"
+                        android:textAlignment="center"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:alpha="0.5"
+                    android:background="@android:color/darker_gray"></View>
+
+            </RelativeLayout><!--relNavto-->
+
+        </LinearLayout><!--botCtrl-->
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

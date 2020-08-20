@@ -96,7 +96,8 @@ class SettingFragment : ToolbarFragment() {
         }
     }
 
- /*   *//**
+    /*   */
+    /**
      * 打开/关闭 推送
      *//*
     private fun onOffPush() {
@@ -127,6 +128,7 @@ class SettingFragment : ToolbarFragment() {
     private fun toggleRobot() {
         //是否打开机器人按钮默认打开
         switchToggleRobot.setOnClickListener {
+            //true 为打开机器人
             val isOpenRobot = SpUtils.get(OPEN_ROBOT_SP, true)
             val dragView = (activity as MultiFragments).dragView?.dragView
             //如果已经打开机器人则切换为隐藏

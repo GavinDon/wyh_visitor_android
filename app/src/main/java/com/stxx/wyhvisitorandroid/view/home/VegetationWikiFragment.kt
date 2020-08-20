@@ -29,14 +29,14 @@ class VegetationWikiFragment : ToolbarFragment() {
     override val layoutId: Int = R.layout.fragment_vegetaion_wiki
     override val mStatusViewId: Int = R.id.vegetationStatus
 
-    private lateinit var mAdapter: VegetationWikiAdapter
+    private var mAdapter: VegetationWikiAdapter =
+        VegetationWikiAdapter(R.layout.adapter_vegetation_wiki, null)
     private lateinit var vegetationWikiVm: VegetationWikiVm
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         vegetationWikiVm = getViewModel()
         lifecycle.addObserver(vegetationWikiVm)
-        mAdapter = VegetationWikiAdapter(R.layout.adapter_vegetation_wiki, null)
         rvVegetationWiki.adapter = mAdapter
         loadData()
         frame_layout_title.setBackgroundColor(
@@ -73,6 +73,10 @@ class VegetationWikiFragment : ToolbarFragment() {
     }
 
     private fun loadData() {
+        if (!mAdapter.data.isNullOrEmpty()) {
+            return
+        }
+
         mStatusView?.hideAllView()
         vegetationWikiVm.getWiki().observe(this, Observer {
             handlerResponseData(it, { resp ->
@@ -96,9 +100,10 @@ class VegetationWikiAdapter(layoutResId: Int, data: MutableList<VegetationWikiRe
     BaseQuickAdapter<VegetationWikiResp, BaseViewHolder>(layoutResId, data) {
     override fun convert(holder: BaseViewHolder, item: VegetationWikiResp) {
         holder.setText(R.id.adaTvVegetationTitle, item.name)
-            .setText(R.id.adaTvVegetationOpenTime, item.content)
-            .setText(R.id.adaTvVegetationTip, item.synopsis)
+            .setText(R.id.adaTvVegetationOpenTime, item.synopsis)
+//            .setText(R.id.adaTvVegetationTip, item.synopsis)
         ImageLoader.with().load(item.img).transForm(RoundedCornersTransformation(20, 0))
             .into(holder.getView(R.id.adaIvVegetationWiki))
+
     }
 }

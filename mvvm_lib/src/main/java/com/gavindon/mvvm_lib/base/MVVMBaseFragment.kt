@@ -1,5 +1,6 @@
 package com.gavindon.mvvm_lib.base
 
+import android.Manifest
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.gavindon.mvvm_lib.R
 import com.gavindon.mvvm_lib.base.my_interface.IView
 import com.gavindon.mvvm_lib.status.StatusView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import io.reactivex.disposables.CompositeDisposable
@@ -32,6 +34,7 @@ abstract class MVVMBaseFragment : Fragment(), IView {
 
     private var isInitView: Boolean = false
 
+    private val rxPermissions: RxPermissions by lazy { RxPermissions(this) }
 
     val mStatusView: StatusView? by lazy {
         if (mStatusViewId != null) {
@@ -106,34 +109,75 @@ abstract class MVVMBaseFragment : Fragment(), IView {
     /**
      * 权限请求
      */
-    protected fun requestPermission(
-        vararg permission: String,
+     protected fun requestPermission(
+         vararg permission: String,
+         onGrantedAction: () -> Unit
+     ) {
+         AndPermission.with(this)
+             .runtime()
+             .permission(permission)
+             .onGranted {
+                 if (it.size == permission.size) {
+                     onGrantedAction()
+                 }
+             }
+             .onDenied {
+                 val permissionNames: List<String?> =
+                     Permission.transformText(context, it)
+                 val message = this.requireContext().getString(
+                     R.string.message_permission_always_failed,
+                     TextUtils.join("\n", permissionNames)
+                 )
+                 //当点击禁止且勾选不再询问时
+                 if (AndPermission.hasAlwaysDeniedPermission(context, it)) {
+                     showDeniedPermission(message)
+                 } else {
+                     //当点击禁止时
+                     showDeniedPermission(message)
+                 }
+             }.start()
+     }
+   /* protected fun requestPermission(
+        vararg permissions: String,
         onGrantedAction: () -> Unit
     ) {
-        AndPermission.with(this)
-            .runtime()
-            .permission(permission)
-            .onGranted {
-                if (it.size == permission.size) {
-                    onGrantedAction()
+        var deniedPermission: List<String>? = null
+        val grantedPermission = mutableListOf<String>()
+        val obj = rxPermissions.requestEach(
+            *permissions
+        ).subscribe({ permission ->
+            when {
+                permission.granted -> {
+                    //把已经授权的权限添加到新集合
+                    grantedPermission.add(permission.name)
+                    //未授权集合
+                    deniedPermission = permissions.filter { !grantedPermission.contains(it) }
+                }
+                permission.shouldShowRequestPermissionRationale -> {
+                }
+                else -> {
+                    // At least one denied permission with ask never again
+                    // Need to go to the settings
+                    val permissionNames: List<String?> =
+                        Permission.transformText(
+                            context,
+                            deniedPermission
+                        )
+                    val message = this.requireContext().getString(
+                        R.string.message_permission_always_failed,
+                        TextUtils.join("\n", permissionNames)
+                    )
+                    showDeniedPermission(message)
                 }
             }
-            .onDenied {
-                val permissionNames: List<String?> =
-                    Permission.transformText(context, it)
-                val message = this.requireContext().getString(
-                    R.string.message_permission_always_failed,
-                    TextUtils.join("\n", permissionNames)
-                )
-                //当点击禁止且勾选不再询问时
-                if (AndPermission.hasAlwaysDeniedPermission(context, it)) {
-                    showDeniedPermission(message)
-                } else {
-                    //当点击禁止时
-                    showDeniedPermission(message)
-                }
-            }.start()
-    }
+
+
+        }, {
+
+        })
+
+
+    }*/
 
     /**
      * 提示缺少什么权限

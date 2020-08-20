@@ -156,4 +156,11 @@
 
     </style>
 
+    <style name="bstDialog" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+
+    </style>
+
 </resources>

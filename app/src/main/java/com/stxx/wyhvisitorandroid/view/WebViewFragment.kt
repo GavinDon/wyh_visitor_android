@@ -45,7 +45,6 @@ class WebViewFragment : BaseFragment() {
             x5WebView.loadUrl(url)
         } else {
             x5WebView.loadUrl("${WebViewUrl.WEB_BASE}${url}")
-            Logger.i("${WebViewUrl.WEB_BASE}${url}")
         }
         //获取title
         val title = arguments?.get(WEB_VIEW_TITLE)
@@ -63,8 +62,6 @@ class WebViewFragment : BaseFragment() {
                 findNavController().navigateUp()
             }
         }
-        (this.activity as MultiFragments).dragView?.dragView?.visibility = View.GONE
-
         requireActivity().onBackPressedDispatcher.addCallback(this, true) {
             if (x5WebView?.canGoBack() == true) {
                 x5WebView?.goBack()
@@ -83,11 +80,11 @@ class WebViewFragment : BaseFragment() {
             x5WebView.removeAllViews()
             x5WebView.destroy()
         }
-        if (SpUtils.get(BUNDLE_IS_ROBOT, true)) {
-            (this.activity as MultiFragments).dragView?.dragView?.visibility = View.VISIBLE
-        } else {
-            (this.activity as MultiFragments).dragView?.dragView?.visibility = View.GONE
-        }
+        /*     if (SpUtils.get(BUNDLE_IS_ROBOT, true)) {
+                 (this.activity as MultiFragments).dragView?.dragView?.visibility = View.VISIBLE
+             } else {
+                 (this.activity as MultiFragments).dragView?.dragView?.visibility = View.GONE
+             }*/
     }
 
     /**

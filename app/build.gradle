@@ -34,7 +34,7 @@ android {
           }*/
         resConfigs "zh", "en"
         buildConfigField("int", "source", "0")
-        buildConfigField("String", "baseUrl", "\"http://manage.wenyuriverpark.com:8894\"")
+        buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "5ab70a3331b4a48026a4cc5c", //JPush 上注册的包名对应的 Appkey.
@@ -64,10 +64,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    aaptOptions {
-        noCompress '.unity3d', '.ress', '.resource', '.obb', 'vuforia/wyhapp.dat', 'vuforia/wyhapp.xml'
-    }
-
     /*   externalNativeBuild {
            cmake {
                path "src/main/cpp/CMakeLists.txt"
@@ -91,15 +87,11 @@ android {
             buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894/\"")
         }
     }*/
-    splits {
-    }
     sourceSets {
         main {
-//           java.srcDirs = ['local/java','offical/java']
             jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
         }
     }
-
     repositories {
         flatDir {
             dirs 'libs', '../WYH20.03.30/libs'
@@ -147,7 +139,8 @@ def loadVersionProperty() {
 
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    testImplementation 'junit:junit:4.12'
     implementation "com.google.android.material:material:1.2.0"
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.1.0'
