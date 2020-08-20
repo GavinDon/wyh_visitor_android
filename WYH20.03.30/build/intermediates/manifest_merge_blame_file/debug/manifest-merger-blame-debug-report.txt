@@ -1,0 +1,131 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="com.dreamdeck.wyhapp"
+5    android:installLocation="preferExternal"
+6    android:versionCode="1"
+7    android:versionName="1.0" >
+8
+9    <uses-sdk android:targetSdkVersion="26" />
+9-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+10
+11    <supports-screens
+11-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:9:5-14:40
+12        android:anyDensity="true"
+12-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:10:9-34
+13        android:largeScreens="true"
+13-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:11:9-36
+14        android:normalScreens="true"
+14-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:12:9-37
+15        android:smallScreens="true"
+15-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:13:9-36
+16        android:xlargeScreens="true" />
+16-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:14:9-37
+17
+18    <uses-feature android:glEsVersion="0x00020000" />
+18-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:42:5-54
+18-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:42:19-51
+19
+20    <uses-permission android:name="android.permission.INTERNET" />
+20-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:44:5-67
+20-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:44:22-64
+21    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+21-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:45:5-79
+21-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:45:22-76
+22    <uses-permission android:name="android.permission.CAMERA" />
+22-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:46:5-65
+22-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:46:22-62
+23
+24    <uses-feature
+24-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:48:5-50:36
+25        android:name="android.hardware.camera"
+25-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:49:9-47
+26        android:required="false" />
+26-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:50:9-33
+27    <uses-feature
+27-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:51:5-53:36
+28        android:name="android.hardware.camera.autofocus"
+28-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:52:9-57
+29        android:required="false" />
+29-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:53:9-33
+30    <uses-feature
+30-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:54:5-56:36
+31        android:name="android.hardware.camera.front"
+31-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:55:9-53
+32        android:required="false" />
+32-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:56:9-33
+33
+34    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+34-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:58:5-81
+34-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:58:22-78
+35
+36    <uses-feature
+36-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:60:5-62:36
+37        android:name="android.hardware.touchscreen"
+37-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:61:9-52
+38        android:required="false" />
+38-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:62:9-33
+39    <uses-feature
+39-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:63:5-65:36
+40        android:name="android.hardware.touchscreen.multitouch"
+40-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:64:9-63
+41        android:required="false" />
+41-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:65:9-33
+42    <uses-feature
+42-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:66:5-68:36
+43        android:name="android.hardware.touchscreen.multitouch.distinct"
+43-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:67:9-72
+44        android:required="false" />
+44-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:68:9-33
+45
+46    <application>
+46-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:15:5-40:19
+47        <activity
+47-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:16:9-26:20
+48            android:name="com.dreamdeck.wyhapp.UnityPlayerActivity"
+48-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:17:13-68
+49            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
+49-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:18:13-194
+50            android:hardwareAccelerated="false"
+50-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:19:13-48
+51            android:label="@string/app_name"
+51-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:20:13-45
+52            android:launchMode="singleTask"
+52-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:21:13-44
+53            android:screenOrientation="reverseLandscape" >
+53-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:22:13-57
+54            <meta-data
+54-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:23:13-25:40
+55                android:name="unityplayer.UnityActivity"
+55-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:24:17-57
+56                android:value="true" />
+56-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:25:17-37
+57        </activity>
+58
+59        <meta-data
+59-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:28:9-30:68
+60            android:name="unity.build-id"
+60-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:29:13-42
+61            android:value="d9b92057-9996-40de-86c0-111d7e4f309b" />
+61-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:30:13-65
+62        <meta-data
+62-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:31:9-33:33
+63            android:name="unity.splash-mode"
+63-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:32:13-45
+64            android:value="0" />
+64-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:33:13-30
+65        <meta-data
+65-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:34:9-36:37
+66            android:name="unity.splash-enable"
+66-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:35:13-47
+67            android:value="False" />
+67-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:36:13-34
+68        <meta-data
+68-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:37:9-39:35
+69            android:name="android.max_aspect"
+69-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:38:13-46
+70            android:value="2.1" />
+70-->D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:39:13-32
+71    </application>
+72
+73</manifest>
