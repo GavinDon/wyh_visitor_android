@@ -32,7 +32,7 @@ public class WNaviGuideActivity extends Activity {
 
     private SpeechSynthesizer mSpeechSynthesizer;
 
-    private WalkNavigateHelper mNaviHelper;
+    private WalkNavigateHelper mNaviHelper = WalkNavUtil.INSTANCE.getWalkNavigateHelper();
 
     @Override
     protected void onDestroy() {
@@ -66,9 +66,6 @@ public class WNaviGuideActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mNaviHelper = WalkNavigateHelper.getInstance();
-
         try {
             View view = mNaviHelper.onCreate(WNaviGuideActivity.this);
             if (view != null) {

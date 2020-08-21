@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gavindon.mvvm_lib.net.SuccessSource
@@ -83,7 +84,8 @@ class ArMoreFragment : ToolbarFragment() {
         override fun convert(holder: BaseViewHolder, item: Ar720Resp) {
             holder.setText(R.id.adaTvArName, item.name)
             val imageView = holder.getView<ImageView>(R.id.adaIvAr)
-            ImageLoader.with().load(item.imgurl).placeHolder(R.mipmap.banner).into(imageView)
+//            ImageLoader.with().load(item.imgurl).placeHolder(R.mipmap.banner).into(imageView)
+            Glide.with(context).load(item.imgurl).placeholder(R.mipmap.banner).into(imageView)
         }
     }
 }

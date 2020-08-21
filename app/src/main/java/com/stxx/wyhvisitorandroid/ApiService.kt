@@ -161,4 +161,8 @@ object WebViewUrl {
 
     //虚拟游园
     const val VR = "http://116.117.157.183:28183/3da/"
+    //植物百科
+    const val PLANT_WIKI_URL = "https://qrcode.wenyuriverpark.com/qrcode/list.html"
+    //入园预约
+    const val ENTER_BOOK_URL = "pages/authentication/authentication"
 }

@@ -109,35 +109,36 @@ abstract class MVVMBaseFragment : Fragment(), IView {
     /**
      * 权限请求
      */
-     protected fun requestPermission(
-         vararg permission: String,
-         onGrantedAction: () -> Unit
-     ) {
-         AndPermission.with(this)
-             .runtime()
-             .permission(permission)
-             .onGranted {
-                 if (it.size == permission.size) {
-                     onGrantedAction()
-                 }
-             }
-             .onDenied {
-                 val permissionNames: List<String?> =
-                     Permission.transformText(context, it)
-                 val message = this.requireContext().getString(
-                     R.string.message_permission_always_failed,
-                     TextUtils.join("\n", permissionNames)
-                 )
-                 //当点击禁止且勾选不再询问时
-                 if (AndPermission.hasAlwaysDeniedPermission(context, it)) {
-                     showDeniedPermission(message)
-                 } else {
-                     //当点击禁止时
-                     showDeniedPermission(message)
-                 }
-             }.start()
-     }
-   /* protected fun requestPermission(
+    protected fun requestPermission(
+        vararg permission: String,
+        onGrantedAction: () -> Unit
+    ) {
+        AndPermission.with(this)
+            .runtime()
+            .permission(permission)
+            .onGranted {
+                if (it.size == permission.size) {
+                    onGrantedAction()
+                }
+            }
+            .onDenied {
+                val permissionNames: List<String?> =
+                    Permission.transformText(context, it)
+                val message = this.requireContext().getString(
+                    R.string.message_permission_always_failed,
+                    TextUtils.join("\n", permissionNames)
+                )
+                //当点击禁止且勾选不再询问时
+                if (AndPermission.hasAlwaysDeniedPermission(context, it)) {
+                    showDeniedPermission(message)
+                } else {
+                    //当点击禁止时
+                    showDeniedPermission(message)
+                }
+            }.start()
+    }
+
+    protected fun requestPermission2(
         vararg permissions: String,
         onGrantedAction: () -> Unit
     ) {
@@ -152,7 +153,11 @@ abstract class MVVMBaseFragment : Fragment(), IView {
                     grantedPermission.add(permission.name)
                     //未授权集合
                     deniedPermission = permissions.filter { !grantedPermission.contains(it) }
+                    if (grantedPermission.size == permissions.size) {
+                        onGrantedAction()
+                    }
                 }
+
                 permission.shouldShowRequestPermissionRationale -> {
                 }
                 else -> {
@@ -177,7 +182,7 @@ abstract class MVVMBaseFragment : Fragment(), IView {
         })
 
 
-    }*/
+    }
 
     /**
      * 提示缺少什么权限

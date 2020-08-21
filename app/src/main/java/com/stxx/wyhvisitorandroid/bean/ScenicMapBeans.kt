@@ -26,8 +26,8 @@ data class ServerPointResp(
     val update_by: Int,
     val lngLat: List<String>,
     //共用
-    val x: String?,
-    val y: String?,
+    val x: String? = "0",
+    val y: String? = "0",
     val name: String,
     val location: String,
     //停车场
@@ -44,16 +44,16 @@ data class ServerPointResp(
     val thirdInfo: ToiletNumBean?,
     val manInfo: ToiletNumBean?,
     val woMenInfo: ToiletNumBean?,
-    val occupation:String
+    val occupation: String
 ) : Serializable
 
 data class ToiletNumBean(
     val H2SThreshold: String,
     val NH3Threshold: String,
-    val occupation: Int=0,
+    val occupation: Int = 0,
     val status: String,
     val stayThreshold: String,
-    val sum: Int=0,
+    val sum: Int = 0,
     val temperatureThreshold: String
 )
 

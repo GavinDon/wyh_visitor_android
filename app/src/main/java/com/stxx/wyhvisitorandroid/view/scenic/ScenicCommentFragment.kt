@@ -47,7 +47,9 @@ class ScenicCommentFragment : BaseFragment() {
     private lateinit var mViewModel: CommentViewModel
     //获取从景点页面传过来的值
     private var detailData: ServerPointResp? = null
-
+    //当前经纬度
+    private var currentLatitude: Double? = null
+    private var currentLongitude: Double? = null
     //从搜索过来的值
     private val scenicType by lazy { arguments?.getString("type") }
     private var scenicId: Int = -1

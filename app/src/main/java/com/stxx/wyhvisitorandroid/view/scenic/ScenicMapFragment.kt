@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.view.scenic
 
+import android.Manifest
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -57,6 +58,7 @@ import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
 import com.stxx.wyhvisitorandroid.service.PlaySoundService
+import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil
 import com.stxx.wyhvisitorandroid.widgets.BottomSheetBehavior3
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
@@ -170,17 +172,21 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 data.y?.toDouble() ?: 0.toDouble(),
                 data.x?.toDouble() ?: 0.toDouble()
             )
+            val convertLatLng = CoordinateConverter()
+                .from(CoordinateConverter.CoordType.GPS)
+                .coord(latLng)
+                .convert()
             //显示infoWindow
-            showInfoWindow(latLng, data)
+            showInfoWindow(convertLatLng, data)
             //点击服务点时称动到地图中心并隐藏bottomSheet
-            fixedLocation2Center(latLng)
+            fixedLocation2Center(convertLatLng)
             hiddenSheet()
         }
         //infoWindow上导航按钮点击事件
         serverPointAdapter.onItemClick { resp: ServerPointResp ->
             //初始化导航引擎
 //            initEngine(resp.lngLat, 1)
-            goWalkNav(resp)
+            goWalkNav(resp, LatLng((resp.x?.toDouble()!!), resp.y?.toDouble()!!))
         }
 
         ibMessage.setOnClickListener {
@@ -409,7 +415,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             }
 
             override fun onMapPoiClick(p0: MapPoi?) {
-                Log.i("customLocation", p0.toString())
+                Log.i("customLocation", "${p0?.position?.latitude}==${p0?.position?.longitude}")
             }
         })
         val tilePair = object : FileTileProvider() {
@@ -429,7 +435,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
         val urlTileProvider = object : UrlTileProvider() {
             override fun getMinDisLevel(): Int = 14
-            override fun getMaxDisLevel(): Int = 19
+            override fun getMaxDisLevel(): Int = 18
 
             // "http://online1.map.bdimg.com/tile/?qt=vtile&x={x}&y={y}&z={z}&styles=pl&scaler"
             //            + "=1&udt=20190528";
@@ -438,8 +444,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 //  val fileDir = "tiles/${z}/tile${x}_${y}.png"
                 /*    "http://online1.map.bdimg.com/tile/?qt=vtile&x={x}&y={y}&z={z}&styles=pl&scaler" + "=1&udt=20190528";
                     "http://223.221.37.181:8082/tiles?z={z}&x={x}_y={y}.png"*/
-                return "http://223.221.37.181:8082/tiles?z={z}&tile\"x={x}\"_\"&y={y}\".png"
-
+                //https://tourist.wenyuriverpark.com/mapTiles/{z}/tile{x}_{y}.png
+                return "https://tourist.wenyuriverpark.com/mapTiles/{z}/tile{x}_{y}.png"
             }
 
         }
@@ -451,7 +457,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             //40.09526869141341, longitude: 116.52661420314884
             val northEast = LatLng(40.06048593512643, 116.39524272759365)
             val southEast = LatLng(40.071822098761984, 116.46385409389569)
-            tileProvider(tilePair)
+            tileProvider(urlTileProvider)
 //            setPositionFromBounds(LatLngBounds.Builder().include(northEast).include(southEast).build())
         }
         map.addTileLayer(options)
@@ -649,7 +655,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 animateType(MarkerOptions.MarkerAnimateType.grow)
                 extraInfo(bundleOf("marketExtra" to data[item]))
             }
-            markerOptions.add(options)
 
             markerOptions.add(options)
 
@@ -760,13 +765,13 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             if (!explain.isNullOrEmpty() && !explain.startsWith("http")) View.GONE else View.VISIBLE
         //设置宽度 设置match 地图会
         val infoWindow = InfoWindow(dialog, latLng, -96)
-        mapView.map.showInfoWindow(infoWindow)
+        mapView.map?.showInfoWindow(infoWindow)
 
         dialog.setOnClickListener {
             loadMarkerScenicDetail(pointData)
         }
         blNav.setOnClickListener {
-            goWalkNav(pointData)
+            goWalkNav(pointData, latLng)
         }
         blVoice.setOnClickListener {
             playVoice(pointData)
@@ -873,26 +878,53 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         val infoWindow = InfoWindow(toiletParkDialog, latLng, -96)
         mapView.map.showInfoWindow(infoWindow)
         blNav.setOnClickListener {
-            goWalkNav(pointData)
+            goWalkNav(pointData, latLng)
         }
     }
 
-    private fun goWalkNav(pointData: ServerPointResp) {
-        val end = ArtMapMark("B", 116.46517524751016, 40.07349224993583, 1)
-        val beg = ArtMapMark("A", 116.47708886355713, 40.08153794200041, 1)
-        val intent = Intent(this.context, ArNavActivity2::class.java)
-        intent.putExtra("start", beg)
-        intent.putExtra("stop", end)
-        startActivity(intent)
-        return
+    /**
+     * 后台返回
+     */
+    private fun goWalkNav(
+        pointData: ServerPointResp,
+        latLng: LatLng
+    ) {
+
 
         if (geoBroadCast.status == GeoFence.STATUS_IN || geoBroadCast.status == GeoFence.INIT_STATUS_IN) {
             //进入园区则使用园区导航
-            findNavController().navigate(
-                R.id.fragment_ar_nav,
-                bundleOf(Pair(BUNDLE_SCENIC_DETAIL, pointData)),
-                navOption
-            )
+            /*  findNavController().navigate(
+                  R.id.fragment_ar_nav,
+                  bundleOf(Pair(BUNDLE_SCENIC_DETAIL, pointData)),
+                  navOption
+              )*/
+            requestPermission2(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ) {
+                /* val beg = ArtMapMark("A", 116.47708886355713, 40.08153794200041, 1)
+                 val x = (pointData.x ?: "0").toDouble()
+                 val y = (pointData.y ?: "0").toDouble()
+                 Logger.i("$x==$y")
+                 *//*val converter = CoordinateConverter()
+                .from(CoordinateConverter.CoordType.GPS)
+                .coord(latLng)
+            val con = converter.convert()*//*
+            //40.08140775275331==116.47102257186532
+            val end = ArtMapMark("B", latLng.longitude, latLng.latitude, 1)
+            val intent = Intent(this.context, ArNavActivity2::class.java)
+            intent.putExtra("start", beg)
+            intent.putExtra("stop", end)
+            startActivity(intent)*/
+
+                WalkNavUtil.setParam(
+                    LatLng(currentLatitude!!, currentLongitude!!),
+                    latLng,
+                    this.requireActivity()
+                ).startNav()
+            }
+
         } else {
             //未进入园区
             if (this.context != null && currentLongitude != null) {
@@ -902,6 +934,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             }
         }
     }
+
 
     private fun playVoice(pointData: ServerPointResp) {
 

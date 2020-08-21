@@ -58,9 +58,9 @@
     "iconRes": "ic_weather"
   },
   {
-    "name": "周边美食",
+    "name": "虚拟游园",
     "showType": 1,
-    "iconRes": "ic_zbms"
+    "iconRes": "ic_vr"
   },
   {
     "name": "推荐路线",
@@ -95,10 +95,5 @@
     "name": "停车场",
     "showType": 1,
     "iconRes": "ic_park"
-  },
-  {
-    "name": "充电桩",
-    "showType": 1,
-    "iconRes": "ic_charge"
   }
 ]

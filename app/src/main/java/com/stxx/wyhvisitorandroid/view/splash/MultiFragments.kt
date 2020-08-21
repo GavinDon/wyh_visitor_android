@@ -97,8 +97,11 @@ class MultiFragments : BaseActivity() {
             this,
             android.Manifest.permission.RECORD_AUDIO,
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
-        ) {}
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.CAMERA
+
+
+            ) {}
     }
 
 /*    protected fun startRecognition() {

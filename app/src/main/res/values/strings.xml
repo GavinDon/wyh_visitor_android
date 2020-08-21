@@ -32,6 +32,7 @@
     <!--热门推荐-->
     <string name="str_line_recommend">线路推荐</string>
     <string name="str_line_recommend_tip">给您最好的游园体验</string>
+    <string name="str_enter_book">入园预约</string>
 
     <!--虚拟游园-->
     <string name="str_ar">虚拟游园</string>

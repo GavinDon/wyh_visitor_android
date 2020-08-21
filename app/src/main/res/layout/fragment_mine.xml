@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp_8"
-                    android:text="你好,欢迎来到温榆河公园"
+                    android:text="你好,欢迎来到北京温榆河公园"
                     android:textColor="@color/fontSecond"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="@id/ivUserIcon"

@@ -108,6 +108,14 @@ class VisitorServerFragment : BaseFragment() {
                 11 -> {
                     navigate(WebViewUrl.WEATHER, R.string.visitor_server_weather)
                 }
+                12 -> {
+                    findNavController().navigate(
+                        R.id.fragment_webview, bundleOf(
+                            "url" to WebViewUrl.VR,
+                            "title" to R.string.str_ar
+                        ), navOption
+                    )
+                }
                 13 -> {
                     //线路推荐
                     findNavController().navigate(

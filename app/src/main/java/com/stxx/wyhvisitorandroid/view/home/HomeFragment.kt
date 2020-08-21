@@ -159,11 +159,11 @@ class HomeFragment : BaseFragment() {
         //景区百科
         //ar科普 植物百科 智慧停车 全景游园 虚拟游园 景区百科  AI步道 游客服务
         return listOf(
-            GridBean(R.string.grid_ar_science, R.mipmap.grid_ar),
-            GridBean(R.string.grid_plant_wiki, R.mipmap.grid_plant_wiki),
+            GridBean(R.string.str_enter_book, R.mipmap.grid_enter_book),
             GridBean(R.string.grid_smart_car, R.mipmap.grid_smart_cart),
+            GridBean(R.string.grid_plant_wiki, R.mipmap.grid_plant_wiki),
             GridBean(R.string.full_ar, R.mipmap.grid_vr),
-            GridBean(R.string.str_ar, R.mipmap.grid_virtual),
+            GridBean(R.string.grid_ar_science, R.mipmap.grid_ar),
             GridBean(R.string.grid_scenic_wiki, R.mipmap.grid_scenic_wiki),
             GridBean(R.string.visitor_ai_budao, R.mipmap.grid_ar_budao),
             GridBean(R.string.grid_visit, R.mipmap.grid_visit_server)

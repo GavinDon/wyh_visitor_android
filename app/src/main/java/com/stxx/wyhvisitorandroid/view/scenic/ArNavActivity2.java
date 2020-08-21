@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,18 +26,14 @@ import androidx.core.app.ActivityCompat;
 
 import com.quyuanfactory.artmap.ArtMap;
 import com.quyuanfactory.artmap.ArtMapARView;
+import com.quyuanfactory.artmap.ArtMapView;
 import com.quyuanfactory.artmap.ArtMapMark;
 import com.quyuanfactory.artmap.ArtMapPoi;
-import com.quyuanfactory.artmap.ArtMapView;
 import com.stxx.wyhvisitorandroid.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * description:
- * Created by liNan on  2020/8/20 18:44
- */
 public class ArNavActivity2 extends AppCompatActivity {
     private static final String TAG = ArNavActivity2.class.getSimpleName();
 
@@ -50,18 +45,15 @@ public class ArNavActivity2 extends AppCompatActivity {
 
     private LinearLayout mapCtrl;
     private LinearLayout botCtrl;
-    private RelativeLayout navCtrl;
+
+    //  private RelativeLayout  navCtrl;
+
     private int MGAR = 0;
     private int MGBOT = 0;
     private int MGNAV = 0;
     private ValueAnimator animatorBot = null;
-    private ImageButton butClose;
-    private TextView txtTitle;
-    private ImageButton butNavto;
     private ImageButton butHome;
     private AlertDialog dlgTip;
-
-    private ArtMapPoi curPoi;
 
     private Drawable[] mIconWeiZhi = {null, null};
 
@@ -75,191 +67,24 @@ public class ArNavActivity2 extends AppCompatActivity {
 
     private TextView txtNavtoTitle = null;
 
+    private ArtMapMark startMark = null;
+    private ArtMapMark endMark = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
 
-        boolean ret = checkAndGotPermissionNormal(new CallBackPermission() {
-            @Override
-            public void onResult(boolean ret) {
-                if (ret) {
-                    init();
-                }
-            }
-        });
-        if (!ret) {
-            return;
-        }
-        init();
-    }
-
-    private void init() {
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        setContentView(R.layout.activity_ar_nav);
-
-        mIconWeiZhi[0] = getResources().getDrawable(R.drawable.weizhi);
-        mIconWeiZhi[1] = getResources().getDrawable(R.drawable.weizhi_on);
-
-        mapCtrl = findViewById(R.id.mapCtrl);
-        botCtrl = findViewById(R.id.botCtrl);
-        navCtrl = findViewById(R.id.relNavCtrl);
-
-        butClose = findViewById(R.id.butClose);
-        txtTitle = findViewById(R.id.txtTitle);
-        butNavto = findViewById(R.id.butNavto);
-        butHome = findViewById(R.id.butHome);
-
-        mMapView = findViewById(R.id.artmapview);
-        butLocation = findViewById(R.id.butWeiZi);
-
-        mARView = findViewById(R.id.artmaparview);
-        butNavClose = findViewById(R.id.lineNavtoClose);
-        butNavMode = findViewById(R.id.lineNavtoMode);
-        relNavto = findViewById(R.id.relNavto);
-
-        txtNavtoMode = findViewById(R.id.txtNavtoMode);
-
-        txtNavtoTitle = findViewById(R.id.txtNavtoTitle);
-
-        butLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!hasLocation) {
-                    doCheckPermission(new CallBackPermission() {
-                        @Override
-                        public void onResult(boolean ret) {
-                            if (ret) {
-                                hasLocation = true;
-                                ArtMap.EnableLocation(true);
-                            }
-                            boolean _on = ArtMap.isLocated();
-                            butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
-                            //if(_on){Toast.makeText(getApplicationContext(), "定位已打开，长按可关闭！", Toast.LENGTH_SHORT).show();}
-                        }
-                    });
-                    return;
-                }
-                boolean on = ArtMap.isLocated();
-                ArtMap.EnableLocation(true);
-                if (!on) {
-                    boolean _on = ArtMap.isLocated();
-                    butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
-                    //if(_on){Toast.makeText(getApplicationContext(), "定位已打开，长按可关闭！", Toast.LENGTH_SHORT).show();}
-                }
-            }//end click
-        });
-
-        butLocation.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                boolean on = ArtMap.isLocated();
-                if (on) {//do turn off location
-                    ArtMap.EnableLocation(false);
-                    Toast.makeText(getApplicationContext(), "定位已关闭！", Toast.LENGTH_SHORT).show();
-                    boolean _on = ArtMap.isLocated();
-                    butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        butClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBotCtrl(false);
-                curPoi = null;
-                ArtMap.SelectPoi(null);
-            }
-        });
-
-        butNavto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null == curPoi) {
-                    return;
-                }
-                if (!ArtMap.isLocated()) {
-                    Toast.makeText(getApplicationContext(), "请先打开定位功能！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (ArtMap.isRouted()) {
-                    ArtMap.CancelRoute();
-                }
-                //ArtMap.SearchRoute(curPoi);
-            }
-        });
-
-        butHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArtMap.GoHome();
-            }
-        });
-
-//        findViewById(R.id.butTest).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ArtMap.WalkNext();
-//            }
-//        });
-
-        butNavClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ArtMap.isRouted()) {
-                    return;
-                }
-                dlgTip = commonDialog("ArtMap", "              退出导航", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (DialogInterface.BUTTON_POSITIVE == which) {
-                            ExitNav();
-                        }
-                        dlgTip.dismiss();
-                        dlgTip = null;
-                    }
-                });
-                dlgTip.show();
-            }
-        });
-
-        butNavMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ArtMap.isRouted()) {
-                    return;
-                }
-                routeLookMode = 1 - routeLookMode;
-                if (0 == routeLookMode) {
-                    ArtMap.OverlookRoute();
-                    txtNavtoMode.setText("继续当前导航");
-                } else {
-                    ArtMap.EnableLocation(true);
-                    txtNavtoMode.setText("查看全览");
-                }
-            }
-        });
-
         ArtMap.SetCallBack(new ArtMap.CallBack() {
             @Override
             public void mapLoaded(boolean ret) {
-                //open location
-                butLocation.performClick();
-
                 //Search Route
                 Intent intent = getIntent();
-                ArtMapMark start = (ArtMapMark) intent.getSerializableExtra("start");
-                ArtMapMark end = (ArtMapMark) intent.getSerializableExtra("stop");
-                ArtMap.SearchRoute(start, end);
-            }
+                startMark = (ArtMapMark) intent.getSerializableExtra("start");
+                endMark = (ArtMapMark) intent.getSerializableExtra("stop");
 
-            @Override
-            public void poiClicked(final ArtMapPoi poi) {
-                curPoi = new ArtMapPoi(poi);
-                txtTitle.setText(poi.title);
-                showBotCtrl(true);
+                //open location
+                butLocation.performClick();
             }
 
             @Override
@@ -318,9 +143,141 @@ public class ArNavActivity2 extends AppCompatActivity {
             }
         });
 
+        init();
+    }
+
+    private void init() {
+        setContentView(R.layout.activity_ar_nav);
+
+        mIconWeiZhi[0] = getResources().getDrawable(R.drawable.weizhi);
+        mIconWeiZhi[1] = getResources().getDrawable(R.drawable.weizhi_on);
+
+        mapCtrl = findViewById(R.id.mapCtrl);
+        botCtrl = findViewById(R.id.botCtrl);
+
+        butHome = findViewById(R.id.butHome);
+
+        mMapView = findViewById(R.id.artmapview);
+        butLocation = findViewById(R.id.butWeiZi);
+
+        mARView = findViewById(R.id.artmaparview);
+        butNavClose = findViewById(R.id.lineNavtoClose);
+        butNavMode = findViewById(R.id.lineNavtoMode);
+        relNavto = findViewById(R.id.relNavto);
+
+        txtNavtoMode = findViewById(R.id.txtNavtoMode);
+
+        txtNavtoTitle = findViewById(R.id.txtNavtoTitle);
+
+        butLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!hasLocation) {
+                    doCheckPermission(new CallBackPermission() {
+                        @Override
+                        public void onResult(boolean ret) {
+                            if (ret) {
+                                hasLocation = true;
+                                ArtMap.EnableLocation(true);
+                            }
+                            boolean _on = ArtMap.isLocated();
+                            butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
+                            doEnter();
+                        }
+                    });
+                    return;
+                }
+                boolean on = ArtMap.isLocated();
+                ArtMap.EnableLocation(true);
+                if (!on) {
+                    boolean _on = ArtMap.isLocated();
+                    butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
+                }
+                doEnter();
+            }//end click
+        });
+
+        butLocation.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                boolean on = ArtMap.isLocated();
+                if (on) {//do turn off location
+                    ArtMap.EnableLocation(false);
+                    Toast.makeText(getApplicationContext(), "定位已关闭！", Toast.LENGTH_SHORT).show();
+                    boolean _on = ArtMap.isLocated();
+                    butLocation.setImageDrawable(_on ? mIconWeiZhi[1] : mIconWeiZhi[0]);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        butHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArtMap.GoHome();
+            }
+        });
+
+        butNavClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dlgTip = commonDialog("ArtMap", "              退出导航", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (DialogInterface.BUTTON_POSITIVE == which) {
+                            ExitNav();
+                            finish();
+                        }
+                        dlgTip.dismiss();
+                        dlgTip = null;
+                    }
+                });
+                dlgTip.show();
+            }
+        });
+
+        butNavMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!ArtMap.isRouted()) {
+                    return;
+                }
+                routeLookMode = 1 - routeLookMode;
+                if (0 == routeLookMode) {
+                    ArtMap.OverlookRoute();
+                    txtNavtoMode.setText("继续当前导航");
+                } else {
+                    ArtMap.EnableLocation(true);
+                    txtNavtoMode.setText("查看全览");
+                }
+            }
+        });
+
         resetHeight();
+    }
 
+    private void doEnter() {
+        if (!ArtMap.isLocated()) {
+            return;
+        }
+/*
+        if (!hasCamera) {
+            hasCamera = checkAndGotPermissionCamera(new CallBackPermission() {
+                @Override
+                public void onResult(boolean ret) {
+                    hasCamera = ret;
+                    if (hasCamera) {
+                        doEnter();
+                    }
+                }
+            });
+            if (!hasCamera) {
+                return;
+            }
+        }*/
 
+        ArtMap.SearchRoute(startMark, endMark);
     }
 
     private int getContextH(Context context) {
@@ -339,36 +296,13 @@ public class ArNavActivity2 extends AppCompatActivity {
     }
 
     private void resetHeight() {
-        MGNAV = ((LinearLayout.LayoutParams) relNavto.getLayoutParams()).height;
-        MGBOT = ((RelativeLayout.LayoutParams) botCtrl.getLayoutParams()).bottomMargin;
-        int mapH = (int) (Math.abs(MGBOT) * 2.8);
+        MGBOT = ((RelativeLayout.LayoutParams) botCtrl.getLayoutParams()).height;
+        int mapH = (int) (Math.abs(MGBOT) * 1.8);
         int H = getContextH(getApplicationContext());
         MGAR = H - mapH;
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mARView.getLayoutParams();
         layoutParams.height = MGAR;
         mARView.setLayoutParams(layoutParams);
-        Log.d(null, "ar height:" + MGAR);
-    }
-
-    private void showBotCtrl(boolean show) {
-        int beg = ((RelativeLayout.LayoutParams) botCtrl.getLayoutParams()).bottomMargin;
-        int end = show ? 0 : MGBOT;
-        if (null != animatorBot) {
-            animatorBot.cancel();
-            animatorBot = null;
-        }
-        animatorBot = ValueAnimator.ofInt(beg, end);
-        animatorBot.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator arg0) {
-                int value = (int) arg0.getAnimatedValue();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) botCtrl.getLayoutParams();
-                layoutParams.bottomMargin = value;
-                botCtrl.setLayoutParams(layoutParams);
-                //ArtMap.SetBotPading(value-MGBOT);
-            }
-        });//end ani
-        animatorBot.start();
     }
 
     private void EnterNav() {
@@ -387,45 +321,17 @@ public class ArNavActivity2 extends AppCompatActivity {
             }
         }
 
-        //update ui
-        {
-            navCtrl.setVisibility(View.GONE);
-            butNavto.setVisibility(View.GONE);
-            relNavto.setVisibility(View.VISIBLE);
-
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) botCtrl.getLayoutParams();
-            layoutParams.bottomMargin = MGNAV + MGBOT;
-            botCtrl.setLayoutParams(layoutParams);
-            //ArtMap.SetBotPading(MGNAV);
-        }
-
         //Open AR
-        mARView.setVisibility(View.VISIBLE);
         ArtMap.StartAR();
     }
 
     private void ExitNav() {
         //Gone AR
         ArtMap.StopAR();
-        mARView.setVisibility(View.GONE);
 
         ArtMap.CancelRoute();
 
-        //update ui
-        {
-            relNavto.setVisibility(View.GONE);
-            butNavto.setVisibility(View.VISIBLE);
-            navCtrl.setVisibility(View.VISIBLE);
-
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) botCtrl.getLayoutParams();
-            layoutParams.bottomMargin = 0;
-            botCtrl.setLayoutParams(layoutParams);
-            //ArtMap.SetBotPading(-MGBOT);
-        }
-
         ArtMap.GoHome();
-
-        finish();
     }
 
     @Override
@@ -450,52 +356,15 @@ public class ArNavActivity2 extends AppCompatActivity {
 
         // 在activity执行onDestroy时必须调用mMapView.onDestroy()
         if (null != mMapView) mMapView.onDestroy();
-        if (null != mMapView) mMapView.onDestroy();
+
+        mMapView = null;
+        mARView = null;
     }
 
     //////////////////////////////////////////////////////////////////////////
     //NORMAL
     private static interface CallBackPermission {
         public void onResult(boolean ret);
-    }
-
-    private static final int NORMAL_PERMISSION_REQ_CODE = 1;
-    private CallBackPermission cbPermissionNormal = null;
-
-    private boolean checkAndGotPermissionNormal(CallBackPermission cb) {
-        cbPermissionNormal = cb;
-
-        ArrayList<String> permissionsList = new ArrayList<>();
-        String[] permissions = {
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//7.0
-            for (String perm : permissions) {
-                if (PackageManager.PERMISSION_GRANTED != checkSelfPermission(perm)) {
-                    permissionsList.add(perm);
-                }
-            }
-            if (!permissionsList.isEmpty()) {
-                String[] strings = new String[permissionsList.size()];
-                requestPermissions(permissionsList.toArray(strings), NORMAL_PERMISSION_REQ_CODE);
-            }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//6.0
-            for (String perm : permissions) {
-                if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(getApplicationContext(), perm)) {
-                    permissionsList.add(perm);
-                }
-            }
-            if (!permissionsList.isEmpty()) {
-                String[] strings = new String[permissionsList.size()];
-                ActivityCompat.requestPermissions(this, permissionsList.toArray(strings), NORMAL_PERMISSION_REQ_CODE);
-            }
-        }
-
-        return permissionsList.isEmpty();
     }
 
     //CHECK LOCATION PERMISSION
@@ -599,27 +468,12 @@ public class ArNavActivity2 extends AppCompatActivity {
         return permissionsList.isEmpty();
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.M)
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Log.d(TAG, "onActivityResult->requestCode: "+requestCode+" ret: "+resultCode);
-//        if (requestCode == LOCATION_PERMISSION_REQ_CODE) {
-//            boolean ret = checkPermission();
-//            if(null != cbPermission){cbPermission.onResult(ret);}
-//         }
-//    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d(TAG, "onRequestPermissionsResult->requestCode: " + requestCode + " ret: " + grantResults[0]);
 
-        if (NORMAL_PERMISSION_REQ_CODE == requestCode) {
-            if (null != cbPermissionNormal) {
-                cbPermissionNormal.onResult(grantResults[0] == PackageManager.PERMISSION_GRANTED);
-            }
-        } else if (LOCATION_PERMISSION_REQ_CODE == requestCode) {
+        if (LOCATION_PERMISSION_REQ_CODE == requestCode) {
             if (null != cbPermission) {
                 cbPermission.onResult(grantResults[0] == PackageManager.PERMISSION_GRANTED);
             }
@@ -630,6 +484,5 @@ public class ArNavActivity2 extends AppCompatActivity {
         }
     }
     //////////////////////////////////////////////////////////////////////////
-
 
 }

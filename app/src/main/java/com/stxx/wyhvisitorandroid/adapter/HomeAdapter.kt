@@ -31,6 +31,8 @@ import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.WebViewUrl.AI_BUDAO
 import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
+import com.stxx.wyhvisitorandroid.WebViewUrl.ENTER_BOOK_URL
+import com.stxx.wyhvisitorandroid.WebViewUrl.PLANT_WIKI_URL
 import com.stxx.wyhvisitorandroid.WebViewUrl.VR
 import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
 import com.stxx.wyhvisitorandroid.base.OnlyShowDelegateAdapter
@@ -350,13 +352,21 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                     )
                 }
                 R.string.grid_plant_wiki -> {
-                    view.findNavController().navigate(R.id.fragment_plant_wiki, null, navOption)
+                    view.findNavController().navigate(
+                        R.id.fragment_webview_notitle,
+                        bundleOf(
+                            "url" to PLANT_WIKI_URL,
+                            "title" to R.string.grid_plant_wiki
+                        ), navOption
+                    )
+//                    view.findNavController().navigate(R.id.fragment_plant_wiki, null, navOption)
                 }
-                R.string.str_ar -> {
+
+                R.string.str_enter_book -> {
                     view.findNavController().navigate(
                         R.id.fragment_webview, bundleOf(
-                            "url" to VR,
-                            "title" to R.string.str_ar
+                            "url" to ENTER_BOOK_URL,
+                            "title" to R.string.str_enter_book
                         ), navOption
                     )
                 }

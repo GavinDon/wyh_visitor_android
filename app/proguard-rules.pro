@@ -481,6 +481,59 @@
   -dontwarn cn.jiguang.**
   -keep class cn.jiguang.** { *; }
   -keep class com.stxx.wyhvisitorandroid.view.asr.**{*;}
+  # com.quyuanfactory.xvaide.XVAide
+  -keepclasseswithmembers class com.quyuanfactory.artmap.ArtMap {
+      *;
+  }
+
+  -keep interface com.quyuanfactory.artmap.ArtMap$CallBack {
+      public <methods>;
+  }
+
+  -keep class com.quyuanfactory.artmap.ArtMapPoi {*;}
+
+  -keep class com.quyuanfactory.artmap.ArtMapMark {*;}
+
+  -keepclasseswithmembers class com.quyuanfactory.artmap.ArtMapView {
+      *;
+  }
+
+  -keepclasseswithmembers class com.quyuanfactory.artmap.ArtMapARView {
+      *;
+  }
+
+  -keepclassmembers class com.quyuanfactory.artmap.OgreSurfaceView {
+      public void pollMessages();
+      public void messageFromNative(int, java.lang.String);
+      public String getSdDir();
+  }
+
+  # Also keep - Enumerations. Keep the special static methods that are required in
+  # enumeration classes.
+  -keepclassmembers enum  * {
+      public static **[] values();
+      public static ** valueOf(java.lang.String);
+  }
+
+  # Keep names - Native method names. Keep all native class/method names.
+  -keepclasseswithmembers,allowshrinking class * {
+      native <methods>;
+  }
+#  AR科普
+-keep class bitter.jnibridge.* { *; }
+-keep class com.unity3d.player.* { *; }
+-keep class org.fmod.* { *; }
+-ignorewarnings
+-dontwarn com.unity3d.player.**
+-dontwarn org.fmod.**
+-keep class com.unity3d.player.*{*;}
+-keep class org.fmod.*{*;}
+-keep public class * extends com.unity3d.player.**
+-keep public class * extends org.fmod.**
+
+-libraryjars D:\work\android\workspace\wyh_visitor_android\WYH20.03.30\libs\unity-classes.jar
+
+
 
 
 
