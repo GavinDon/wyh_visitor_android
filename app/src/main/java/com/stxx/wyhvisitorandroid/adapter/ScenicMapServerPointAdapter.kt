@@ -1,7 +1,6 @@
 package com.stxx.wyhvisitorandroid.adapter
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,12 +9,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.luck.picture.lib.config.PictureMimeType
 import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.bean.ParkPointResp
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
-import com.stxx.wyhvisitorandroid.enums.ToiletTypeEnum
-import com.stxx.wyhvisitorandroid.graphics.ImageLoader
 
 /**
  * description:电子地图服务点
@@ -71,20 +66,20 @@ class ScenicMapServerPointAdapter(layoutResId: Int, data: MutableList<ServerPoin
 
                 if (item.manInfo != null) {
                     manRetailNumber.text =
-                        "剩余数:${item.manInfo.sum - item.manInfo.occupation}"
+                        "剩余:${item.manInfo.sum - item.manInfo.occupation}"
                 } else {
                     cslMan.visibility = View.GONE
                 }
                 if (item.woMenInfo != null) {
                     cslWoman.visibility = View.VISIBLE
                     womanRetailNumber.text =
-                        "剩余数:${item.woMenInfo.sum - item.woMenInfo.occupation}"
+                        "剩余:${item.woMenInfo.sum - item.woMenInfo.occupation}"
                 } else {
                     cslWoman.visibility = View.GONE
                 }
                 if (item.thirdInfo != null) {
                     brRetailNumber.text =
-                        "剩余数:${item.thirdInfo.sum - item.thirdInfo.occupation}"
+                        "剩余:${item.thirdInfo.sum - item.thirdInfo.occupation}"
                 } else {
                     cslBarrierFree.visibility = View.GONE
                 }

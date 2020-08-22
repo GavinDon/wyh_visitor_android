@@ -1,10 +1,8 @@
 package com.stxx.wyhvisitorandroid.location
 
-import android.R.attr.name
 import android.content.Context
 import android.content.Intent
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.route.BaiduMapRoutePlan
@@ -16,13 +14,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.stxx.wyhvisitorandroid.R
 import org.jetbrains.anko.layoutInflater
 import org.jetbrains.anko.runOnUiThread
-import org.jetbrains.anko.support.v4.runOnUiThread
 import java.net.URISyntaxException
 import kotlin.concurrent.thread
 
 
 /**
- * description:
+ * description: 唤醒百度/高德 app
  * Created by liNan on  2020/5/12 13:58
  */
 fun wakeBaiduApp(context: Context, startPoint: LatLng) {

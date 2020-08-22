@@ -14,7 +14,7 @@ import com.orhanobut.logger.Logger
 
 
 /**
- * description:
+ * description: 百度步行导航
  * Created by liNan on  2020/8/21 18:03
  */
 object WalkNavUtil {

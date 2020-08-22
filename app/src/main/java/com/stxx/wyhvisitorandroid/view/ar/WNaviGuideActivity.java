@@ -10,8 +10,13 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MapViewLayoutParams;
 import com.baidu.mapapi.walknavi.WalkNavigateHelper;
 import com.baidu.mapapi.walknavi.adapter.IWNaviStatusListener;
 import com.baidu.mapapi.walknavi.adapter.IWRouteGuidanceListener;
@@ -21,6 +26,7 @@ import com.baidu.platform.comapi.walknavi.WalkNaviModeSwitchListener;
 import com.baidu.platform.comapi.walknavi.widget.ArCameraView;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
+import com.orhanobut.logger.Logger;
 import com.stxx.wyhvisitorandroid.view.asr.Auth;
 
 /**
@@ -68,8 +74,14 @@ public class WNaviGuideActivity extends Activity {
         super.onCreate(savedInstanceState);
         try {
             View view = mNaviHelper.onCreate(WNaviGuideActivity.this);
+
             if (view != null) {
-                setContentView(view);
+                view.getLayoutParams().height = 200;
+                FrameLayout frl = new FrameLayout(this);
+                MapView bdMapView = new MapView(this);
+                frl.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, 300);
+                frl.addView(bdMapView, ViewGroup.LayoutParams.MATCH_PARENT, 700);
+                setContentView(frl);
             }
         } catch (Exception e) {
             e.printStackTrace();

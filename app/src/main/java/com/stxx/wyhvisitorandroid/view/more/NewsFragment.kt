@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.toolbar_title.*
 class NewsFragment : ToolbarFragment() {
     override val toolbarName: Int = R.string.str_news
     override val layoutId: Int = R.layout.comment_recyclerview
+
     //加载第几页
     private var pageNum: Int = 1
     private var dataCount: Int = 0
@@ -134,7 +135,10 @@ class NewsAdapter(layoutResId: Int, data: MutableList<ScenicNewsResp>?) :
 
         val iv = holder.getView<ImageView>(R.id.ivNewsPic)
 
-        Picasso.get().load(t.imgurl).resizeDimen(R.dimen.dp_92, R.dimen.dp_82)
-            .transform(RoundedCornersTransformation(20, 0)).into(iv)
+        Picasso.get().load(t.imgurl)
+            .transform(RoundedCornersTransformation(20, 0))
+            .resizeDimen(R.dimen.dp_98, R.dimen.dp_84)
+            .centerCrop()
+            .into(iv)
     }
 }

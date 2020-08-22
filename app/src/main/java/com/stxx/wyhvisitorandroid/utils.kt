@@ -18,6 +18,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.utils.CoordinateConverter
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.showSoftInputWord
 import com.gavindon.mvvm_lib.widgets.showToast
@@ -55,6 +57,11 @@ val viewOutlineProvider = object : ViewOutlineProvider() {
     override fun getOutline(view: View?, outline: Outline?) {
     }
 }
+
+fun convertBaidu(lat: Double, lng: Double): LatLng = CoordinateConverter()
+    .from(CoordinateConverter.CoordType.GPS)
+    .coord(LatLng(lat, lng))
+    .convert()
 
 
 /**

@@ -2,14 +2,16 @@ package com.stxx.wyhvisitorandroid.mplusvm
 
 import com.gavindon.mvvm_lib.base.MVVMBaseModel
 import com.gavindon.mvvm_lib.base.MVVMBaseViewModel
-import com.gavindon.mvvm_lib.net.*
+import com.gavindon.mvvm_lib.net.BR
+import com.gavindon.mvvm_lib.net.Resource
+import com.gavindon.mvvm_lib.net.http
+import com.gavindon.mvvm_lib.net.parse2
 import com.gavindon.mvvm_lib.utils.Parameters
 import com.gavindon.mvvm_lib.utils.onFailed
 import com.gavindon.mvvm_lib.utils.onSuccessT
 import com.gavindon.mvvm_lib.utils.singLiveData
 import com.google.gson.reflect.TypeToken
 import com.stxx.wyhvisitorandroid.ApiService
-import com.stxx.wyhvisitorandroid.bean.ParkPointResp
 import com.stxx.wyhvisitorandroid.bean.ScenicCommentResp
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
 import com.stxx.wyhvisitorandroid.pageSize

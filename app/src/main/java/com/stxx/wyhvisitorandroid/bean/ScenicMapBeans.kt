@@ -22,6 +22,7 @@ data class ServerPointResp(
     val introduction: String,
     val is_deleted: String,
     val position: String,
+    //厕所 type =-1时表示为非智慧厕所不显示厕所剩余数量
     var type: String?,
     val update_by: Int,
     val lngLat: List<String>,
@@ -47,6 +48,7 @@ data class ServerPointResp(
     val occupation: String
 ) : Serializable
 
+//
 data class ToiletNumBean(
     val H2SThreshold: String,
     val NH3Threshold: String,
@@ -57,34 +59,6 @@ data class ToiletNumBean(
     val temperatureThreshold: String
 )
 
-/**
- * 停车场
- */
-data class ParkPointResp(
-    val alarm_threshold: Int,
-    val camer_ids: String,
-    val corporation: Any,
-    val create_by: Any,
-    val details: Any,
-    val gmt_create: Any,
-    val gmt_modified: String,
-    val id: Int,
-    val imgUrl: String,
-    val is_deleted: Int,
-    val location: String,
-    val manager: Any,
-    val name: String,
-    val number: String,
-    val region: Any,
-    val residue: Int,
-    val state: String,
-    val sum: Int,
-    val tel: Any,
-    val type: String,
-    val update_by: Int,
-    val x: String,
-    val y: String
-)
 
 /**
  * 景区服务详情

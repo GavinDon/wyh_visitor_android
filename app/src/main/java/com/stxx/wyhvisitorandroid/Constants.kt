@@ -1,6 +1,7 @@
 package com.stxx.wyhvisitorandroid
 
 import androidx.navigation.NavOptions
+import com.baidu.mapapi.model.LatLng
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getCurrentDateMillSeconds
 
@@ -44,6 +45,8 @@ const val BUNDLE_IS_SUB_SCENIC = "scenicItem"
 const val WEB_VIEW_URL = "url"
 const val WEB_VIEW_TITLE = "title"
 
+//景点中心点
+val SCENIC_CENTER_LATLNG = LatLng(40.082681, 116.474134)
 
 /**
  * fragment转场设置

@@ -14,6 +14,7 @@ import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
 import kotlinx.android.synthetic.main.fragment_webview_notitle.progressBar
@@ -34,6 +35,7 @@ class WebViewNoTitleFragment : BaseFragment() {
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         x5WebView.webChromeClient = webChromeClient
+        x5WebView.webViewClient = webViewClient
         val url = arguments?.getString("url")
         if (url?.startsWith("http") == true) {
             x5WebView.loadUrl(url)
@@ -57,7 +59,6 @@ class WebViewNoTitleFragment : BaseFragment() {
                     R.color.white
                 )
             )
-            app_tv_Title?.setText(R.string.visitor_ai_budao)
             frame_layout_title?.setBackgroundColor(Color.WHITE)
             toolbar_back.setOnClickListener {
                 if (x5WebView?.canGoBack() == true) {
@@ -84,6 +85,15 @@ class WebViewNoTitleFragment : BaseFragment() {
                 progressBar?.progress = 0
             }
             super.onProgressChanged(p0, p1)
+        }
+    }
+    private val webViewClient = object : WebViewClient() {
+        override fun onPageFinished(view: WebView?, p1: String?) {
+            super.onPageFinished(view, p1)
+            val title = view?.title ?: "详情"
+            app_tv_Title?.text = title
+            app_tv_Title?.isFocusable = true
+
         }
     }
 

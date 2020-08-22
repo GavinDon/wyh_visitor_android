@@ -16,12 +16,10 @@ import com.stxx.wyhvisitorandroid.R
  * description:监听是否进入园区或者离开园区
  * Created by liNan on  2020/5/1 11:20
  */
-class GeoBroadCast : BroadcastReceiver() {
+object GeoBroadCast : BroadcastReceiver() {
 
-    companion object {
-        const val fenceaction = "com.stxx.geofence"
-        const val channelId = "1"
-    }
+    const val fenceaction = "com.stxx.geofence"
+    const val channelId = "1"
 
     //进入或者未进入园区
     var status: Int? = null

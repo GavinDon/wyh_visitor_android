@@ -24,6 +24,7 @@ class BdLocation(private val locationListener: BDAbstractLocationListener) : Lif
             enableSimulateGps = false
             setOpenAutoNotifyMode()
             scanSpan = 2000
+            isLocationNotify = true
             setCoorType(CoordinateConverter.CoordType.BD09LL.name)
             locationMode = LocationClientOption.LocationMode.Hight_Accuracy
         }
@@ -42,6 +43,17 @@ class BdLocation(private val locationListener: BDAbstractLocationListener) : Lif
     fun startLocation() {
         if (!mLocationClient.isStarted) {
             mLocationClient.start()
+        }
+    }
+
+    val listener = object : BDAbstractLocationListener() {
+        override fun onReceiveLocation(location: BDLocation) {
+            if (location.locType != BDLocation.TypeServerError &&
+                location.locType != BDLocation.TypeOffLineLocationFail &&
+                location.locType != BDLocation.TypeCriteriaException
+            ) {
+
+            }
         }
     }
 

@@ -202,5 +202,8 @@
     <activity
         android:id="@+id/fragment_ar_nav"
         android:name="com.stxx.wyhvisitorandroid.view.scenic.ArNavActivity2" />
+    <fragment
+        android:id="@+id/fragment_webview_primeval"
+        android:name="com.stxx.wyhvisitorandroid.view.ScanResultFragment" />
 
 </navigation>

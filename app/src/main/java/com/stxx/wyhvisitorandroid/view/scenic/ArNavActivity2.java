@@ -50,8 +50,6 @@ public class ArNavActivity2 extends AppCompatActivity {
 
     private int MGAR = 0;
     private int MGBOT = 0;
-    private int MGNAV = 0;
-    private ValueAnimator animatorBot = null;
     private ImageButton butHome;
     private AlertDialog dlgTip;
 
@@ -80,7 +78,11 @@ public class ArNavActivity2 extends AppCompatActivity {
             public void mapLoaded(boolean ret) {
                 //Search Route
                 Intent intent = getIntent();
-                startMark = (ArtMapMark) intent.getSerializableExtra("start");
+                startMark = null;
+                endMark = null;
+                if (intent.hasExtra("start")) {
+                    startMark = (ArtMapMark) intent.getSerializableExtra("start");
+                }
                 endMark = (ArtMapMark) intent.getSerializableExtra("stop");
 
                 //open location
@@ -226,7 +228,7 @@ public class ArNavActivity2 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (DialogInterface.BUTTON_POSITIVE == which) {
-                            ExitNav();
+                            doEixt();
                             finish();
                         }
                         dlgTip.dismiss();
@@ -261,7 +263,7 @@ public class ArNavActivity2 extends AppCompatActivity {
         if (!ArtMap.isLocated()) {
             return;
         }
-/*
+
         if (!hasCamera) {
             hasCamera = checkAndGotPermissionCamera(new CallBackPermission() {
                 @Override
@@ -275,9 +277,22 @@ public class ArNavActivity2 extends AppCompatActivity {
             if (!hasCamera) {
                 return;
             }
-        }*/
+        }
 
         ArtMap.SearchRoute(startMark, endMark);
+    }
+
+    private void doEixt() {
+        ExitNav();
+        ArtMap.CancelRoute();
+        ArtMap.EnableLocation(false);
+        ArtMap.Exit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        doEixt();
     }
 
     private int getContextH(Context context) {
@@ -328,10 +343,6 @@ public class ArNavActivity2 extends AppCompatActivity {
     private void ExitNav() {
         //Gone AR
         ArtMap.StopAR();
-
-        ArtMap.CancelRoute();
-
-        ArtMap.GoHome();
     }
 
     @Override
@@ -351,8 +362,8 @@ public class ArNavActivity2 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        ArtMap.Destroy();
+        Log.d(TAG, "onDestroy");
+        doEixt();
 
         // 在activity执行onDestroy时必须调用mMapView.onDestroy()
         if (null != mMapView) mMapView.onDestroy();
@@ -483,6 +494,5 @@ public class ArNavActivity2 extends AppCompatActivity {
             }
         }
     }
-    //////////////////////////////////////////////////////////////////////////
 
 }
