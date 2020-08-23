@@ -76,7 +76,7 @@ object WalkNavUtil {
                 override fun onRoutePlanSuccess() {
                     Logger.i("算路成功")
                     val intent =
-                        Intent(act, WNaviGuideActivity::class.java)
+                        Intent(act, BdNavGuideActivity::class.java)
                     act.startActivity(intent)
                 }
 

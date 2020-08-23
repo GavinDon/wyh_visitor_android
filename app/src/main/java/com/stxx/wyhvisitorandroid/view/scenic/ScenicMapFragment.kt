@@ -904,7 +904,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         pointData: ServerPointResp,
         latLng: LatLng
     ) {
-//        baiduWalkNav(latLng)
+        baiduWalkNav(latLng)
         if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN) {
             //进入园区则使用园区导航
             requestPermission2(
@@ -945,7 +945,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
      */
     private fun baiduWalkNav(latLng: LatLng) {
         WalkNavUtil.setParam(
-            LatLng(currentLatitude!!, currentLongitude!!),
+//            LatLng(currentLatitude!!, currentLongitude!!),
+            LatLng(40.085884758824925,116.4734195350233),
             latLng,
             this.requireActivity()
         ).startNav()

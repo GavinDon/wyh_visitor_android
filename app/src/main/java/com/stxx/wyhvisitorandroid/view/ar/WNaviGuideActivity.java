@@ -5,6 +5,7 @@ package com.stxx.wyhvisitorandroid.view.ar;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.baidu.mapapi.UIMsg;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MapViewLayoutParams;
@@ -22,12 +24,14 @@ import com.baidu.mapapi.walknavi.adapter.IWNaviStatusListener;
 import com.baidu.mapapi.walknavi.adapter.IWRouteGuidanceListener;
 import com.baidu.mapapi.walknavi.adapter.IWTTSPlayer;
 import com.baidu.mapapi.walknavi.model.RouteGuideKind;
+import com.baidu.mapapi.walknavi.model.WalkNaviDisplayOption;
 import com.baidu.platform.comapi.walknavi.WalkNaviModeSwitchListener;
 import com.baidu.platform.comapi.walknavi.widget.ArCameraView;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
 import com.orhanobut.logger.Logger;
 import com.stxx.wyhvisitorandroid.view.asr.Auth;
+import com.stxx.wyhvisitorandroid.view.navigation.WalkNavigationFragment;
 
 /**
  * @author 53089
@@ -73,14 +77,21 @@ public class WNaviGuideActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            WalkNaviDisplayOption option = new WalkNaviDisplayOption();
+            option.runInFragment(true);
+            Bitmap bitmap = option.getImageToNormal();
+            int layout = option.getBottomSettingLayout();
+            mNaviHelper.setWalkNaviDisplayOption(option);
             View view = mNaviHelper.onCreate(WNaviGuideActivity.this);
-
             if (view != null) {
-                view.getLayoutParams().height = 200;
+                ViewGroup.LayoutParams lp = view.getLayoutParams();
+                lp.height = 1200;
+                view.setLayoutParams(lp);
                 FrameLayout frl = new FrameLayout(this);
-                MapView bdMapView = new MapView(this);
-                frl.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, 300);
-                frl.addView(bdMapView, ViewGroup.LayoutParams.MATCH_PARENT, 700);
+//                MapView bdMapView = new MapView(this);
+                frl.addView(view);
+                view.findViewById(layout).setVisibility(View.GONE);
+//                frl.addView(bdMapView, ViewGroup.LayoutParams.MATCH_PARENT, 700);
                 setContentView(frl);
             }
         } catch (Exception e) {
@@ -100,12 +111,9 @@ public class WNaviGuideActivity extends Activity {
             }
         });
 
-        mNaviHelper.setTTsPlayer(new IWTTSPlayer() {
-            @Override
-            public int playTTSText(final String s, boolean b) {
-                mSpeechSynthesizer.speak(s);
-                return 0;
-            }
+        mNaviHelper.setTTsPlayer((s, b) -> {
+            mSpeechSynthesizer.speak(s);
+            return 0;
         });
 
         boolean startResult = mNaviHelper.startWalkNavi(WNaviGuideActivity.this);

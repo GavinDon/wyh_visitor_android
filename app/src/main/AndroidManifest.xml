@@ -178,7 +178,10 @@
         <activity android:name=".view.splash.DisPlayActivity" />
         <activity android:name=".view.scenic.ArNavActivity" />
         <activity android:name=".view.scenic.ArNavActivity2" />
-
+        <activity
+            android:name=".view.ar.BdNavGuideActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <uses-library
             android:name="org.apache.http.legacy"
