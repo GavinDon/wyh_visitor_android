@@ -8,7 +8,7 @@ import com.baidu.mapapi.walknavi.model.RouteGuideKind
 
 /**
  * description:
- * Created by liNan on  2020/8/23 21:51
+ * Created by liNan on  2020/8/24 10:51
  */
 abstract class SimpleIWRouteGuidanceListener : IWRouteGuidanceListener {
     override fun onRoutePlanYawing(p0: CharSequence?, p1: Drawable?) {
