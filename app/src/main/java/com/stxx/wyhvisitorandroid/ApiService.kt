@@ -133,6 +133,8 @@ object WebViewUrl {
 
     //服务咨询
     const val FWZX = "pages/service/tourist/advisory"
+    const val KEFU =
+        "http://robot.easemob.com/webim/im.html?tenantId=54807&robotId=4d0c23d9-9187-4b62-8956-bdbb92a1b5a7"
 
     //景区天气
     const val WEATHER = "pages/service/weather/weather"
@@ -161,8 +163,10 @@ object WebViewUrl {
 
     //虚拟游园
     const val VR = "http://116.117.157.183:28183/3da/"
+
     //植物百科
     const val PLANT_WIKI_URL = "https://qrcode.wenyuriverpark.com/qrcode/list.html"
+
     //入园预约
     const val ENTER_BOOK_URL = "pages/authentication/authentication"
 }

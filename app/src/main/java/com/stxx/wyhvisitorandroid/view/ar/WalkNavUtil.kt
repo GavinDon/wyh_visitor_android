@@ -2,6 +2,7 @@ package com.stxx.wyhvisitorandroid.view.ar
 
 import android.app.Activity
 import android.content.Intent
+import androidx.core.os.bundleOf
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.walknavi.WalkNavigateHelper
 import com.baidu.mapapi.walknavi.adapter.IWEngineInitListener
@@ -11,6 +12,7 @@ import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.orhanobut.logger.Logger
+import org.jetbrains.anko.startActivity
 
 
 /**
@@ -74,10 +76,7 @@ object WalkNavUtil {
                 }
 
                 override fun onRoutePlanSuccess() {
-                    Logger.i("算路成功")
-                    val intent =
-                        Intent(act, BdNavGuideActivity::class.java)
-                    act.startActivity(intent)
+                    act.startActivity<BdNavGuideActivity>("start" to startParam, "end" to endParam)
                 }
 
                 override fun onRoutePlanFail(p0: WalkRoutePlanError?) {

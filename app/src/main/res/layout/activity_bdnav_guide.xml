@@ -43,6 +43,28 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"
+            android:layout_gravity="start|bottom"
+            android:layout_marginHorizontal="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_38"
+            app:cardCornerRadius="@dimen/dp_16"
+            app:cardElevation="@dimen/dp_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <ImageButton
+                android:id="@+id/ivMoveToCenterLocation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/dp_6"
+                android:src="@mipmap/icon_move_current" />
+        </androidx.cardview.widget.CardView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

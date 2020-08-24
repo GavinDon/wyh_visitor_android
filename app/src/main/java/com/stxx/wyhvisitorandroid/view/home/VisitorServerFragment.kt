@@ -66,7 +66,6 @@ class VisitorServerFragment : BaseFragment() {
                     navigate(WebViewUrl.WZAFW, R.string.visitor_server_wzafu)
                 }
                 3 -> {
-
                     val token = judgeLogin()
                     if (token.isEmpty()) {
                         findNavController().navigate(R.id.login_activity, null, navOption)
@@ -85,30 +84,34 @@ class VisitorServerFragment : BaseFragment() {
                     navigate(WebViewUrl.ZAJB, R.string.visitor_server_zajb)
                 }
                 6 -> {
-                    /*  findNavController().navigate(
-                          R.id.fragment_RobotWebViewFragment, null, navOption
-                      )
-  */
                     navigate(WebViewUrl.FWZX, R.string.visitor_server_khzx)
                 }
-                //7 is title
-                8 -> {
+                7 -> {
+                    findNavController().navigate(
+                        R.id.fragment_webview_primeval, bundleOf(
+                            WEB_VIEW_URL to WebViewUrl.KEFU,
+                            WEB_VIEW_TITLE to "客服"
+                        )
+                    )
+                }
+                //8 is title
+                9 -> {
                     //景区导览
                     navigateMap(ScenicMApPointEnum.MAIN_SCENIC.ordinal)
                 }
-                9 -> {
+                10 -> {
                     //找厕所
                     navigateMap(ScenicMApPointEnum.TOILET.ordinal)
                 }
-                10 -> {
+                11 -> {
                     findNavController().navigate(
                         R.id.fragment_vegetation_wiki, null, navOption
                     )
                 }
-                11 -> {
+                12 -> {
                     navigate(WebViewUrl.WEATHER, R.string.visitor_server_weather)
                 }
-                12 -> {
+                13 -> {
                     findNavController().navigate(
                         R.id.fragment_webview, bundleOf(
                             "url" to WebViewUrl.VR,
@@ -116,17 +119,17 @@ class VisitorServerFragment : BaseFragment() {
                         ), navOption
                     )
                 }
-                13 -> {
+                14 -> {
                     //线路推荐
                     findNavController().navigate(
                         R.id.fragment_line_recommend, null, navOption
                     )
                 }
-                14 -> {
+                15 -> {
                     //小机器人
                     findNavController().navigate(R.id.fragment_asr)
                 }
-                15 -> {
+                16 -> {
                     //步道
                     findNavController().navigate(
                         R.id.fragment_webview_notitle,
@@ -136,19 +139,14 @@ class VisitorServerFragment : BaseFragment() {
                         navOption
                     )
                 }
-
-                17 -> {
+                18 -> {
                     navigate(WebViewUrl.LSCX, R.string.visitor_server_lscx)
                 }
-                18 -> {
+                19 -> {
                     navigate(WebViewUrl.GJCX, R.string.visitor_server_gjcx)
                 }
-                19 -> {
+                20 -> {
                     navigateMap(ScenicMApPointEnum.PARK.ordinal)
-                }
-
-                12, 20 -> {
-                    toast("功能暂未开放")
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.stxx.wyhvisitorandroid.view.helpers
 
 import android.graphics.drawable.Drawable
 import android.os.Message
+import com.baidu.mapapi.search.route.*
 import com.baidu.mapapi.walknavi.adapter.IWRouteGuidanceListener
 import com.baidu.mapapi.walknavi.model.RouteGuideKind
 
@@ -49,4 +50,21 @@ abstract class SimpleIWRouteGuidanceListener : IWRouteGuidanceListener {
     override fun onGpsStatusChange(p0: CharSequence?, p1: Drawable?) {
     }
 
+}
+
+abstract class SimpleOnGetRoutePlanResultListener : OnGetRoutePlanResultListener {
+    override fun onGetIndoorRouteResult(p0: IndoorRouteResult?) {
+    }
+
+    override fun onGetTransitRouteResult(p0: TransitRouteResult?) {
+    }
+
+    override fun onGetDrivingRouteResult(p0: DrivingRouteResult?) {
+    }
+
+    override fun onGetMassTransitRouteResult(p0: MassTransitRouteResult?) {
+    }
+
+    override fun onGetBikingRouteResult(p0: BikingRouteResult?) {
+    }
 }

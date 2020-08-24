@@ -472,7 +472,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             val northEast = LatLng(40.06048593512643, 116.39524272759365)
             val southEast = LatLng(40.071822098761984, 116.46385409389569)
             tileProvider(urlTileProvider)
-            //etPositionFromBounds(LatLngBounds.Builder().include(northEast).include(southEast).build())
+            //setPositionFromBounds(LatLngBounds.Builder().include(northEast).include(southEast).build())
         }
         map.addTileLayer(options)
     }
@@ -776,8 +776,11 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         blContent.layoutParams.width = phoneWidth - dip(80)
 
         val explain = pointData.explain
-        blVoice.visibility =
-            if (!explain.isNullOrEmpty() && !explain.startsWith("http")) View.GONE else View.VISIBLE
+        if (explain.isNullOrEmpty() || !explain.startsWith("http")) {
+            blVoice.visibility = View.GONE
+        } else {
+            blVoice.visibility = View.VISIBLE
+        }
         //设置宽度 设置match 地图会
         val infoWindow = InfoWindow(dialog, latLng, -96)
         mapView.map?.showInfoWindow(infoWindow)
@@ -904,7 +907,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         pointData: ServerPointResp,
         latLng: LatLng
     ) {
-        baiduWalkNav(latLng)
         if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN) {
             //进入园区则使用园区导航
             requestPermission2(
@@ -912,8 +914,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
             ) {
-                customWalkNav(latLng)
-//                baiduWalkNav(latLng)
+//                customWalkNav(latLng)
+                baiduWalkNav(latLng)
             }
         } else {
             //未进入园区
@@ -945,8 +947,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
      */
     private fun baiduWalkNav(latLng: LatLng) {
         WalkNavUtil.setParam(
-//            LatLng(currentLatitude!!, currentLongitude!!),
-            LatLng(40.085884758824925,116.4734195350233),
+            LatLng(currentLatitude!!, currentLongitude!!),
             latLng,
             this.requireActivity()
         ).startNav()

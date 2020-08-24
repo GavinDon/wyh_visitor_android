@@ -1,6 +1,0 @@
-com.dreamdeck.wyhapp
-drawable app_banner
-drawable app_icon
-string app_name
-style UnityThemeSelector
-style UnityThemeSelector_Translucent
