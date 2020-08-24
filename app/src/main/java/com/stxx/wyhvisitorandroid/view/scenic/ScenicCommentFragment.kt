@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.view.scenic
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
@@ -14,6 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.baidu.geofence.GeoFence
+import com.baidu.geofence.GeoFenceClient
+import com.baidu.mapapi.map.MyLocationData
+import com.baidu.mapapi.model.LatLng
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gavindon.mvvm_lib.net.http
@@ -26,14 +30,19 @@ import com.stxx.wyhvisitorandroid.adapter.ScenicCommentAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import com.stxx.wyhvisitorandroid.location.BdLocation2
+import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.CommentViewModel
 import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
 import com.stxx.wyhvisitorandroid.service.PlaySoundService
 import com.stxx.wyhvisitorandroid.transformer.PicassoCircleImage
+import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil
 import com.stxx.wyhvisitorandroid.widgets.ExpandableTextView
 import com.stxx.wyhvisitorandroid.widgets.NineGridView
 import kotlinx.android.synthetic.main.fragment_comment.*
+import kotlinx.android.synthetic.main.fragment_multi_root.*
+import kotlinx.android.synthetic.main.fragment_scenic.*
 
 
 /**
@@ -53,6 +62,8 @@ class ScenicCommentFragment : BaseFragment() {
     //从搜索过来的值
     private val scenicType by lazy { arguments?.getString("type") }
     private var scenicId: Int = -1
+    //该景点的经纬度
+    private val navLatLng by lazy { arguments?.getParcelable("end") as LatLng }
 
 
     override val layoutId: Int = R.layout.fragment_comment
@@ -110,16 +121,7 @@ class ScenicCommentFragment : BaseFragment() {
             }
         }
         commentNav.setOnClickListener {
-            if (detailData?.lngLat.isNullOrEmpty()) {
-                this.context?.showToast("点位正在采集中,暂不能导航")
-            } else {
-                findNavController().navigate(
-                    R.id.fragment_route_plant,
-                    bundleOf(BUNDLE_SCENIC_DETAIL to detailData),
-                    navOption
-                )
-            }
-
+            goWalkNav(navLatLng)
         }
         tvVoiceExplain.setOnClickListener {
             if (!NotificationUtil.hasNotifyEnable()) {
@@ -137,6 +139,7 @@ class ScenicCommentFragment : BaseFragment() {
             }
         }
 
+
     }
 
     private fun loadView() {
@@ -145,7 +148,13 @@ class ScenicCommentFragment : BaseFragment() {
         tvCommentDetailDate.text = detailData?.gmt_create
         tvCommentDetailContent.text = detailData?.introduction
         toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
-//        toolbar.title = detailData?.name
+        //开始定位
+        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
+            BdLocation2.startLocation.bdLocationListener {
+                currentLatitude = it.latitude //获取纬度信息
+                currentLongitude = it.longitude //获取经度信息
+            }
+        }
     }
 
     /**
@@ -211,6 +220,43 @@ class ScenicCommentFragment : BaseFragment() {
             }
         }
     }
+
+    /**
+     * 后台返回
+     */
+    private fun goWalkNav(
+        latLng: LatLng
+    ) {
+        if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN) {
+            //进入园区则使用园区导航
+            requestPermission2(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ) {
+                baiduWalkNav(latLng)
+            }
+        } else {
+            //未进入园区
+            if (this.context != null && currentLongitude != null) {
+                showWakeApp(this.requireContext(), currentLatitude!!, currentLongitude!!)
+            } else {
+                this.context?.showToast("无法获取当前位置,暂不能导航")
+            }
+        }
+    }
+
+    /**
+     * 使用百度步行导航
+     */
+    private fun baiduWalkNav(latLng: LatLng) {
+        WalkNavUtil.setParam(
+            LatLng(currentLatitude!!, currentLongitude!!),
+            latLng,
+            this.requireActivity()
+        ).startNav()
+    }
+
 
     override fun setStatusBar() {
         ImmersionBar.with(this)

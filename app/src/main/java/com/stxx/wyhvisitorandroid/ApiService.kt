@@ -102,8 +102,7 @@ object ApiService {
     //查询当天天气
     const val WEATHER_NOW = "complex/weather/findNew"
     const val WEATHER_FORECAST = "complex/weather/findWeatherForecast"
-    const val REAL_TIME_NUM_TOTAL =
-        "http://223.221.37.181:8889/bigdata/passengerFlow/findNumberOfVisitors"
+    const val REAL_TIME_NUM_TOTAL = "passengerFlow/findNumberOfVisitors"
 
     const val WEATHER_LIFESTYLE = "complex/weather/findNewLifestyle"
 

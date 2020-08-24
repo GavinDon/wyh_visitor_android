@@ -914,7 +914,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
             ) {
-//                customWalkNav(latLng)
+                //                customWalkNav(latLng)
                 baiduWalkNav(latLng)
             }
         } else {
@@ -980,10 +980,17 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
      * marker点击之后跳转景点详情
      */
     private fun loadMarkerScenicDetail(pointData: ServerPointResp) {
+        //上传历史足迹
         findById(pointData.id)
         findNavController().navigate(
             R.id.fragment_scenic_comment,
-            bundleOf(BUNDLE_SCENIC_DETAIL to pointData),
+            bundleOf(
+                BUNDLE_SCENIC_DETAIL to pointData,
+                "end" to convertBaidu(
+                    (pointData.y ?: "0").toDouble(),
+                    ((pointData.x ?: "0").toDouble())
+                )
+            ),
             navOption
         )
     }
