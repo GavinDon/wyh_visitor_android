@@ -179,5 +179,9 @@ dependencies {
     implementation 'cn.jiguang.sdk:jpush:3.6.0'  // 此处以JPush 3.6.0 版本为例。
     implementation 'cn.jiguang.sdk:jcore:2.3.4'  // 此处以JCore 2.3.4 版本为例。
 //    implementation(name: 'artmap', ext: 'aar')
+    //腾讯分享
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.4'
+
+
 
 }

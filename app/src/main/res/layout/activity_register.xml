@@ -23,7 +23,6 @@
             android:id="@+id/ivLogo"
             android:layout_width="@dimen/dp_89"
             android:layout_height="@dimen/dp_89"
-            android:background="@drawable/logo"
             android:src="@mipmap/ic_icon"
             app:layout_constraintCircle="@id/ivRegisterTitle"
             app:layout_constraintCircleAngle="180"

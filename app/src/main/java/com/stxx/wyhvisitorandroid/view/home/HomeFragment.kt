@@ -127,6 +127,8 @@ class HomeFragment : BaseFragment() {
                     enter = R.anim.alpha_enter
                     exit = R.anim.alpha_exit
                 }
+                launchSingleTop = true
+                popUpTo(R.id.fragment_search) { inclusive = true }
             })
         }
         ibScanQr.setOnClickListener {

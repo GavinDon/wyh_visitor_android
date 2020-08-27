@@ -160,6 +160,11 @@ data class RealPeopleNum(
 
 )
 
+data class PM25Resp(
+    val pm25: Int
+)
+
+
 data class NoticeResp(
     val content: String? = null,
     val createBy: Int? = null,

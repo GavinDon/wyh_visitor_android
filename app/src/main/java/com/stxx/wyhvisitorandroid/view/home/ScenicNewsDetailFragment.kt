@@ -1,35 +1,49 @@
 package com.stxx.wyhvisitorandroid.view.home
 
-import android.animation.ObjectAnimator
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.text.Html
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
-import android.util.Base64
-import android.view.MotionEvent
+import android.view.View
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.text.HtmlCompat
 import androidx.transition.TransitionInflater
 import com.gavindon.mvvm_lib.net.http
-import com.gavindon.mvvm_lib.net.parse
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
-import com.gavindon.mvvm_lib.utils.phoneHeight
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.BUNDLE_DETAIL
 import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.base.BaseFragment
+import com.stxx.wyhvisitorandroid.WebViewUrl.SHARE_URL
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.*
+import com.stxx.wyhvisitorandroid.graphics.HtmlTagHandler
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import com.stxx.wyhvisitorandroid.utils.WeChatUtil
 import com.stxx.wyhvisitorandroid.widgets.HtmlUtil
+import com.tencent.mm.opensdk.constants.ConstantsAPI
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
+import com.tencent.mm.opensdk.modelmsg.WXImageObject
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
+import com.tencent.mm.opensdk.openapi.IWXAPI
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import kotlinx.android.synthetic.main.bottom_share.*
+import kotlinx.android.synthetic.main.fragment_notice.*
 import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.toolbar_title.*
-import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.find
+import org.jetbrains.anko.imageBitmap
 
 
 /**
@@ -39,14 +53,11 @@ import org.jetbrains.anko.support.v4.dip
 class ScenicNewsDetailFragment : ToolbarFragment() {
     override val layoutId: Int = R.layout.fragment_scenic_news_detail
 
+
+    private lateinit var broadcastReceiver: BroadcastReceiver
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        frame_layout_title.setBackgroundColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.white
-            )
-        )
+        frame_layout_title.setBackgroundColor(Color.WHITE)
 
         /*热门推荐,新闻资讯, 景区百科*/
         when (val detailData = arguments?.getSerializable(BUNDLE_DETAIL)) {
@@ -84,6 +95,9 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                     detailData.content,
                     detailData.gmt_modfy
                 )
+                tv_menu?.text = "分享"
+                tv_menu?.visibility = View.VISIBLE
+                registerApp()
             }
             is PushMessageResp -> {
                 initView(
@@ -108,6 +122,9 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
             TransitionInflater.from(this.requireContext()).inflateTransition(
                 android.R.transition.move
             )
+        tv_menu?.setOnClickListener {
+            createShareDialog()
+        }
 
     }
 
@@ -133,60 +150,119 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
         tvNewsDetailContent?.movementMethod = LinkMovementMethod.getInstance()
     }
 
+    /**
+     * 路线推荐分享至微信
+     */
+    private fun shareWeChat(scenic: Int) {
+        val req = SendMessageToWX.Req()
+        val bmp = view2Image(ivNewsDetailHead)
+        //分享媒体对象
+        val msg = WXMediaMessage()
 
-    private var isUpScroll = false
-    private var isDownScroll = false
+        val imageObj = WXImageObject(bmp)
+        msg.mediaObject = imageObj
+        val thumbBmp: Bitmap =
+            Bitmap.createScaledBitmap(bmp, 100, 300, true)
+        bmp.recycle()
+        msg.mediaObject = imageObj
 
-/*    private fun initScroll() {
-        var posY = 0f
-        var curY = 0f
-        //未滚动时在Y轴的值
-        val initScrollTop = scrollNews.top
-        scrollNews.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    posY = event.y
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    curY = event.y
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (curY - posY <= 10) {
-                        if (!isUpScroll) {
-                            val animUp =
-                                ObjectAnimator.ofFloat(
-                                    scrollNews,
-                                    "y",
-                                    (scrollNews.top.toFloat()),
-                                    100f
-                                )
-                            animUp.duration = 200
-                            animUp.start()
-                            isUpScroll = true
-                            isDownScroll = false
-                        }
-                    } else {
-                        if (!isDownScroll) {
-                            val animDown =
-                                ObjectAnimator.ofFloat(
-                                    scrollNews,
-                                    "y",
-                                    100f,
-                                    scrollNews.top.toFloat()
-                                )
-                            animDown.duration = 200
-                            animDown.start()
-                            isDownScroll = true
-                            isUpScroll = false
-                        }
-                    }
-                }
+        req.transaction = buildTransaction("img")
+        req.message = msg
+        req.scene = scenic
+
+        api?.sendReq(req)
+
+    }
+
+    private fun shareUrlWeChat(scenic: Int) {
+        val data = arguments?.getSerializable(BUNDLE_DETAIL) as LineRecommendResp
+        //初始化一个WXWebpageObject，填写url
+        val webpage = WXWebpageObject()
+        webpage.webpageUrl = "$SHARE_URL${data.id}"
+
+        val msg = WXMediaMessage(webpage)
+        msg.title = data.title
+        val spanned = HtmlCompat.fromHtml(
+            "${data.content}",
+            HtmlCompat.FROM_HTML_MODE_COMPACT,
+            null,
+            HtmlTagHandler()
+        )
+        msg.description = spanned.toString()
+        val drawable = ivNewsDetailHead.drawable
+        if (drawable != null) {
+            val bmp: Bitmap = drawable.toBitmap(100, 100)
+            msg.thumbData = WeChatUtil.bmpToByteArray(bmp, true)
+        }
+        val req = SendMessageToWX.Req()
+        req.transaction = buildTransaction("webPage")
+        req.message = msg
+        req.scene = scenic
+        api?.sendReq(req)
+    }
+
+    private var api: IWXAPI? = null
+
+    /**
+     * 注册 appId
+     */
+    private fun registerApp() {
+        val appid = "wx697de48974c13c39"
+        api = WXAPIFactory.createWXAPI(this.requireContext(), appid, true)
+        //建议动态监听微信启动广播进行注册到微信
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                // 将该app注册到微信
+                api?.registerApp(appid)
             }
-            return@setOnTouchListener !isUpScroll
+        }
+        this.requireContext()
+            .registerReceiver(broadcastReceiver, IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP))
+    }
 
+    private fun createShareDialog() {
+
+        val view = layoutInflater.inflate(R.layout.bottom_share, null, false)
+        val ivWeChatFriend = view.find<ImageView>(R.id.ivWeChatFriend)
+        val ivWeChatGroup = view.find<ImageView>(R.id.ivWeChatGroup)
+        val ivWeChatCollect = view.find<ImageView>(R.id.ivWeChatCollect)
+
+        val bsd = BottomSheetDialog(this.requireContext())
+        bsd.setContentView(view)
+        if (!bsd.isShowing) bsd.show()
+        ivWeChatFriend.setOnClickListener {
+            shareUrlWeChat(SendMessageToWX.Req.WXSceneSession)
+//            shareWeChat(SendMessageToWX.Req.WXSceneSession)
+        }
+        ivWeChatGroup.setOnClickListener {
+            //分享朋友圈
+            shareUrlWeChat(SendMessageToWX.Req.WXSceneTimeline)
+
+//            shareWeChat(SendMessageToWX.Req.WXSceneTimeline)
+        }
+        ivWeChatCollect.setOnClickListener {
+            shareUrlWeChat(SendMessageToWX.Req.WXSceneFavorite)
+
+//            shareWeChat(SendMessageToWX.Req.WXSceneFavorite)
         }
 
-    }*/
+    }
+
+    private fun buildTransaction(type: String?): String? {
+        return if (type == null) System.currentTimeMillis()
+            .toString() else type + System.currentTimeMillis()
+    }
+
+    private fun view2Image(view: View): Bitmap {
+        val shareBitmap = Bitmap.createBitmap(
+            view.measuredWidth,
+            view.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val c = Canvas(shareBitmap)
+        view.draw(c)
+        return shareBitmap
+    }
 
     override fun setStatusBar() {
         titleBar.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.white))
@@ -198,28 +274,14 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
             .init()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (this::broadcastReceiver.isInitialized) {
+            this.context?.unregisterReceiver(broadcastReceiver)
+        }
+    }
+
 
     override val toolbarName: Int = R.string.detail
-
-    private val imageGetter: Html.ImageGetter = Html.ImageGetter {
-        Logger.i(it)
-        val drawable = decodeImage(it)
-        ImageLoader.with().load(it)
-        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        return@ImageGetter drawable
-    }
-
-    private fun decodeImage(strBase: String): BitmapDrawable? {
-        var drawable: BitmapDrawable? = null
-        try {
-            val encodeArray = Base64.decode(strBase, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(encodeArray, 0, encodeArray.size)
-            drawable = BitmapDrawable(resources, bitmap)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return drawable
-    }
-
 
 }

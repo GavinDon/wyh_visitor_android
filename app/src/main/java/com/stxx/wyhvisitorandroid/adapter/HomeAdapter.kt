@@ -137,6 +137,7 @@ class BannerAdapter(
                         if (data is List<*>) {
                             if (!data.isNullOrEmpty())
                                 when {
+                                    //获取数据列表的第一个数据类型进行判断
                                     data[0] is BannerResp -> {
                                         //设置banner 数据
 //                                        bannerView.setData(data, null)
@@ -167,9 +168,11 @@ class BannerAdapter(
                                         hum.text = "${data.hum}%"
                                     }
                                 }
-                                is RealPeopleNum -> {
+                                is PM25Resp -> {
                                     //入园人数
-                                    nowPeople.text = data.real_time_num_total.toString()
+//                                    nowPeople.text = data.real_time_num_total.toString()
+                                    nowPeople.text = data.pm25.toString()
+
                                 }
                             }
                         }

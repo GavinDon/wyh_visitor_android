@@ -530,8 +530,17 @@
 -keep class org.fmod.*{*;}
 -keep public class * extends com.unity3d.player.**
 -keep public class * extends org.fmod.**
+-keep class com.tencent.mm.opensdk.** {
+    *;
+}
 
--libraryjars D:\work\android\workspace\wyh_visitor_android\WYH20.03.30\libs\unity-classes.jar
+-keep class com.tencent.wxop.** {
+    *;
+}
+
+-keep class com.tencent.mm.sdk.** {
+    *;
+}
 
 
 

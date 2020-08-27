@@ -20,13 +20,13 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.gyf.immersionbar.ImmersionBar
-import com.stxx.wyhvisitorandroid.HISTORY_SEARCH_SP
-import com.stxx.wyhvisitorandroid.R
+import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.HistoryAdapter
 import com.stxx.wyhvisitorandroid.adapter.SearchAdapter
-import com.stxx.wyhvisitorandroid.alphaNavOption
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.bean.SearchAllScenicResp
+import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.mplusvm.SearchVm
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.concurrent.thread
@@ -43,13 +43,16 @@ class SearchFragment : BaseFragment() {
 
     //展示搜索历史列表
     private val historyAdapter by lazy { HistoryAdapter(R.layout.adapter_search_history, null) }
+
     //展示查询到的结果列表
     private val searchResultAdapter by lazy { SearchAdapter(R.layout.adapter_search_result, null) }
 
     //查询所有景点并且把景点名称转换成拼音集合
     private var searchResultLst: List<SearchAllScenicResp>? = null
+
     //匹配到结果列表
     private var searchMatchResultLst = mutableListOf<SearchAllScenicResp>()
+
     //搜索历史纪录
     private var searchHistoryLst: MutableList<Triple<Int, String, String>>? = null
 
@@ -117,7 +120,8 @@ class SearchFragment : BaseFragment() {
                     val str = SpUtils.list2String(searchHistoryLst)
                     SpUtils.put(HISTORY_SEARCH_SP, str)
                 }
-                navDetail(data.id, data.type)
+                Logger.i("type==${data.type}")
+                navDetail(data.id, data.type, data.name)
             }
         }
         //删除按钮
@@ -132,7 +136,7 @@ class SearchFragment : BaseFragment() {
         historyAdapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.AlphaIn)
         historyAdapter.setOnItemClickListener { adapter, _, position ->
             val data = adapter.data[position] as Triple<Int, String, String>
-            navDetail(data.first, data.second)
+            navDetail(data.first, data.second, data.third)
             //把点击的item放到第一个位置
             searchHistoryLst?.remove(data)
             searchHistoryLst?.add(0, data)
@@ -161,13 +165,32 @@ class SearchFragment : BaseFragment() {
     /**
      * 跳转到详情
      */
-    private fun navDetail(id: Int, type: String) {
-        findNavController().navigate(
-            R.id.fragment_scenic_comment,
-            //@see ScenicCommentFragment
-            bundleOf("id" to id, "type" to type),
-            alphaNavOption
-        )
+    private fun navDetail(id: Int, type: String, name: String) {
+        when (type) {
+            "5" -> {
+                //停车场
+                findNavController().navigate(
+                    R.id.fragment_scenic,
+                    bundleOf(BUNDLE_IS_ROBOT to true, BUNDLE_SELECT_TAB to 6, "name" to name)
+                )
+
+            }
+            "7" -> {
+                //厕所
+                findNavController().navigate(
+                    R.id.fragment_scenic,
+                    bundleOf(BUNDLE_IS_ROBOT to true, BUNDLE_SELECT_TAB to 5, "name" to name)
+                )
+            }
+            else -> {
+                findNavController().navigate(
+                    R.id.fragment_scenic_comment,
+                    //@see ScenicCommentFragment
+                    bundleOf("id" to id, "type" to type),
+                    alphaNavOption
+                )
+            }
+        }
     }
 
 
@@ -199,7 +222,10 @@ class SearchFragment : BaseFragment() {
                 for (i in searchResultLst!!) {
                     val name = i.name
                     val pyName = i.letterName
-                    if (name.indexOf(fillStr.trim()) != -1 || pyName?.indexOf(fillStr.trim().toUpperCase()) != -1) {
+                    if (name.indexOf(fillStr.trim()) != -1 || pyName?.indexOf(
+                            fillStr.trim().toUpperCase()
+                        ) != -1
+                    ) {
                         searchMatchResultLst.add(i)
                     }
                 }

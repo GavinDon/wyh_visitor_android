@@ -3,6 +3,8 @@ package com.stxx.wyhvisitorandroid.view.ar
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.content.res.AssetManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
@@ -32,6 +34,8 @@ import com.stxx.wyhvisitorandroid.view.asr.Auth
 import com.stxx.wyhvisitorandroid.view.helpers.SimpleIWRouteGuidanceListener
 import com.stxx.wyhvisitorandroid.view.helpers.SimpleOnGetRoutePlanResultListener
 import com.stxx.wyhvisitorandroid.view.overlayutil.WalkingRouteOverlay
+import java.io.InputStream
+import java.nio.ByteBuffer
 
 
 /**
@@ -101,28 +105,29 @@ class BdNavGuideActivity : Activity() {
         val map = baiduMapView?.map
 
         val builder = MapStatus.Builder()
-        builder.zoom(15f)
+        builder.zoom(16f)
         builder.target(SCENIC_CENTER_LATLNG)
         val mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(builder.build())
         map?.setMapStatus(mMapStatusUpdate)
         map?.apply {
             setOnMapLoadedCallback(onMapLoadListener)
-            setMaxAndMinZoomLevel(18f, 14f)
+            setMaxAndMinZoomLevel(19f, 15f)
         }
         val urlTileProvider = object : UrlTileProvider() {
-            override fun getMinDisLevel(): Int = 14
-            override fun getMaxDisLevel(): Int = 18
+            override fun getMinDisLevel(): Int = 15
+            override fun getMaxDisLevel(): Int = 19
             override fun getTileUrl(): String {
-                return "https://tourist.wenyuriverpark.com/mapTiles/{z}/tile{x}_{y}.png"
+                return "http://223.70.181.106:8082/mapTiles/{z}/tile{x}_{y}.png"
             }
         }
+
         val options = TileOverlayOptions().apply {
             val northEast = LatLng(40.06048593512643, 116.39524272759365)
             val southEast = LatLng(40.071822098761984, 116.46385409389569)
             tileProvider(urlTileProvider)
-            setPositionFromBounds(
-                LatLngBounds.Builder().include(northEast).include(southEast).build()
-            )
+//            setPositionFromBounds(
+//                LatLngBounds.Builder().include(northEast).include(southEast).build()
+//            )
         }
         map?.addTileLayer(options)
         btnLocation?.setOnClickListener {
@@ -198,6 +203,9 @@ class BdNavGuideActivity : Activity() {
         super.onDestroy()
         walkNavigateHelper.quit()
         search.destroy()
+        mSpeechSynthesizer?.pause()
+        mSpeechSynthesizer?.stop()
+        mSpeechSynthesizer?.release()
 
     }
 
@@ -227,7 +235,7 @@ class BdNavGuideActivity : Activity() {
     private fun navStateListener() {
         walkNavigateHelper.setWalkNaviStatusListener(object : IWNaviStatusListener {
             override fun onWalkNaviModeChange(mode: Int, p1: WalkNaviModeSwitchListener?) {
-                walkNavigateHelper.switchWalkNaviMode(this@BdNavGuideActivity, mode, p1)
+                walkNavigateHelper.switchWalkNaviMode(this@BdNavGuideActivity, 1, p1)
             }
 
             override fun onNaviExit() {

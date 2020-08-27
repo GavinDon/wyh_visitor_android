@@ -45,7 +45,7 @@ class ScenicMapServerPointAdapter(layoutResId: Int, data: MutableList<ServerPoin
                 Glide.with(context)
                     .load(item.imgurl)
                     .centerCrop()
-                    .placeholder(R.color.color999)
+                    .placeholder(R.mipmap.park)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.getView(R.id.adaIvServerPoint))
             }
@@ -85,9 +85,9 @@ class ScenicMapServerPointAdapter(layoutResId: Int, data: MutableList<ServerPoin
                 }
 
                 Glide.with(context)
-                    .load(R.mipmap.restroom)
+                    .load(item.imgurl)
                     .centerCrop()
-                    .placeholder(R.color.color999)
+                    .placeholder(R.mipmap.restroom)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.getView(R.id.adaIvServerPoint))
             }

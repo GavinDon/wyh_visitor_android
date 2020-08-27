@@ -2,17 +2,17 @@ package com.stxx.wyhvisitorandroid.view.splash
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.os.Bundle
 import android.view.Gravity
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.findNavController
-import androidx.navigation.navOptions
+import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI
+import com.baidu.geofence.GeoFenceClient
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneHeight
 import com.gavindon.mvvm_lib.utils.phoneWidth
@@ -21,9 +21,11 @@ import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
+import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.location.BdLocation
 import com.stxx.wyhvisitorandroid.location.BdLocation2
+import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
 import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment
@@ -32,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_multi_root.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
+import java.lang.Exception
 
 /**
  * description: 多fragment根activity
@@ -50,6 +53,16 @@ class MultiFragments : BaseActivity() {
     private val getFragments
         get() = listOf(homeFragment1, homeFragment2, homeFragment3)
 
+
+    private val mGeoFenceClient = GeoFenceClient(MVVMBaseApplication.appContext)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //创建围栏广播
+        val filter = IntentFilter()
+        filter.addAction(GeoBroadCast.fenceaction)
+        this.registerReceiver(GeoBroadCast, filter)
+    }
 
     override fun onInit(savedInstanceState: Bundle?) {
 //        val type = SDKInitializer.getCoordType()
@@ -94,6 +107,15 @@ class MultiFragments : BaseActivity() {
             .build()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mGeoFenceClient.removeGeoFence()
+        try {
+            this.unregisterReceiver(GeoBroadCast)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     private fun requestPermission() {
         requestPermission(
@@ -102,20 +124,32 @@ class MultiFragments : BaseActivity() {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.ACCESS_FINE_LOCATION,
             android.Manifest.permission.CAMERA
-        ) {}
+        ) {
+//            mGeoFenceClient.removeGeoFence()
+        }
+        mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
+        //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
+        mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
+        mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
+
     }
 
     private fun start() {
         //如果已经打开了机器人页面点击事件不被触发。
         val label = navController.currentDestination?.label.toString()
         if (label != "asrFragment") {
-            val navBuilder = NavOptionsBuilder()
-            navBuilder.launchSingleTop = true
-            navBuilder.popUpTo(R.id.fragment_asr) { inclusive = true }
             navController.navigate(
                 R.id.fragment_asr,
                 null,
-                navOptions { popUpTo(R.id.fragment_asr) { inclusive = true } })
+                navOptions {
+                    anim {
+                        enter = R.anim.alpha_enter
+                        exit = R.anim.alpha_exit
+                    }
+                    launchSingleTop = true
+                    popUpTo(R.id.fragment_asr) { inclusive = true }
+                })
         }
 
     }

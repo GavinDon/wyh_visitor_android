@@ -103,7 +103,7 @@ object ApiService {
     const val WEATHER_NOW = "complex/weather/findNew"
     const val WEATHER_FORECAST = "complex/weather/findWeatherForecast"
     const val REAL_TIME_NUM_TOTAL = "passengerFlow/findNumberOfVisitors"
-
+    const val PM25 = "complex/weather/findPM25"
     const val WEATHER_LIFESTYLE = "complex/weather/findNewLifestyle"
 
     //通知公告
@@ -117,6 +117,8 @@ object ApiService {
 object WebViewUrl {
     const val WEB_BASE = "https://tourist.wenyuriverpark.com/h5/#/"
 //    const val WEB_BASE = "https://tourist.wenyuriverpark.com/app"
+
+    const val SHARE_URL = "${WEB_BASE}pages/road/details/details?id="
 
     //医疗求助
     const val MEDICAL = "pages/service/tourist/hospital?device=1"
@@ -158,10 +160,10 @@ object WebViewUrl {
 
     //全景游园
 //    const val AR_720 = "http://manage.wenyuriverpark.com:8082/web/index720.html"
-    const val AR_720 = "http://116.117.157.183:28183/vr/index.html#node_"
+    const val AR_720 = "http://map.wenyuriverpark.com:8084/vr/index.html#node_"
 
     //虚拟游园
-    const val VR = "http://116.117.157.183:28183/3da/"
+    const val VR = "http://map.wenyuriverpark.com:8084/3da"
 
     //植物百科
     const val PLANT_WIKI_URL = "https://qrcode.wenyuriverpark.com/qrcode/list.html"

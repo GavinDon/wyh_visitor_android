@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.view.more
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -116,7 +117,7 @@ class LineRecommendFragment : ToolbarFragment() {
                 R.color.white
             )
         )
-        titleBar.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+        titleBar.setBackgroundColor(Color.WHITE)
         titleBar.layoutParams.height = getStatusBarHeight(this.requireContext())
         ImmersionBar.with(this)
             .fitsSystemWindows(false)

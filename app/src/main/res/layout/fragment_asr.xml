@@ -85,7 +85,7 @@
             app:layout_constraintBottom_toTopOf="@id/speakView"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvAsrResult"
+            app:layout_constraintTop_toBottomOf="@id/cslTip"
             app:layout_constraintVertical_bias="0.1" />
 
 

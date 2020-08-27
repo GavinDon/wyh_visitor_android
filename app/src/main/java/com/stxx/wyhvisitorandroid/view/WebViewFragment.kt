@@ -19,10 +19,16 @@ import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
+import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.fragment_webview.*
+import kotlinx.android.synthetic.main.fragment_webview.app_tv_Title
+import kotlinx.android.synthetic.main.fragment_webview.frame_layout_title
 import kotlinx.android.synthetic.main.fragment_webview.progressBar
+import kotlinx.android.synthetic.main.fragment_webview.titleBar
+import kotlinx.android.synthetic.main.fragment_webview.toolbar_back
 import kotlinx.android.synthetic.main.fragment_webview.x5WebView
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 
@@ -40,6 +46,7 @@ class WebViewFragment : BaseFragment() {
         super.onInit(savedInstanceState)
         x5WebView.addJavascriptInterface(JavaInterfaceClose(), "android")
         x5WebView.webChromeClient = webChromeClient
+//        x5WebView.webViewClient = webViewClient
         val url = arguments?.getString(WEB_VIEW_URL)
         if (url?.startsWith("http") == true) {
             x5WebView.loadUrl(url)
@@ -53,9 +60,9 @@ class WebViewFragment : BaseFragment() {
         } else {
             getString(arguments?.getInt(WEB_VIEW_TITLE) ?: R.string.app_name)
         }
-        app_tv_Title.text = strTitle
+        app_tv_Title?.text = strTitle
 
-        toolbar_back.setOnClickListener {
+        toolbar_back?.setOnClickListener {
             if (x5WebView?.canGoBack() == true) {
                 x5WebView?.goBack()
             } else {
@@ -71,6 +78,15 @@ class WebViewFragment : BaseFragment() {
         }
     }
 
+    private val webViewClient = object : WebViewClient() {
+        override fun onPageFinished(view: WebView?, p1: String?) {
+            super.onPageFinished(view, p1)
+            val title = view?.title ?: "详情"
+            app_tv_Title?.text = title
+            app_tv_Title?.isFocusable = true
+
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -80,11 +96,6 @@ class WebViewFragment : BaseFragment() {
             x5WebView.removeAllViews()
             x5WebView.destroy()
         }
-        /*     if (SpUtils.get(BUNDLE_IS_ROBOT, true)) {
-                 (this.activity as MultiFragments).dragView?.dragView?.visibility = View.VISIBLE
-             } else {
-                 (this.activity as MultiFragments).dragView?.dragView?.visibility = View.GONE
-             }*/
     }
 
     /**
@@ -95,12 +106,7 @@ class WebViewFragment : BaseFragment() {
         // 设置状态栏为透明。并不使用fitSystem 动态设置view高度侵占状态栏(使状态栏和contentView 为一体)
         //使用此方式设置状态栏
         if (context != null) {
-            titleBar.setBackgroundColor(
-                ContextCompat.getColor(
-                    this.requireContext(),
-                    R.color.white
-                )
-            )
+            titleBar.setBackgroundColor(Color.WHITE)
             frame_layout_title.setBackgroundColor(Color.WHITE)
             titleBar.layoutParams.height = getStatusBarHeight(this.context)
             ImmersionBar.with(this)

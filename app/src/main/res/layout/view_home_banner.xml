@@ -30,7 +30,7 @@
             android:layout_marginStart="@dimen/dp_28"
             android:layout_marginTop="@dimen/dp_16"
             android:gravity="center"
-            android:text="中国·北京温榆河"
+            android:text="中国·北京温榆河公园"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_12"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:shadowColor="@color/dividerColor"
                     android:shadowRadius="1"
-                    android:text="当前游园人数"
+                    android:text="PM2.5"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12" />
 

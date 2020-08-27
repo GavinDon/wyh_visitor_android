@@ -52,7 +52,7 @@
     <!--游客服务主页str-->
     <string name="visitor_server_khjy">客户建议</string>
     <string name="visitor_server_tsjb">投诉举报</string>
-    <string name="visitor_server_tsjy">投诉建议</string>
+    <string name="visitor_server_tsjy">意见反馈</string>
     <string name="visitor_server_yljz">医疗救助</string>
     <string name="visitor_server_ryzs">人员走失</string>
     <string name="visitor_server_xwqs">寻物启事</string>

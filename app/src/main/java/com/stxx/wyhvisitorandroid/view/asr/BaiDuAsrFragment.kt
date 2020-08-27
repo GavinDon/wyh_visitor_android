@@ -50,6 +50,7 @@ class BaiDuAsrFragment : BaseFragment() {
 
     private lateinit var vm: BaiDuAsr
     private lateinit var mBotChatAdapter: BDBotChatAdapter
+
     //对话记录
     private val chatList = mutableListOf<DelegateMultiEntity>()
 
@@ -93,6 +94,10 @@ class BaiDuAsrFragment : BaseFragment() {
                 token = it.access_token
             })
         }
+//        if (!chatList.isNullOrEmpty()) {
+//            cslTip?.visibility = View.VISIBLE
+//            tvAsrResult?.visibility = View.VISIBLE
+//        }
         mBotChatAdapter = BDBotChatAdapter(chatList)
         rvBot.adapter = mBotChatAdapter
 

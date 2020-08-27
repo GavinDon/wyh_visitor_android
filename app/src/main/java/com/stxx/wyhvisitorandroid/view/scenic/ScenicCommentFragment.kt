@@ -54,16 +54,20 @@ class ScenicCommentFragment : BaseFragment() {
 
 
     private lateinit var mViewModel: CommentViewModel
+
     //获取从景点页面传过来的值
     private var detailData: ServerPointResp? = null
+
     //当前经纬度
     private var currentLatitude: Double? = null
     private var currentLongitude: Double? = null
+
     //从搜索过来的值
     private val scenicType by lazy { arguments?.getString("type") }
     private var scenicId: Int = -1
+
     //该景点的经纬度
-    private val navLatLng by lazy { arguments?.getParcelable("end") as LatLng }
+    private var navLatLng: LatLng? = null
 
 
     override val layoutId: Int = R.layout.fragment_comment
@@ -90,6 +94,7 @@ class ScenicCommentFragment : BaseFragment() {
             loadView()
             loadCommentData()
             loadMoreCommentData()
+            navLatLng = arguments?.getParcelable("end")
         } else if (!scenicType.isNullOrEmpty()) {
             //从搜索界面过来 需要获取景点id查找详情
             scenicId = arguments?.getInt("id") ?: -1
@@ -121,7 +126,7 @@ class ScenicCommentFragment : BaseFragment() {
             }
         }
         commentNav.setOnClickListener {
-            goWalkNav(navLatLng)
+            goWalkNav(navLatLng ?: LatLng(Double.MIN_VALUE, Double.MIN_VALUE))
         }
         tvVoiceExplain.setOnClickListener {
             if (!NotificationUtil.hasNotifyEnable()) {
@@ -169,6 +174,11 @@ class ScenicCommentFragment : BaseFragment() {
                     loadView()
                     loadCommentData()
                     loadMoreCommentData()
+                    navLatLng =
+                        convertBaidu(
+                            (detailData?.y ?: "0").toDouble(),
+                            (detailData?.x ?: "0").toDouble()
+                        )
                 }, {
                     this.context?.showToast("暂无数据")
                 })
@@ -178,6 +188,7 @@ class ScenicCommentFragment : BaseFragment() {
     //加载第几页
     private var pageNum: Int = 1
     private var dataCount: Int = 0
+
     @SuppressLint("SetTextI18n")
     private fun loadCommentData() {
 
@@ -224,9 +235,8 @@ class ScenicCommentFragment : BaseFragment() {
     /**
      * 后台返回
      */
-    private fun goWalkNav(
-        latLng: LatLng
-    ) {
+    private fun goWalkNav(latLng: LatLng) {
+
         if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN) {
             //进入园区则使用园区导航
             requestPermission2(

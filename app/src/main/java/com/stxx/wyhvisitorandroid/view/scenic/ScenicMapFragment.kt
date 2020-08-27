@@ -25,16 +25,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.baidu.geofence.GeoFence
 import com.baidu.geofence.GeoFenceClient
-import com.baidu.location.BDAbstractLocationListener
-import com.baidu.location.BDLocation
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.model.LatLngBounds
-import com.baidu.mapapi.utils.CoordinateConverter
-import com.baidu.mapapi.walknavi.WalkNavigateHelper
-import com.baidu.mapapi.walknavi.adapter.IWEngineInitListener
 import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
-import com.baidu.mapapi.walknavi.params.WalkRouteNodeInfo
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.net.http
@@ -53,7 +47,6 @@ import com.stxx.wyhvisitorandroid.adapter.ScenicMapServerPointAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
-import com.stxx.wyhvisitorandroid.location.BdLocation
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
@@ -97,8 +90,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     //第一次加载进来默认隐藏bottomSheet,再次选中tab时需要显示bottomSheet
     private var isFirstLoad = true
 
-    private var tileUrl = "http://223.221.37.181:8082/tiles/"
-
     private var bottomSheetBehavior: BottomSheetBehavior3<NestedScrollView>? = null
     private var mapLoaded = false
 
@@ -110,7 +101,11 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     private var lastType = -10
     private val mGeoFenceClient = GeoFenceClient(MVVMBaseApplication.appContext)
 
-//    private val geoBroadCast by lazy { GeoBroadCast() }
+    //搜索过来的厕所名称/停车场名称 用来弹出infoWindow
+    private val searchName by lazy { arguments?.get("name") }
+
+    //是否保存地图状态
+    private var isRememberMapState = false
 
     private val serverPointAdapter: ScenicMapServerPointAdapter by lazy {
         ScenicMapServerPointAdapter(R.layout.adapter_server_point, null)
@@ -128,7 +123,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         super.onInit(savedInstanceState)
         lifecycle.addObserver(mViewModel)
         val saveState = savedInstanceState?.getInt(BUNDLE_SELECT_TAB)
-        //是否从机器人页面跳转过来
+        //从搜索或者机器人问答跳转过来
         val isRobot = arguments?.getBoolean(BUNDLE_IS_ROBOT) ?: false
         if (isRobot) {
             defaultSelectTab = arguments?.getInt(BUNDLE_SELECT_TAB, 0) ?: 0
@@ -169,14 +164,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         //点击服务点列表
         serverPointAdapter.setOnItemClickListener { adapter, _, position ->
             val data = adapter.data[position] as ServerPointResp
-            val latLng = LatLng(
-                data.y?.toDouble() ?: 0.toDouble(),
-                data.x?.toDouble() ?: 0.toDouble()
-            )
-            val convertLatLng = CoordinateConverter()
-                .from(CoordinateConverter.CoordType.GPS)
-                .coord(latLng)
-                .convert()
+            val convertLatLng =
+                convertBaidu(data.y?.toDouble() ?: 0.toDouble(), data.x?.toDouble() ?: 0.toDouble())
             //显示infoWindow
             showInfoWindow(convertLatLng, data)
             //点击服务点时称动到地图中心并隐藏bottomSheet
@@ -189,6 +178,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         }
 
         ibMessage.setOnClickListener {
+            isRememberMapState = true
             it.findNavController().navigate(R.id.fragment_push_message, null, navOption)
         }
         ibScanQr.setOnClickListener {
@@ -197,6 +187,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 SCAN_CODE,
                 HmsScanAnalyzerOptions.Creator().create()
             )
+            isRememberMapState = true
+
         }
         //搜索
         llSearchDestination.setOnClickListener {
@@ -205,6 +197,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     enter = R.anim.alpha_enter
                     exit = R.anim.alpha_exit
                 }
+                launchSingleTop = true
+                popUpTo(R.id.fragment_search) { inclusive = true }
             })
         }
         initMap()
@@ -212,102 +206,9 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         initLocation2()
         //每次都需要重新创建否则从返回到该页面时添加的callback无效
         bottomSheetBehavior = BottomSheetBehavior3.from(scrollBottom)
+
     }
 
-    /**
-     * @param lngLat 导航途经点以及起终点经纬度
-     * @param navMode 0 普通导航 1 AR导航
-     * 加载百度导航引擎
-     */
-    private fun initEngine(lngLat: List<String>, navMode: Int = 0) {
-
-        //如果没有线路点位不进行导航跳转
-        if (lngLat.isNullOrEmpty()) {
-            this.context?.showToast("点位正在采集中,暂不能导航")
-            return
-        }
-        val context = this.activity
-        if (context != null) {
-            WalkNavigateHelper.getInstance().initNaviEngine(
-                context,
-                object : IWEngineInitListener {
-                    override fun engineInitSuccess() {
-                        initHelper(lngLat, navMode)
-                    }
-
-                    override fun engineInitFail() {
-                        toast("初始化引擎失败")
-                        WalkNavigateHelper.getInstance().unInitNaviEngine()
-                    }
-                })
-        }
-    }
-
-    /**
-     *
-     * 算路以及算路的参数处理
-     * 算路完成进行导航
-     */
-    private fun initHelper(lngLat: List<String>, navMode: Int) {
-        val points = mutableListOf<WalkRouteNodeInfo>()
-        walkNaviLaunchParam = WalkNaviLaunchParam()
-
-        try {
-            for (i in lngLat) {
-                val ll = i.split(",")
-                val walkInfo = WalkRouteNodeInfo()
-                if (ll.size == 2) {
-                    walkInfo.location = LatLng(ll[0].toDouble(), ll[1].toDouble())
-                    points.add(walkInfo)
-                }
-
-            }
-            this.findNavController().navigate(
-                R.id.fragment_route_plant,
-                bundleOf(
-                    "start" to points[0].location,
-                    "end" to points[lngLat.size - 1].location
-                )
-            )
-            walkNaviLaunchParam.apply {
-                startNodeInfo(points[0])
-                endNodeInfo(points[points.size - 1])
-                viaNodes = points.toList()
-                extraNaviMode(navMode)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
-        /*       *//*算路成功之后跳转到导航页面*//*
-        WalkNavigateHelper.getInstance()
-            .routePlanWithRouteNode(walkNaviLaunchParam, object : IWRoutePlanListener {
-                override fun onRoutePlanStart() {
-                }
-
-                override fun onRoutePlanSuccess() {
-                    val intent = Intent(
-                        this@ScenicMapFragment.requireActivity(),
-                        WNaviGuideActivity::class.java
-                    )
-                    startActivity(intent)
-                }
-
-                override fun onRoutePlanFail(p0: WalkRoutePlanError?) {
-                }
-            })
-
-        WalkNavigateHelper.getInstance().setWalkNaviStatusListener(object : IWNaviStatusListener {
-            override fun onWalkNaviModeChange(p0: Int, p1: WalkNaviModeSwitchListener?) {
-                WalkNavigateHelper.getInstance()
-                    .switchWalkNaviMode(this@ScenicMapFragment.requireActivity(), p0, p1)
-            }
-
-            override fun onNaviExit() {
-            }
-        })*/
-    }
 
     override fun setStatusBar() {
         titleBar?.layoutParams?.height = getStatusBarHeight(requireContext())
@@ -340,50 +241,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         }
     }
 
-    private fun initLocation() {
-        val locationListener = object : BDAbstractLocationListener() {
-            override fun onReceiveLocation(location: BDLocation) {
-                if (location.locType != BDLocation.TypeServerError &&
-                    location.locType != BDLocation.TypeOffLineLocationFail &&
-                    location.locType != BDLocation.TypeCriteriaException
-                ) {
-                    //先移除围栏再添加围栏可使再次调用广播进行回调位置信息
-                    mGeoFenceClient.removeGeoFence()
-                    mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
-                    //防止定位回调时 View已经注销
-                    val map = mapView?.map
-                    currentLatitude = location.latitude //获取纬度信息
-                    currentLongitude = location.longitude //获取经度信息
-                    //设置显示在地图上的定位数据
-                    val locationData = MyLocationData.Builder()
-                        .direction(location.direction)
-                        .accuracy(location.radius)
-                        .latitude(location.latitude)
-                        .longitude(location.longitude)
-                        .build()
-                    map?.setMyLocationData(locationData)
-                }
-            }
-        }
-        //开始定位
-        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
-            val location = BdLocation(locationListener)
-            lifecycle.addObserver(location)
-            mapView.map?.isMyLocationEnabled = true
-            location.startLocation()
-        }
-        //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
-        mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
-        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
-        /*//当监测到用户已经离开园区时定位到瓦片图中心。
-        geoBroadCast.setOnReceiveLocation {
-            if (geoBroadCast.status == GeoFence.INIT_STATUS_OUT || geoBroadCast.status == GeoFence.STATUS_OUT) {
-                fixedLocation2Center()
-            }
-        }*/
-        showLocationInMap()
-    }
-
     private fun initLocation2() {
         //开始定位
         requestPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
@@ -408,6 +265,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         }
         //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
         mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
+        mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
         mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
         showLocationInMap()
     }
@@ -430,7 +288,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         mapView.showZoomControls(false)
         val map = mapView.map
         map.setOnMapLoadedCallback(this)
-        map.setMaxAndMinZoomLevel(18f, 14f)
+        map.setMaxAndMinZoomLevel(19f, 15f)
         val builder = MapStatus.Builder()
         builder.zoom(SaveMapObj.mapZoom)
         builder.target(SaveMapObj.target)
@@ -446,25 +304,12 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 Log.i("customLocation", "${p0?.position?.latitude}==${p0?.position?.longitude}")
             }
         })
-        val tilePair = object : FileTileProvider() {
-            override fun getMinDisLevel(): Int = 14
-
-            override fun getMaxDisLevel(): Int = 18
-
-            override fun getTile(x: Int, y: Int, z: Int): Tile? {
-                val fileDir = "tiles/${z}/tile${x}_${y}.png"
-                val bm = getFromAssets(fileDir) ?: return null
-                val tile = Tile(bm.width, bm.height, toRawData(bm))
-                bm.recycle()
-                return tile
-            }
-        }
 
         val urlTileProvider = object : UrlTileProvider() {
-            override fun getMinDisLevel(): Int = 14
-            override fun getMaxDisLevel(): Int = 18
+            override fun getMinDisLevel(): Int = 15
+            override fun getMaxDisLevel(): Int = 19
             override fun getTileUrl(): String {
-                return "https://tourist.wenyuriverpark.com/mapTiles/{z}/tile{x}_{y}.png"
+                return "http://223.70.181.106:8082/mapTiles/{z}/tile{x}_{y}.png"
             }
         }
 
@@ -549,11 +394,19 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     handlerResponseData(it, { resp ->
                         serverPointAdapter.setList(resp.data.toMutableList())
                         createMarket(resp.data)
+
                     }, {
                         this.context?.showToast("暂无数据")
                     })
                 })
         }
+        //恢复地图状态
+        fixedLocation2Center()
+        val builder = MapStatus.Builder()
+        builder.zoom(SaveMapObj.mapZoom)
+        builder.target(SaveMapObj.target)
+        val mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(builder.build())
+        mapView.map?.setMapStatus(mMapStatusUpdate)
         //保存当前请求的type
         lastType = type
     }
@@ -646,11 +499,12 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
      * 创建景点的marker
      */
     private fun createMarket(data: List<ServerPointResp>) {
-
         var bitmap: BitmapDescriptor? = getMarkerBitmap(data[0])
         val xy = data.map { Pair(it.x, it.y) }
         //所有的marker点位
         val markerOptions = mutableListOf<OverlayOptions>()
+        //infoWindow数据的index
+        var searchInfoIndex = -1
         for (item in xy.indices) {
             //经度
             val lng = xy[item].first?.toDouble() ?: 0.toDouble()
@@ -658,6 +512,10 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             val lat = xy[item].second?.toDouble() ?: 0.toDouble()
             if (lastSelectTab == ScenicMApPointEnum.TOILET.ordinal || lastSelectTab == ScenicMApPointEnum.PARK.ordinal) {
                 bitmap = getMarkerBitmap(data[item])
+                //如果是厕所/停车场 在地图上显示infoWindow不去评论页面
+                if (searchName == data[item].name) {
+                    searchInfoIndex = item
+                }
             }
             val options = with(MarkerOptions()) {
                 position(convertBaidu(lat, lng))
@@ -685,6 +543,17 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             }
             return@setOnMarkerClickListener true
         }
+        //如果是厕所/停车场 在地图上显示infoWindow不去评论页面
+        if (searchInfoIndex != -1) {
+            showInfoWindow(
+                convertBaidu(
+                    (data[searchInfoIndex].y ?: "0").toDouble(),
+                    (data[searchInfoIndex].x ?: "0").toDouble()
+                ), data[searchInfoIndex]
+            )
+        }
+
+
     }
 
     /**
@@ -786,6 +655,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         mapView.map?.showInfoWindow(infoWindow)
 
         dialog.setOnClickListener {
+            isRememberMapState = true
             loadMarkerScenicDetail(pointData)
         }
         blNav.setOnClickListener {
@@ -842,6 +712,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     toast("请先登录")
                     findNavController().navigate(R.id.login_activity, null, navOption)
                 }
+                isRememberMapState = true
             }
 
         } else if (lastSelectTab == toiletTabIndex) {
@@ -925,6 +796,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 this.context?.showToast("无法获取当前位置,暂不能导航")
             }
         }
+        isRememberMapState = true
     }
 
     /**
@@ -1040,10 +912,18 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     override fun onPause() {
         super.onPause()
+//        if (isRememberMapState) {
+//            SaveMapObj.mapZoom = mapView.map.mapStatus.zoom
+//            SaveMapObj.target = mapView.map.mapStatus.target
+//        } else {
+//            SaveMapObj.mapZoom = 17f
+//            SaveMapObj.target = SCENIC_CENTER_LATLNG
+//        }
         SaveMapObj.mapZoom = mapView.map.mapStatus.zoom
         SaveMapObj.target = mapView.map.mapStatus.target
         bottomSheetBehavior?.removeBottomSheetCallback(bottomCallBack)
         mapView.onPause()
+        isRememberMapState = false
     }
 
 
@@ -1055,41 +935,22 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         SaveMapObj.needSaveState =
             Pair(lastSelectTab!!, bottomSheetBehavior?.state == BottomSheetBehavior3.STATE_HIDDEN)
         mapView.onDestroy()
+        isRememberMapState = false
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        this.context?.unregisterReceiver(GeoBroadCast)
+        try {
+            this.context?.unregisterReceiver(GeoBroadCast)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        isRememberMapState = false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(BUNDLE_SELECT_TAB, lastSelectTab!!)
-    }
-
-    private fun toRawData(bitmap: Bitmap): ByteArray? {
-        val buffer: ByteBuffer = ByteBuffer.allocate(
-            bitmap.width
-                    * bitmap.height * 4
-        )
-        bitmap.copyPixelsToBuffer(buffer)
-        val data: ByteArray = buffer.array()
-        buffer.clear()
-        return data
-    }
-
-    private fun getFromAssets(fileName: String): Bitmap? {
-        val am: AssetManager? = this.activity?.assets
-        val `is`: InputStream?
-        val bm: Bitmap
-        return try {
-            `is` = am?.open(fileName)
-            bm = BitmapFactory.decodeStream(`is`)
-            bm
-        } catch (e: Exception) {
-//            e.printStackTrace()
-            null
-        }
     }
 
 }
@@ -1100,7 +961,7 @@ object SaveMapObj {
     var bottomState: Int = -1
 
     //onDestroyView时地图的绽放级别
-    var mapZoom = 17f
+    var mapZoom = 16f
 
     //onDestroyView时保存地图的中心点
     var target: LatLng = SCENIC_CENTER_LATLNG
