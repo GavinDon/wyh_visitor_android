@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnim"
+        android:layout_width="@dimen/dp_72"
+        android:layout_height="@dimen/dp_72"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/robot_blue" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_36"
+        android:background="@drawable/shape_notice"
+        app:layout_constraintCircleAngle="0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/smartTipTvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@string/full_ar"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:background="@color/fontMajor"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/smartTipTvTitle" />
+
+        <TextView
+            android:id="@+id/smartTipTvContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_16"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/smartTipTvTitle"
+            tools:text="@string/add_calendar" />
+
+        <com.gavindon.mvvm_lib.widgets.DonButton
+            android:id="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/dp_30"
+            android:paddingVertical="@dimen/dp_6"
+            android:text="我知道了"
+            android:textSize="@dimen/sp_16"
+            app:circleRadius="@dimen/dp_30"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/smartTipTvContent"
+            app:normalBackgroundColor="@color/colorPrimaryYellow"
+            app:normalTextColor="@color/white"
+            app:pressBackgroundColor="@color/colorTabSelect" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@+id/btnConfirm" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

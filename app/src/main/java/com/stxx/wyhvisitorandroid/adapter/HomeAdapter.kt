@@ -16,6 +16,7 @@ import androidx.core.util.set
 import androidx.core.view.ViewCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
@@ -343,6 +344,8 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                     //全景游园
                     view.findNavController()
                         .navigate(R.id.fragment_ar_more, null, navOption)
+//                    view.findNavController().navigate(R.id.dialog_smart_tip, null, navOption)
+
                 }
                 R.string.visitor_ai_budao -> {
                     view.findNavController().navigate(

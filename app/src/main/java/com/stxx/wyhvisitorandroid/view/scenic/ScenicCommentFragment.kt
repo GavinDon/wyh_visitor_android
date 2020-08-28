@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.SparseBooleanArray
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
@@ -128,11 +129,19 @@ class ScenicCommentFragment : BaseFragment() {
         commentNav.setOnClickListener {
             goWalkNav(navLatLng ?: LatLng(Double.MIN_VALUE, Double.MIN_VALUE))
         }
+        //是否显示讲解图标
+        val explain = detailData?.explain
+        if (explain.isNullOrEmpty() || !explain.startsWith("http")) {
+            tvVoiceExplain.visibility = View.INVISIBLE
+        } else {
+            tvVoiceExplain.visibility = View.VISIBLE
+        }
         tvVoiceExplain.setOnClickListener {
             if (!NotificationUtil.hasNotifyEnable()) {
                 this.context?.showToast("使用该功能需要打开通知权限!")
                 NotificationUtil.settingNotify()
             } else {
+
                 Intent(this.context, PlaySoundService::class.java).also {
                     it.putExtra(PlaySoundService.SOUND_SOURCE, detailData)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

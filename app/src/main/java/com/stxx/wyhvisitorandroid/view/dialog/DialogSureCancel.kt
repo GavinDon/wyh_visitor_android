@@ -1,11 +1,9 @@
 package com.stxx.wyhvisitorandroid.view.dialog
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import com.stxx.wyhvisitorandroid.R
 import kotlinx.android.synthetic.main.dialog_loading.*
 import org.jetbrains.anko.support.v4.dip
@@ -34,8 +32,7 @@ class DialogSureCancel : BaseDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dialogView = inflater.inflate(R.layout.dialog_loading, null, false)
-        return dialogView
+        return inflater.inflate(R.layout.dialog_loading, null, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
