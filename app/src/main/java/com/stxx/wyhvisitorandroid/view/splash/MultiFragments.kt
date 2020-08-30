@@ -174,6 +174,7 @@ class MultiFragments : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         //扫码结果
         if (requestCode == SCAN_CODE) {
+            if (resultCode != Activity.RESULT_OK) return
             val obj = data?.getParcelableExtra(ScanUtil.RESULT) as HmsScan
             /*  val intent = Intent(this, DisPlayActivity::class.java)
               intent.putExtra("SCAN_RESULT", obj)

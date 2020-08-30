@@ -96,6 +96,7 @@ class ScenicCommentFragment : BaseFragment() {
             loadCommentData()
             loadMoreCommentData()
             navLatLng = arguments?.getParcelable("end")
+            handlerVoice()
         } else if (!scenicType.isNullOrEmpty()) {
             //从搜索界面过来 需要获取景点id查找详情
             scenicId = arguments?.getInt("id") ?: -1
@@ -129,6 +130,11 @@ class ScenicCommentFragment : BaseFragment() {
         commentNav.setOnClickListener {
             goWalkNav(navLatLng ?: LatLng(Double.MIN_VALUE, Double.MIN_VALUE))
         }
+
+
+    }
+
+    private fun handlerVoice() {
         //是否显示讲解图标
         val explain = detailData?.explain
         if (explain.isNullOrEmpty() || !explain.startsWith("http")) {
@@ -152,9 +158,8 @@ class ScenicCommentFragment : BaseFragment() {
                 }
             }
         }
-
-
     }
+
 
     private fun loadView() {
         ImageLoader.with().load(detailData?.imgurl).into(ivCommentDetailHead)
@@ -188,6 +193,7 @@ class ScenicCommentFragment : BaseFragment() {
                             (detailData?.y ?: "0").toDouble(),
                             (detailData?.x ?: "0").toDouble()
                         )
+                    handlerVoice()
                 }, {
                     this.context?.showToast("暂无数据")
                 })
