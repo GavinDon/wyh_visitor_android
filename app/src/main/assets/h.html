@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" accept="image/*" capture="camera">  
+    <input type="file" accept="video/*" capture="camcorder">  
+    <input type="file" accept="audio/*" capture="microphone">  
+</body>
+</html>
+<script>
+    var file = document.querySelector('input');
+        if (getIos()) {
+            file.removeAttribute("capture"); //如果是ios设备就删除"capture"属性
+        }
+        function getIos() {
+            var ua=navigator.userAgent.toLowerCase();
+            if (ua.match(/iPhone\sOS/i) == "iphone os") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+</script>

@@ -113,6 +113,10 @@ android {
         abortOnError false
     }
 
+    aaptOptions {
+        noCompress '.unity3d', '.ress', '.resource', '.obb', 'vuforia/wyhapp.dat', 'vuforia/wyhapp.xml'
+    }
+
 }
 
 
@@ -181,7 +185,6 @@ dependencies {
 //    implementation(name: 'artmap', ext: 'aar')
     //腾讯分享
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.4'
-
 
 
 }

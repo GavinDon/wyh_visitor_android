@@ -21,9 +21,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.CoordinateConverter
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.gavindon.mvvm_lib.utils.GsonUtil
 import com.gavindon.mvvm_lib.utils.showSoftInputWord
 import com.gavindon.mvvm_lib.widgets.showToast
+import com.google.gson.reflect.TypeToken
+import com.stxx.wyhvisitorandroid.bean.VisitGridData
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.regex.Pattern
 
 /**
@@ -63,6 +69,34 @@ fun convertBaidu(lat: Double, lng: Double): LatLng = CoordinateConverter()
     .coord(LatLng(lat, lng))
     .convert()
 
+fun readAssets(context: Context, dir: String): String {
+
+    var inputStream: InputStream? = null
+    var inputStreamReader: InputStreamReader? = null
+    var bufferedReader: BufferedReader? = null
+
+    try {
+        inputStream = context.resources.assets.open(dir)
+        inputStreamReader = InputStreamReader(inputStream)
+        bufferedReader = BufferedReader(inputStreamReader)
+        var strJson = bufferedReader.readLine()
+        val stringBuilder = StringBuilder()
+        while (strJson != null) {
+            stringBuilder.append(strJson)
+            strJson = bufferedReader.readLine()
+        }
+        val type = object : TypeToken<List<VisitGridData>>() {}.type
+        val obj = GsonUtil.str2Obj<List<VisitGridData>>(stringBuilder.toString(), type)
+        return stringBuilder.toString()
+    } catch (ex: Exception) {
+    } finally {
+        inputStream?.close()
+        inputStreamReader?.close()
+        bufferedReader?.close()
+    }
+    return ""
+
+}
 
 /**
  * 让显示自动刷新 不会请求数据

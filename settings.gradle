@@ -1,3 +1,2 @@
-include ':WYH20.03.30'
-include ':app', ':mvvm_lib'
+include ':app', ':mvvm_lib', ':WYH20.03.30'
 rootProject.name='wyh_visitor_android'

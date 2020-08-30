@@ -1,6 +1,7 @@
 package com.stxx.wyhvisitorandroid.view
 
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
+import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
@@ -29,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_webview.toolbar_back
 import kotlinx.android.synthetic.main.fragment_webview.x5WebView
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.support.v4.toast
 import java.util.*
 
 
@@ -128,6 +131,15 @@ class WebViewFragment : BaseFragment() {
                 progressBar?.progress = 0
             }
             super.onProgressChanged(p0, p1)
+        }
+
+        override fun onShowFileChooser(
+            p0: WebView?,
+            p1: ValueCallback<Array<Uri>>?,
+            p2: FileChooserParams?
+        ): Boolean {
+            toast("aa")
+            return true
         }
 
     }

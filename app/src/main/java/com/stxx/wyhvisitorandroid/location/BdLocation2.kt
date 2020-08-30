@@ -1,8 +1,11 @@
 package com.stxx.wyhvisitorandroid.location
 
+import android.location.Location
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import com.baidu.geofence.GeoFence
 import com.baidu.location.*
 import com.baidu.mapapi.map.BaiduMapOptions
@@ -10,8 +13,16 @@ import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.CoordinateConverter
 import com.baidu.mapapi.utils.DistanceUtil
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.gavindon.mvvm_lib.utils.GsonUtil
+import com.google.gson.reflect.TypeToken
 import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.SCENIC_CENTER_LATLNG
+import com.stxx.wyhvisitorandroid.bean.LocationBean
+import com.stxx.wyhvisitorandroid.bean.VisitGridData
+import com.stxx.wyhvisitorandroid.convertBaidu
+import com.stxx.wyhvisitorandroid.readAssets
+import kotlin.concurrent.thread
 
 /**
  * description:百度定位
@@ -21,7 +32,13 @@ object BdLocation2 : LifecycleObserver {
 
     private lateinit var mLocationClient: LocationClient
     private lateinit var mLocationOption: LocationClientOption
+    private var locationObj: List<LocationBean>? = null
+    private var lastShowDialogId = -1
+    //已经提示过的景点不再提示
+    private var hasShowNameLst = mutableSetOf<String>()
 
+
+    private val mThread = Thread()
 
     private fun initOptions() {
         mLocationOption = LocationClientOption()
@@ -29,7 +46,7 @@ object BdLocation2 : LifecycleObserver {
             isOpenGps = true
             enableSimulateGps = false
             setOpenAutoNotifyMode()
-            scanSpan = 2000
+            scanSpan = 6000
             isLocationNotify = true
             setCoorType(CoordinateConverter.CoordType.BD09LL.name)
             locationMode = LocationClientOption.LocationMode.Hight_Accuracy
@@ -73,11 +90,20 @@ object BdLocation2 : LifecycleObserver {
             return this
         }
 
-    fun bdLocationListener(listener: ((location: BDLocation) -> Unit)? = null) {
+    fun bdLocationListener(listener: ((location: BDLocation) -> Unit)? = null): BdLocation2 {
         this.locationListener = listener
+        return this
     }
 
     private var locationListener: ((location: BDLocation) -> Unit)? = null
+
+
+    fun setDistanceListener(listener: ((bean: LocationBean) -> Unit)? = null): BdLocation2 {
+        this.distanceListener = listener
+        return this
+    }
+
+    private var distanceListener: ((bean: LocationBean) -> Unit)? = null
 
     /**
      * 定位结果回调
@@ -90,6 +116,7 @@ object BdLocation2 : LifecycleObserver {
             ) {
                 locationListener?.invoke(location)
                 val startLatlng = LatLng(location.latitude, location.longitude)
+                calculateNear(startLatlng)
             }
         }
     }
@@ -97,16 +124,33 @@ object BdLocation2 : LifecycleObserver {
     /**
      * 计算最近的景点
      */
-    private fun calculateNear(startLatlng: LatLng) {
-        val distance = DistanceUtil.getDistance(startLatlng, SCENIC_CENTER_LATLNG)
-        if (distance < 10000) {
-            //计算提示哪个景点
+    private fun calculateNear(startLatLng: LatLng) {
+        Logger.i(startLatLng.toString())
+        mThread.run {
+            locationObj?.forEach {
+                val distance = DistanceUtil.getDistance(
+                    startLatLng,
+                    convertBaidu(it.y.toDouble(), it.x.toDouble())
+                )
+                if (distance < 50) {
+                    //如果已经弹出过提示则不在弹出对话框
+                    if (hasShowNameLst.contains(it.name)) return
+                    distanceListener?.invoke(it)
+                    hasShowNameLst.add(it.name)
+                }
+                Logger.i(distance.toString())
+            }
         }
+
 
     }
 
     init {
         initOptions()
+        val locationJson = readAssets(MVVMBaseApplication.appContext, "json/location.json")
+        val type = object : TypeToken<List<LocationBean>>() {}.type
+        locationObj = GsonUtil.str2Obj<List<LocationBean>>(locationJson, type)
+
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

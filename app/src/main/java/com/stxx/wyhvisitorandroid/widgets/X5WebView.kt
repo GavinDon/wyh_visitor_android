@@ -52,11 +52,17 @@ class X5WebView : WebView {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
             setSupportZoom(true)
-            setSupportMultipleWindows(true)
-            allowFileAccess = false
+            setSupportMultipleWindows(false)
+            allowFileAccess = true
             useWideViewPort = true
             setAppCacheEnabled(true)
+            setAppCachePath(context.externalCacheDir?.path+"webview")
+            setGeolocationEnabled(true)
             domStorageEnabled = true
+            useWideViewPort=true
+            setAllowFileAccessFromFileURLs(true)
+            setAllowUniversalAccessFromFileURLs(true)
+            allowContentAccess=true
         }
     }
 

@@ -56,6 +56,7 @@ import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.toast
 
 
 /**
@@ -255,6 +256,21 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     .longitude(it.longitude)
                     .build()
                 map?.setMyLocationData(locationData)
+            }.setDistanceListener {
+                //如果弹出框正在显示 则不在弹出
+//                if (findNavController().currentDestination?.id == R.id.dialog_smart_tip) {
+//                    return@setDistanceListener
+//                }
+                findNavController().navigate(R.id.dialog_smart_tip,
+                    bundleOf("locationBean" to it),
+                    navOptions {
+                        launchSingleTop = true
+                        popUpTo(R.id.dialog_smart_tip) { inclusive = true }
+                        anim {
+                            enter = R.anim.alpha_enter
+                            exit = R.anim.alpha_exit
+                        }
+                    })
             }
         }
         //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)

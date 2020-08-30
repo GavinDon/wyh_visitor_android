@@ -1,6 +1,9 @@
 package com.stxx.wyhvisitorandroid.view
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,30 +15,27 @@ import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
+import com.stxx.wyhvisitorandroid.view.helpers.WebCameraHelper
+import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
-import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
-import kotlinx.android.synthetic.main.fragment_webview_notitle.progressBar
-import kotlinx.android.synthetic.main.fragment_webview_notitle.x5WebView
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.toolbar.app_tv_Title
-import kotlinx.android.synthetic.main.toolbar.frame_layout_title
-import kotlinx.android.synthetic.main.toolbar.titleBar
-import kotlinx.android.synthetic.main.toolbar.toolbar_back
+import org.jetbrains.anko.support.v4.toast
+
 
 /**
  * description:提供的webView 不带标题栏需要自已添加一个标题栏
  * Created by liNan on  2020/4/27 11:11
  */
-class WebViewNoTitleFragment : BaseFragment() {
+open class WebViewNoTitleFragment : BaseFragment() {
     override val layoutId: Int = R.layout.fragment_webview_notitle
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        x5WebView.webChromeClient = webChromeClient
         x5WebView.webViewClient = webViewClient
+        x5WebView.webChromeClient = webChromeClient
         val url = arguments?.getString("url")
         if (url?.startsWith("http") == true) {
             x5WebView.loadUrl(url)
@@ -86,7 +86,32 @@ class WebViewNoTitleFragment : BaseFragment() {
             }
             super.onProgressChanged(p0, p1)
         }
+
+        override fun onReceivedTitle(p0: WebView?, p1: String?) {
+            super.onReceivedTitle(p0, p1)
+            val title = p0?.title ?: "详情"
+            app_tv_Title?.text = title
+            app_tv_Title?.isFocusable = true
+        }
+
+        override fun onShowFileChooser(
+            p0: WebView?,
+            uploadMsg: ValueCallback<Array<Uri>>,
+            fileChooserParams: FileChooserParams?
+        ): Boolean {
+            WebCameraHelper.getInstance().mUploadCallbackAboveL = uploadMsg
+            WebCameraHelper.getInstance().showOptions(this@WebViewNoTitleFragment.requireActivity())
+            return true
+        }
+
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+        WebCameraHelper.getInstance().onActivityResult(requestCode, resultCode, intent)
+    }
+
     private val webViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, p1: String?) {
             super.onPageFinished(view, p1)
@@ -103,6 +128,7 @@ class WebViewNoTitleFragment : BaseFragment() {
         if (parent is ViewGroup) {
             parent.removeView(x5WebView)
             x5WebView.removeAllViews()
+            WebCameraHelper.getInstance().cameraCancel()
             x5WebView.destroy()
         }
     }

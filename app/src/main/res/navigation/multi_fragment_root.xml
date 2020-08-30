@@ -206,6 +206,7 @@
         android:id="@+id/fragment_webview_primeval"
         android:name="com.stxx.wyhvisitorandroid.view.ScanResultFragment" />
 
+
     <dialog
         android:id="@+id/dialog_smart_tip"
         android:name="com.stxx.wyhvisitorandroid.view.dialog.SmartTipDialog" />

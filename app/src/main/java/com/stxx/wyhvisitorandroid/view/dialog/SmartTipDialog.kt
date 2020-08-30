@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.view.dialog
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -9,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.findNavController
 import com.gavindon.mvvm_lib.utils.phoneWidth
 import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.bean.LocationBean
 import kotlinx.android.synthetic.main.dialog_smart_tip.*
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.wrapContent
@@ -40,7 +43,13 @@ class SmartTipDialog : DialogFragment() {
         return layoutInflater.inflate(R.layout.dialog_smart_tip, null, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        smartTipTvTitle.text = "温馨提示"
+        val locationBean: LocationBean = arguments?.getSerializable("locationBean") as LocationBean
+        smartTipTvTitle.text = "小管家发现您在${locationBean.name}附近\n推荐您游玩以下路线"
+        smartTipTvContent.text = "${locationBean.suitble}\n${locationBean.route}"
+        btnConfirm.setOnClickListener {
+            this.dismiss()
+        }
     }
 }

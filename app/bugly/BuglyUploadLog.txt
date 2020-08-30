@@ -182,3 +182,15 @@ file=D:\work\android\workspace\wyh_visitor_android\app\build\outputs\mapping\rel
 sha1=b97efa68dc15b2458006cd1dc535bf78c56fdd56
 appId=4fa626abc1
 
+file=D:\work\android\workspace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=2fe3b6b9764f0e51f51e1b7ce6aefc4c606e4db7
+appId=4fa626abc1
+
+file=D:\work\android\workspace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=2fe3b6b9764f0e51f51e1b7ce6aefc4c606e4db7
+appId=4fa626abc1
+
+file=D:\work\android\workspace\wyh_visitor_android\app\build\outputs\mapping\release\mapping.txt
+sha1=2fe3b6b9764f0e51f51e1b7ce6aefc4c606e4db7
+appId=4fa626abc1
+

@@ -26,6 +26,7 @@ import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.location.BdLocation
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
+import com.stxx.wyhvisitorandroid.view.helpers.WebCameraHelper
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
 import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment
@@ -125,7 +126,22 @@ class MultiFragments : BaseActivity() {
             android.Manifest.permission.ACCESS_FINE_LOCATION,
             android.Manifest.permission.CAMERA
         ) {
-//            mGeoFenceClient.removeGeoFence()
+            BdLocation2.startLocation.setDistanceListener {
+                //如果弹出框正在显示 则不在弹出
+//                if (navController.currentDestination?.id == R.id.dialog_smart_tip) {
+//                    return@setDistanceListener
+//                }
+                navController.navigate(R.id.dialog_smart_tip,
+                    bundleOf("locationBean" to it),
+                    navOptions {
+                        launchSingleTop = true
+                        popUpTo(R.id.dialog_smart_tip) { inclusive = true }
+                        anim {
+                            enter = R.anim.alpha_enter
+                            exit = R.anim.alpha_exit
+                        }
+                    })
+            }
         }
         mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
         //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
@@ -156,12 +172,9 @@ class MultiFragments : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != Activity.RESULT_OK || data == null) {
-            return
-        }
         //扫码结果
         if (requestCode == SCAN_CODE) {
-            val obj = data.getParcelableExtra(ScanUtil.RESULT) as HmsScan
+            val obj = data?.getParcelableExtra(ScanUtil.RESULT) as HmsScan
             /*  val intent = Intent(this, DisPlayActivity::class.java)
               intent.putExtra("SCAN_RESULT", obj)
               startActivity(intent)*/
@@ -176,6 +189,9 @@ class MultiFragments : BaseActivity() {
                 longToast("无效的二维码..").setGravity(Gravity.CENTER, 0, 0)
             }
 
+        } else if (requestCode == 23) {
+            //ai步道拍照
+            WebCameraHelper.getInstance().onActivityResult(requestCode, resultCode, intent)
         }
     }
 

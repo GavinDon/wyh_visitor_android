@@ -2,39 +2,34 @@ package com.stxx.wyhvisitorandroid.adapter
 
 import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
-import android.util.SparseIntArray
 import android.view.View
 import android.widget.AdapterViewFlipper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
-import androidx.core.util.set
 import androidx.core.view.ViewCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
-import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.dreamdeck.wyhapp.UnityPlayerActivity
-import com.gavindon.mvvm_lib.net.*
 import com.gavindon.mvvm_lib.net.BR
+import com.gavindon.mvvm_lib.net.SuccessSource
 import com.mario.baseadapter.holder.VBaseHolderHelper
-import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.WebViewUrl.AI_BUDAO
 import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
 import com.stxx.wyhvisitorandroid.WebViewUrl.ENTER_BOOK_URL
 import com.stxx.wyhvisitorandroid.WebViewUrl.PLANT_WIKI_URL
-import com.stxx.wyhvisitorandroid.WebViewUrl.VR
 import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
 import com.stxx.wyhvisitorandroid.base.OnlyShowDelegateAdapter
 import com.stxx.wyhvisitorandroid.base.VBaseAdapter
@@ -42,7 +37,6 @@ import com.stxx.wyhvisitorandroid.base.VBaseViewHolder
 import com.stxx.wyhvisitorandroid.bean.*
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
-import com.stxx.wyhvisitorandroid.service.DownLoadAppService
 import com.stxx.wyhvisitorandroid.transformer.RoundedCornersTransformation
 import com.stxx.wyhvisitorandroid.transformer.ScaleInOutTransformer
 import com.zhpan.bannerview.BannerViewPager
@@ -50,7 +44,6 @@ import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.constants.PageStyle
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.startActivity
-import java.util.HashMap
 
 
 /**
@@ -348,7 +341,14 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
 
                 }
                 R.string.visitor_ai_budao -> {
-                    view.findNavController().navigate(
+
+                  /*  val intent = Intent()
+                    intent.action = "android.intent.action.VIEW";
+                    val content_url = Uri.parse(AI_BUDAO);
+                    intent.data = content_url;
+                    view.context?.startActivity(intent)
+*/
+                   view.findNavController().navigate(
                         R.id.fragment_webview_notitle,
                         bundleOf(
                             "url" to AI_BUDAO,
