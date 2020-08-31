@@ -168,7 +168,7 @@ class ScenicCommentFragment : BaseFragment() {
         tvCommentDetailContent.text = detailData?.introduction
         toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
         //开始定位
-        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
+        requestPermission2(Manifest.permission.ACCESS_FINE_LOCATION) {
             BdLocation2.startLocation.bdLocationListener {
                 currentLatitude = it.latitude //获取纬度信息
                 currentLongitude = it.longitude //获取经度信息

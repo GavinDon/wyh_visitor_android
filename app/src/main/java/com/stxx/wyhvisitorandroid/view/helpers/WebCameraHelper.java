@@ -38,7 +38,7 @@ public class WebCameraHelper {
 
     private Uri fileUri;
     private static final int TYPE_REQUEST_PERMISSION = 3;
-    private static final int TYPE_CAMERA = 23;
+    public static final int TYPE_CAMERA = 23;
     private File faceImage;
     private Activity activity;
 
@@ -57,48 +57,6 @@ public class WebCameraHelper {
                             TYPE_REQUEST_PERMISSION);
         } else {
             toCamera(act);
-        }
-
-/*        AlertDialog.Builder alertDialog = new AlertDialog.Builder(act);
-        alertDialog.setOnCancelListener(new ReOnCancelListener());
-        alertDialog.setTitle("选择");
-        alertDialog.setItems(new CharSequence[]{"相机"},
-                (dialog, which) -> {
-                    if (which == 0) {
-                        if (ContextCompat.checkSelfPermission(act,
-                                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                            // 申请WRITE_EXTERNAL_STORAGE权限
-                            ActivityCompat
-                                    .requestPermissions(
-                                            act,
-                                            new String[]{Manifest.permission.CAMERA},
-                                            TYPE_REQUEST_PERMISSION);
-                        } else {
-                            toCamera(act);
-                        }
-                    } else {
-                        Intent i = new Intent(
-                                Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);// 调用android的图库
-                        act.startActivityForResult(i,
-                                TYPE_GALLERY);
-                    }
-                });
-        alertDialog.show();*/
-    }
-
-    /**
-     * 点击取消的回调
-     */
-    private class ReOnCancelListener implements
-            DialogInterface.OnCancelListener {
-
-        @Override
-        public void onCancel(DialogInterface dialogInterface) {
-            if (mUploadCallbackAboveL != null) {
-                mUploadCallbackAboveL.onReceiveValue(null);
-                mUploadCallbackAboveL = null;
-            }
         }
     }
 
@@ -131,14 +89,6 @@ public class WebCameraHelper {
 
 
     private File createImageFile(Activity act) {
-/*
-        filePath = Environment.getExternalStorageDirectory() + File.separator
-                + Environment.DIRECTORY_PICTURES + File.separator;
-        String fileName = "IMG_" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
-
-        ToastUtils.s(act, filePath + fileName);*/
-
-
         //创建打卡时的临时拍照‘文件对象’
         faceImage = new File(act.getExternalCacheDir(), "budao_face.jpg");
         try {

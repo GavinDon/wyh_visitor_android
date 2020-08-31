@@ -16,17 +16,15 @@ import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneHeight
 import com.gavindon.mvvm_lib.utils.phoneWidth
-import com.gavindon.mvvm_lib.widgets.showToast
+import com.gavindon.mvvm_lib.utils.rxRequestPermission
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
-import com.stxx.wyhvisitorandroid.location.BdLocation
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
-import com.stxx.wyhvisitorandroid.view.helpers.WebCameraHelper
+import com.stxx.wyhvisitorandroid.view.helpers.WebViewCameraHelper
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
 import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment
@@ -34,7 +32,6 @@ import com.stxx.wyhvisitorandroid.widgets.SuspensionDragView
 import kotlinx.android.synthetic.main.fragment_multi_root.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
 import java.lang.Exception
 
 /**
@@ -119,18 +116,13 @@ class MultiFragments : BaseActivity() {
     }
 
     private fun requestPermission() {
-        requestPermission(
-            this,
+        this.rxRequestPermission(
             android.Manifest.permission.RECORD_AUDIO,
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.ACCESS_FINE_LOCATION,
             android.Manifest.permission.CAMERA
         ) {
             BdLocation2.startLocation.setDistanceListener {
-                //如果弹出框正在显示 则不在弹出
-//                if (navController.currentDestination?.id == R.id.dialog_smart_tip) {
-//                    return@setDistanceListener
-//                }
                 navController.navigate(R.id.dialog_smart_tip,
                     bundleOf("locationBean" to it),
                     navOptions {
@@ -144,7 +136,7 @@ class MultiFragments : BaseActivity() {
             }
         }
         mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
-        //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
+        //初始化围栏(在位置回调中先进行移除再添加达到每隔6s回调一次)
         mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
         mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
         mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
@@ -190,9 +182,10 @@ class MultiFragments : BaseActivity() {
                 longToast("无效的二维码..").setGravity(Gravity.CENTER, 0, 0)
             }
 
-        } else if (requestCode == 23) {
+        } else if (requestCode == WebViewCameraHelper.TYPE_CAMERA) {
             //ai步道拍照
-            WebCameraHelper.getInstance().onActivityResult(requestCode, resultCode, intent)
+//            WebCameraHelper.getInstance().onActivityResult(requestCode, resultCode, intent)
+            WebViewCameraHelper.onActivityResult(requestCode, resultCode, intent)
         }
     }
 

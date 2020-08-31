@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.gavindon.mvvm_lib.R
 import com.gavindon.mvvm_lib.base.my_interface.IView
 import com.gavindon.mvvm_lib.status.StatusView
+import com.gavindon.mvvm_lib.utils.rxRequestPermission
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
@@ -140,10 +141,11 @@ abstract class MVVMBaseFragment : Fragment(), IView {
 
     protected fun requestPermission2(
         vararg permissions: String,
+        onDeniedAction: (() -> Unit)? = null,
         onGrantedAction: () -> Unit
     ) {
-        var deniedPermission: List<String>? = null
         val grantedPermission = mutableListOf<String>()
+        val rxPermissions = RxPermissions(this)
         val obj = rxPermissions.requestEach(
             *permissions
         ).subscribe({ permission ->
@@ -151,36 +153,27 @@ abstract class MVVMBaseFragment : Fragment(), IView {
                 permission.granted -> {
                     //把已经授权的权限添加到新集合
                     grantedPermission.add(permission.name)
-                    //未授权集合
-                    deniedPermission = permissions.filter { !grantedPermission.contains(it) }
+                    //全部授权
                     if (grantedPermission.size == permissions.size) {
                         onGrantedAction()
                     }
                 }
-
-                permission.shouldShowRequestPermissionRationale -> {
-                }
                 else -> {
-                    // At least one denied permission with ask never again
-                    // Need to go to the settings
+                    //获取需要的总权限和已授权差集便是未授权的集合
+                    val subtract = permissions.subtract(grantedPermission)
                     val permissionNames: List<String?> =
-                        Permission.transformText(
-                            context,
-                            deniedPermission
-                        )
-                    val message = this.requireContext().getString(
+                        Permission.transformText(this.context, subtract.toList())
+                    val message = this.getString(
                         R.string.message_permission_always_failed,
                         TextUtils.join("\n", permissionNames)
                     )
                     showDeniedPermission(message)
+                    onDeniedAction?.invoke()
                 }
             }
-
-
         }, {
 
         })
-
 
     }
 

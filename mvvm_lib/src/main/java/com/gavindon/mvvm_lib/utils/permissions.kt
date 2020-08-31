@@ -3,8 +3,10 @@ package com.gavindon.mvvm_lib.utils
 import android.content.Context
 import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentActivity
 import com.gavindon.mvvm_lib.R
 import com.gavindon.mvvm_lib.base.PermissionCode
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 
@@ -42,6 +44,49 @@ fun Context.requestPermission(
             }
         }.start()
 }
+
+fun FragmentActivity.rxRequestPermission(
+    vararg permissions: String,
+    onDeniedAction: (() -> Unit)? = null,
+    onGrantedAction: () -> Unit
+) {
+    val grantedPermission = mutableListOf<String>()
+    val rxPermissions = RxPermissions(this)
+    val obj = rxPermissions.requestEach(
+        *permissions
+    ).subscribe({ permission ->
+        when {
+            permission.granted -> {
+                //把已经授权的权限添加到新集合
+                grantedPermission.add(permission.name)
+                //全部授权
+                if (grantedPermission.size == permissions.size) {
+                    onGrantedAction()
+                }
+            }
+            else -> {
+                //获取需要的总权限和已授权差集便是未授权的集合
+                val subtract = permissions.subtract(grantedPermission)
+//                val denidPerission2 = permissions.union(grantedPermission)
+//                val intersect = permissions.intersect(grantedPermission)
+                val permissionNames: List<String?> =
+                    Permission.transformText(this, subtract.toList())
+                val message = this.getString(
+                    R.string.message_permission_always_failed,
+                    TextUtils.join("\n", permissionNames)
+                )
+                showDeniedPermission(this, message)
+                onDeniedAction?.invoke()
+            }
+        }
+
+
+    }, {
+
+    })
+
+}
+
 
 /**
  * 提示缺少什么权限

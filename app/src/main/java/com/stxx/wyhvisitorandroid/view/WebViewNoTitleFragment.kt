@@ -16,6 +16,7 @@ import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.view.helpers.WebCameraHelper
+import com.stxx.wyhvisitorandroid.view.helpers.WebViewCameraHelper
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
@@ -99,8 +100,10 @@ open class WebViewNoTitleFragment : BaseFragment() {
             uploadMsg: ValueCallback<Array<Uri>>,
             fileChooserParams: FileChooserParams?
         ): Boolean {
-            WebCameraHelper.getInstance().mUploadCallbackAboveL = uploadMsg
-            WebCameraHelper.getInstance().showOptions(this@WebViewNoTitleFragment.requireActivity())
+//            WebCameraHelper.getInstance().mUploadCallbackAboveL = uploadMsg
+//            WebCameraHelper.getInstance().showOptions(this@WebViewNoTitleFragment.requireActivity())
+            WebViewCameraHelper.mUploadCallbackAboveL = uploadMsg
+            WebViewCameraHelper.showOptions(this@WebViewNoTitleFragment.requireActivity())
             return true
         }
 
@@ -125,10 +128,10 @@ open class WebViewNoTitleFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         val parent = x5WebView.parent
+        WebViewCameraHelper.cancelChoose()
         if (parent is ViewGroup) {
             parent.removeView(x5WebView)
             x5WebView.removeAllViews()
-            WebCameraHelper.getInstance().cameraCancel()
             x5WebView.destroy()
         }
     }

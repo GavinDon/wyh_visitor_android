@@ -138,7 +138,7 @@ object BdLocation2 : LifecycleObserver {
                     distanceListener?.invoke(it)
                     hasShowNameLst.add(it.name)
                 }
-                Logger.i(distance.toString())
+//                Logger.i(distance.toString())
             }
         }
 

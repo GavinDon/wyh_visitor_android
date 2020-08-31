@@ -238,7 +238,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     private fun initLocation2() {
         //开始定位
-        requestPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
+        requestPermission2(Manifest.permission.ACCESS_FINE_LOCATION) {
             mapView.map?.isMyLocationEnabled = true
             BdLocation2.startLocation.bdLocationListener {
                 //先移除围栏再添加围栏可使再次调用广播进行回调位置信息

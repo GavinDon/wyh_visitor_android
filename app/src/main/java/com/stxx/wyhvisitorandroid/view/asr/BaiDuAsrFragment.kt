@@ -139,10 +139,17 @@ class BaiDuAsrFragment : BaseFragment() {
     }
 
 
+    override fun onPause() {
+        super.onPause()
+        mSpeechSynthesizer.pause()
+        mSpeechSynthesizer.stop()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         myRecognizer.setEventListener(null)
         myRecognizer.release()
+        mSpeechSynthesizer.release()
     }
 
     override fun setStatusBar() {

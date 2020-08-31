@@ -52,7 +52,7 @@ class UserInfoFragment : ToolbarFragment() {
 
         //修改用户头像
         ivUserIcon.setOnClickListener {
-            requestPermission(
+            requestPermission2(
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) {

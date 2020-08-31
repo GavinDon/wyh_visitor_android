@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.gavindon.mvvm_lib.utils.requestPermission
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.quyuanfactory.artmap.ArtMap
 import com.quyuanfactory.artmap.ArtMapPoi

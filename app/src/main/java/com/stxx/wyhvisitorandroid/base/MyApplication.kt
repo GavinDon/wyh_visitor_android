@@ -1,14 +1,14 @@
 package com.stxx.wyhvisitorandroid.base
 
 import android.content.Context
-import android.content.res.Configuration
-import android.content.res.Resources
+import android.os.Build
 import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.baidu.mapapi.SDKInitializer
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.HttpFrame
 import com.gavindon.mvvm_lib.net.HttpManager
+import com.orhanobut.logger.Logger
 import com.quyuanfactory.artmap.ArtMap
 import com.stxx.wyhvisitorandroid.BuildConfig
 import com.tencent.bugly.Bugly
@@ -34,7 +34,7 @@ class MyApplication : MVVMBaseApplication() {
             initHttp(HttpFrame.FUEL)
             baseUrl = BuildConfig.baseUrl
         }.build()
-
+        initWebView()
         //百度地图
         SDKInitializer.initialize(this)
         RxJavaPlugins.setErrorHandler { }
@@ -65,6 +65,21 @@ class MyApplication : MVVMBaseApplication() {
 
         QbSdk.initX5Environment(this, null)
 
+    }
+
+    /**
+     * 兼容android P
+     * 不同进程不可使用同一webView数据目录
+     */
+    private fun initWebView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val processName = getProcessName()
+            Logger.i(processName)
+            Logger.i(packageName)
+            if (packageName != processName) {
+                android.webkit.WebView.setDataDirectorySuffix(processName)
+            }
+        }
     }
 
 

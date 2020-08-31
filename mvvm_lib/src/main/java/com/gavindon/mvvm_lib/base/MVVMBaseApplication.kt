@@ -37,7 +37,7 @@ open class MVVMBaseApplication : Application() {
 
         /*LOGGER初始化*/
         val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
-            .showThreadInfo(true)
+            .showThreadInfo(false)
             .tag("wyh-logger") // (Optional) Global tag for every log. Default PRETTY_LOGGER
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))

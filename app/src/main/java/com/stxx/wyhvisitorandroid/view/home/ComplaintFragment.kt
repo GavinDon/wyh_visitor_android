@@ -197,7 +197,7 @@ class ComplaintFragment : ToolbarFragment() {
             GalleryLayoutManager(this.context, 4, GridLayoutManager.VERTICAL, false)
         albumAdapter =
             AlbumGridAdapter(this.context, AlbumGridAdapter.onAddPicClickListener {
-                requestPermission(
+                requestPermission2(
                     android.Manifest.permission.CAMERA,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 ) {

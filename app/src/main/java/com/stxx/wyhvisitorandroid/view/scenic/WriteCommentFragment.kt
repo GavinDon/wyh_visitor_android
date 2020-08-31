@@ -93,7 +93,7 @@ class WriteCommentFragment : ToolbarFragment() {
     private fun chooseImage() {
         albumAdapter =
             AlbumGridAdapter(this.context, AlbumGridAdapter.onAddPicClickListener {
-                requestPermission(
+                requestPermission2(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) {
