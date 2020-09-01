@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -45,7 +44,6 @@ import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.location.BdLocation2
-import com.stxx.wyhvisitorandroid.location.BdUtil
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
@@ -56,7 +54,6 @@ import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.toast
 
 
 /**
@@ -257,10 +254,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     .build()
                 map?.setMyLocationData(locationData)
             }.setDistanceListener {
-                //如果弹出框正在显示 则不在弹出
-//                if (findNavController().currentDestination?.id == R.id.dialog_smart_tip) {
-//                    return@setDistanceListener
-//                }
                 findNavController().navigate(R.id.dialog_smart_tip,
                     bundleOf("locationBean" to it),
                     navOptions {
@@ -880,6 +873,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         builders.include(LatLng(40.09364835966737, 116.4920968191294))
             .include(LatLng(40.071822098761984, 116.46385409389569))
 //        mapView.map.setMapStatusLimits(builders.build())
+        //设置不显示百度底图
+//        mapView?.map?.mapType = BaiduMap.MAP_TYPE_NONE
     }
 
     override fun onPause() {

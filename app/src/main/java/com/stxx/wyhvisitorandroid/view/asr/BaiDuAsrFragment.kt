@@ -94,10 +94,7 @@ class BaiDuAsrFragment : BaseFragment() {
                 token = it.access_token
             })
         }
-//        if (!chatList.isNullOrEmpty()) {
-//            cslTip?.visibility = View.VISIBLE
-//            tvAsrResult?.visibility = View.VISIBLE
-//        }
+
         mBotChatAdapter = BDBotChatAdapter(chatList)
         rvBot.adapter = mBotChatAdapter
 
@@ -118,16 +115,6 @@ class BaiDuAsrFragment : BaseFragment() {
         speakView.setAnimation(R.raw.voice)
         speakView.playAnimation()
 
-//        input = DigitalDialogInput(
-//            myRecognizer,
-//            chainRecogListener,
-//            mapOf(
-//                "accept-audio-volume" to true,
-//                "accept-audio-data" to false,
-//                "disable-punctuation" to false,
-//                "pid" to "15373"
-//            )
-//        )
         myRecognizer.start(
             mapOf(
                 "accept-audio-volume" to true,
@@ -236,7 +223,6 @@ class BaiDuAsrFragment : BaseFragment() {
                             GsonUtil.str2Obj<BdBotResult>(httpResult, genericType<BdBotResult>())
                         logId = botResult?.result?.log_id
                         sessionId = botResult?.result?.session_id
-                        Logger.i(httpResult)
                         //防止已经关闭页面时更新ui
                         if (!this@BaiDuAsrFragment.isDetached)
                             runOnUiThread {
@@ -313,7 +299,6 @@ class BaiDuAsrFragment : BaseFragment() {
         }
 
         override fun onAsrOnlineNluResult(nluResult: String?) {
-            Logger.i("${nluResult}===========================================")
         }
 
         override fun onOfflineUnLoaded() {
