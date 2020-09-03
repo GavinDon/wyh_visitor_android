@@ -13,7 +13,8 @@ import com.stxx.wyhvisitorandroid.location.BdUtil
  */
 
 fun MapView.init() {
-    map.setMaxAndMinZoomLevel(19f, 15f)
+    map?.setMaxAndMinZoomLevel(19f, 15f)
+    map?.uiSettings?.isRotateGesturesEnabled=false
     showZoomControls(false)
 }
 
