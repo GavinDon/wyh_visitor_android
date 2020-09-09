@@ -161,7 +161,13 @@ data class RealPeopleNum(
 )
 
 data class PM25Resp(
-    val pm25: Int
+    val pm25: Int,
+    //pm10
+    val pm10: Int,
+    //湿度
+    val hum: String,
+    //负氧离子
+    val no: Int
 )
 
 

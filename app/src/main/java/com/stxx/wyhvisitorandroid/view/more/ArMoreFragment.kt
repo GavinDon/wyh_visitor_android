@@ -45,11 +45,10 @@ class ArMoreFragment : ToolbarFragment() {
         arMoreRv.adapter = moreAdapter
         moreAdapter.setOnItemClickListener { adapter, view, position ->
             val data = adapter.getItem(position) as Ar720Resp
-            Logger.i("${AR_720}?id=${data.pid}")
             view.findNavController()
                 .navigate(
                     R.id.fragment_webview, bundleOf(
-                        WEB_VIEW_TITLE to data.name,
+                        WEB_VIEW_TITLE to getString(R.string.full_ar),
                         WEB_VIEW_URL to "${AR_720}${data.pid}"
                     ), navOption
                 )

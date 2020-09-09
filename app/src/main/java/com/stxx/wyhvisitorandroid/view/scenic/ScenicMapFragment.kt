@@ -98,10 +98,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     //搜索过来的厕所名称/停车场名称 用来弹出infoWindow
     private val searchName by lazy { arguments?.get("name") }
 
-    // 用于设置个性化地图的样式文件
-    private val CUSTOM_FILE_NAME_GREEN = "custom_bd_map.sty"
-
-
     private val serverPointAdapter: ScenicMapServerPointAdapter by lazy {
         ScenicMapServerPointAdapter(R.layout.adapter_server_point, null)
     }
@@ -219,13 +215,13 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 http?.getWithoutLoading(ApiService.SCENIC_MAP_POINT_ID, listOf("id" to id))
                     ?.subscribe({ Logger.i(it) }, {})
             }
-            5 -> {
+            toiletTabIndex -> {
                 //厕所
                 http?.getWithoutLoading(ApiService.TOILET_LST_URL_ID, listOf("id" to id))
                     ?.subscribe({ Logger.i(it) }, {})
 
             }
-            6 -> {
+            parkTabIndex -> {
                 //停车场
                 http?.getWithoutLoading(ApiService.PARK_LST_URL_ID, listOf("id" to id))
                     ?.subscribe({ Logger.i(it) }, {})
@@ -348,11 +344,11 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                         ApiService.SCENIC_MAP_POINT
                     )
                 }
-                5 -> {
+                toiletTabIndex -> {
                     //厕所 不用传type
                     loadData(0, ApiService.TOILET_LST_URL)
                 }
-                6 -> {
+                parkTabIndex -> {
                     //停车场
                     loadData(-1, ApiService.PARK_LST_URL)
                 }
@@ -673,9 +669,9 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
             total.text = "共有车位:"
             retail.text = "剩余车位:"
-            rule.text = "收费规则:${pointData.parkingFee}元/小时"
+            rule.text = "收费规则:${pointData.parkingFee ?: "--"}元/小时"
             retailNum.text = pointData.residue
-            parkSubscriber.visibility = View.VISIBLE
+            parkSubscriber.visibility = View.INVISIBLE
             parkSubscriber.setOnClickListener {
                 val token = judgeLogin()
                 if (token.isNotEmpty()) {

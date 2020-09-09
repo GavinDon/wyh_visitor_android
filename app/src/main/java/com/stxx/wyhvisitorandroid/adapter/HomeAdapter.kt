@@ -342,13 +342,13 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                 }
                 R.string.visitor_ai_budao -> {
 
-                  /*  val intent = Intent()
-                    intent.action = "android.intent.action.VIEW";
-                    val content_url = Uri.parse(AI_BUDAO);
-                    intent.data = content_url;
-                    view.context?.startActivity(intent)
-*/
-                   view.findNavController().navigate(
+                    /*  val intent = Intent()
+                      intent.action = "android.intent.action.VIEW";
+                      val content_url = Uri.parse(AI_BUDAO);
+                      intent.data = content_url;
+                      view.context?.startActivity(intent)
+  */
+                    view.findNavController().navigate(
                         R.id.fragment_webview_notitle,
                         bundleOf(
                             "url" to AI_BUDAO,
@@ -461,7 +461,7 @@ class Ar720Adapter(layoutId: Int) : VBaseAdapter<Ar720Resp>(layoutId) {
                     R.id.fragment_webview,
                     bundleOf(
                         Pair(WEB_VIEW_URL, "${AR_720}${scenicId}"),
-                        Pair(WEB_VIEW_TITLE, name)
+                        Pair(WEB_VIEW_TITLE, holder.itemView.context.getString(R.string.full_ar))
                     ),
                     navOption
                 )

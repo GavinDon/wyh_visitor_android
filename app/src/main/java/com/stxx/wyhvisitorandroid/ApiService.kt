@@ -112,6 +112,11 @@ object ApiService {
     //获取720列表
     const val AR720_URL = "complex/panorama/tableData"
 
+    //?faceUrl=XXX&phone=XXX
+    const val FACE_REGISTER_URL =
+        "https://aiot.fractaltest.cn/gw-front/externel/bj_wyh/face_register"
+
+
 }
 
 object WebViewUrl {
