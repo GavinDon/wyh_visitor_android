@@ -24,6 +24,7 @@ import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
+import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
 import com.stxx.wyhvisitorandroid.view.helpers.WebViewCameraHelper
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
@@ -60,6 +61,8 @@ class MultiFragments : BaseActivity() {
         val filter = IntentFilter()
         filter.addAction(GeoBroadCast.fenceaction)
         this.registerReceiver(GeoBroadCast, filter)
+        //注册微信
+        WeChatRegister.register(this)
     }
 
     override fun onInit(savedInstanceState: Bundle?) {
@@ -109,6 +112,8 @@ class MultiFragments : BaseActivity() {
         super.onDestroy()
         mGeoFenceClient.removeGeoFence()
         try {
+            if (WeChatRegister.broadcastReceiver != null)
+                this.unregisterReceiver(WeChatRegister.broadcastReceiver)
             this.unregisterReceiver(GeoBroadCast)
         } catch (e: Exception) {
             e.printStackTrace()

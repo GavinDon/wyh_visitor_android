@@ -6,37 +6,50 @@
   {
     "name": "医疗救助",
     "showType": 1,
-    "iconRes": "ic_yljz"
+    "iconRes": "ic_yljz",
+    "index": 1
   },
   {
     "name": "无障碍服务",
     "showType": 1,
-    "iconRes": "ic_wzafw"
+    "iconRes": "ic_wzafw",
+    "index": 2
   },
   {
     "name": "意见反馈",
     "showType": 1,
-    "iconRes": "ic_tsjb"
+    "iconRes": "ic_tsjb",
+    "index": 3
   },
   {
     "name": "寻人寻物",
     "showType": 1,
-    "iconRes": "ic_xwqs"
+    "iconRes": "ic_xwqs",
+    "index": 4
   },
   {
     "name": "治安举报",
     "showType": 1,
-    "iconRes": "ic_zajb"
+    "iconRes": "ic_zajb",
+    "index": 5
   },
   {
     "name": "客户咨询",
     "showType": 1,
-    "iconRes": "ic_khzx"
+    "iconRes": "ic_khzx",
+    "index": 6
   },
   {
     "name": "智能客服",
     "showType": 1,
-    "iconRes": "ai_dy"
+    "iconRes": "ai_dy",
+    "index": 7
+  },
+  {
+    "name": "客流热力图",
+    "showType": 1,
+    "iconRes": "ic_hot",
+    "index": 8
   },
   {
     "name": "游玩助手",
@@ -45,42 +58,56 @@
   {
     "name": "景区导览",
     "showType": 1,
-    "iconRes": "ic_jqdl"
+    "iconRes": "ic_jqdl",
+    "index": 9
   },
   {
     "name": "找厕所",
     "showType": 1,
-    "iconRes": "ic_wc"
+    "iconRes": "ic_wc",
+    "index": 10
   },
   {
     "name": "景区百科",
     "showType": 1,
-    "iconRes": "ic_pzsh"
+    "iconRes": "ic_pzsh",
+    "index": 11
   },
   {
     "name": "景区天气",
     "showType": 1,
-    "iconRes": "ic_weather"
+    "iconRes": "ic_weather",
+    "index": 12
   },
   {
     "name": "虚拟游园",
     "showType": 1,
-    "iconRes": "ic_vr"
+    "iconRes": "ic_vr",
+    "index": 13
   },
   {
     "name": "推荐路线",
     "showType": 1,
-    "iconRes": "ic_tjlx"
+    "iconRes": "ic_tjlx",
+    "index": 14
   },
   {
     "name": "AI导游",
     "showType": 1,
-    "iconRes": "ai_dy"
+    "iconRes": "ai_dy",
+    "index": 15
   },
   {
     "name": "AI步道",
     "showType": 1,
-    "iconRes": "ic_mine"
+    "iconRes": "ic_mine",
+    "index": 16
+  },
+  {
+    "name": "公共设施",
+    "showType": 1,
+    "iconRes": "ic_pb",
+    "index": 17
   },
   {
     "name": "交通出行",
@@ -89,16 +116,19 @@
   {
     "name": "绿色出行",
     "showType": 1,
-    "iconRes": "ic_khjy"
+    "iconRes": "ic_khjy",
+    "index": 18
   },
   {
     "name": "公交出行",
     "showType": 1,
-    "iconRes": "ic_bus"
+    "iconRes": "ic_bus",
+    "index": 19
   },
   {
     "name": "停车场",
     "showType": 1,
-    "iconRes": "ic_park"
+    "iconRes": "ic_park",
+    "index": 20
   }
 ]

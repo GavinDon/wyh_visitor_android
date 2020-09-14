@@ -125,7 +125,6 @@ object BdLocation2 : LifecycleObserver {
      * 计算最近的景点
      */
     private fun calculateNear(startLatLng: LatLng) {
-        Logger.i(startLatLng.toString())
         mThread.run {
             locationObj?.forEach {
                 val distance = DistanceUtil.getDistance(

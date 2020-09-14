@@ -94,7 +94,10 @@ class VisitorServerFragment : BaseFragment() {
                         )
                     )
                 }
-                //8 is title
+                //8 热力图
+                8 -> {
+                    navigate(WebViewUrl.HOT, R.string.visitor_server_klhot)
+                }
                 9 -> {
                     //景区导览
                     navigateMap(ScenicMApPointEnum.MAIN_SCENIC.ordinal)
@@ -131,13 +134,10 @@ class VisitorServerFragment : BaseFragment() {
                 }
                 16 -> {
                     //步道
-                    findNavController().navigate(
-                        R.id.fragment_webview_notitle,
-                        bundleOf(
-                            "url" to WebViewUrl.AI_BUDAO
-                        ),
-                        navOption
-                    )
+                    goAiBudaoPage(findNavController())
+                }
+                17 -> {
+                    navigate(WebViewUrl.DEVICE_QUERY, R.string.visitor_server_device)
                 }
                 18 -> {
                     navigate(WebViewUrl.LSCX, R.string.visitor_server_lscx)

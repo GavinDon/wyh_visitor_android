@@ -101,25 +101,25 @@
             app:layout_constraintTop_toBottomOf="@id/homeTvWeather">
 
             <LinearLayout
-                android:id="@+id/homeLlAir"
+                android:id="@+id/homeLlHum2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/homeLlHumidity"
+                app:layout_constraintRight_toLeftOf="@id/homeLlNo"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="空气指数"
+                    android:text="湿度"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12" />
 
                 <TextView
-                    android:id="@+id/tvAir"
+                    android:id="@+id/tvHum2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -131,13 +131,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/homeLlHumidity"
+                android:id="@+id/homeLlNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                app:layout_constraintLeft_toRightOf="@id/homeLlAir"
-                app:layout_constraintRight_toLeftOf="@id/homeLlVisitorNum"
+                app:layout_constraintLeft_toRightOf="@id/homeLlHum2"
+                app:layout_constraintRight_toLeftOf="@id/homeLlPm25"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -146,12 +146,12 @@
                     android:shadowColor="@color/dividerColor"
                     android:shadowDy="2"
                     android:shadowRadius="1"
-                    android:text="相对湿度"
+                    android:text="负氧离子"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12" />
 
                 <TextView
-                    android:id="@+id/tvHumidity"
+                    android:id="@+id/tvNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -163,13 +163,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/homeLlVisitorNum"
+                android:id="@+id/homeLlPm25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
 
-                app:layout_constraintLeft_toRightOf="@id/homeLlHumidity"
+                app:layout_constraintLeft_toRightOf="@id/homeLlNo"
                 app:layout_constraintRight_toLeftOf="@id/homeLlVisitorIndex"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -183,7 +183,7 @@
                     android:textSize="@dimen/sp_12" />
 
                 <TextView
-                    android:id="@+id/tvVisitorNum"
+                    android:id="@+id/tvPm25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                app:layout_constraintLeft_toRightOf="@id/homeLlVisitorNum"
+                app:layout_constraintLeft_toRightOf="@id/homeLlPm25"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 

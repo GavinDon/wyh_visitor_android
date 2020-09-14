@@ -1,4 +1,4 @@
-package com.stxx.wyhvisitorandroid.utils;
+package com.stxx.wyhvisitorandroid.view.helpers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

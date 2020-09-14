@@ -32,7 +32,7 @@ class FixUserInfoFragment() : DialogFragment() {
 
     private var mActivity: Activity? = null
 
-    private lateinit var mineVm: MineVm
+    private val mineVm: MineVm = MineView.mineVm
     private var resourceUseInfo: Resource<BR<UserInfoResp>>? = null
     private var userInfoData: UserInfoResp? = null
 
@@ -41,7 +41,7 @@ class FixUserInfoFragment() : DialogFragment() {
         if (context is Activity) {
             mActivity = context
         }
-        mineVm = ViewModelProviders.of(this).get(MineVm::class.java)
+//        mineVm = ViewModelProviders.of(this).get(MineVm::class.java)
         resourceUseInfo = mineVm.getUserInfo().value
         if (resourceUseInfo is SuccessSource) {
             userInfoData = (resourceUseInfo as SuccessSource).body.data

@@ -54,6 +54,8 @@
     <string name="visitor_server_tsjb">投诉举报</string>
     <string name="visitor_server_tsjy">意见反馈</string>
     <string name="visitor_server_yljz">医疗救助</string>
+    <string name="visitor_server_klhot">客流热力图</string>
+
     <string name="visitor_server_ryzs">人员走失</string>
     <string name="visitor_server_xwqs">寻物启事</string>
     <string name="visitor_server_wzafu">无障碍服务</string>
@@ -62,6 +64,7 @@
     <string name="visitor_server_jbcx">举报查询</string>
     <string name="visitor_server_weather">景区天气</string>
     <string name="visitor_server_lscx">绿色出行</string>
+    <string name="visitor_server_device">公共设施</string>
     <string name="visitor_server_gjcx">公交出行</string>
     <string name="visitor_ai_budao">AI步道</string>
 

@@ -46,7 +46,7 @@ class SmartTipDialog : DialogFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val locationBean: LocationBean = arguments?.getSerializable("locationBean") as LocationBean
-        smartTipTvTitle.text = "小管家发现您在${locationBean.name}附近\n推荐您游玩以下路线"
+        smartTipTvTitle.text = "AI管家发现您在${locationBean.name}附近\n推荐您游玩以下路线"
         smartTipTvContent.text = "${locationBean.suitble}\n${locationBean.route}"
         btnConfirm.setOnClickListener {
             this.dismiss()

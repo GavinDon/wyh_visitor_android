@@ -70,16 +70,16 @@ class VisitorServerGridAdapter(private var dataSource: List<VisitGridData>?) :
                 )
             holder.icon.setImageResource(imageId)
             holder.itemView.setOnClickListener {
-                listener?.invoke(position)
+                listener?.invoke(dataSource?.get(position)?.index ?: 0)
             }
         }
 
 
     }
 
-    private var listener: ((position: Int) -> Unit)? = null
+    private var listener: ((index: Int) -> Unit)? = null
 
-    fun addOnItemClickListener(lis: ((position: Int) -> Unit)) {
+    fun addOnItemClickListener(lis: ((index: Int) -> Unit)) {
         this.listener = lis
     }
 

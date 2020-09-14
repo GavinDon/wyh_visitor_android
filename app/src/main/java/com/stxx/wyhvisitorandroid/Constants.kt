@@ -1,9 +1,25 @@
 package com.stxx.wyhvisitorandroid
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.baidu.mapapi.model.LatLng
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getCurrentDateMillSeconds
+import com.gavindon.mvvm_lib.widgets.showToast
+import com.stxx.wyhvisitorandroid.bean.UserInfoResp
+import com.stxx.wyhvisitorandroid.graphics.chooseSinglePicture
+import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * description:
@@ -26,6 +42,7 @@ const val NOTIFY_ID_DOWNLOAD = 3
 
 //扫码request_code
 const val SCAN_CODE = 0X01
+const val BIND_PHONE_RESULT = 119
 
 
 //跳转到热门推荐、新闻资讯等详情页面bundle key
@@ -45,8 +62,13 @@ const val BUNDLE_IS_SUB_SCENIC = "scenicItem"
 const val WEB_VIEW_URL = "url"
 const val WEB_VIEW_TITLE = "title"
 
+// 人脸识别跳转到我的界面
+const val FACE_IDENTIFY = "face_identify"
+
 //景点中心点
 val SCENIC_CENTER_LATLNG = LatLng(40.082681, 116.474134)
+const val wxappid = "wx697de48974c13c39"
+const val wxSecret = "e8cdc89c4adfdf89bc1ddd814bd64515"
 
 /**
  * fragment转场设置
@@ -90,6 +112,67 @@ fun getTimeDiffMinute(preTime: Long): Boolean {
     val diff = diffSeconds / 1000 / 60
     //保存token是否超过了30分钟
     return diff <= 120
+}
+
+//显示加载框
+fun showLoadingDialog(showDialog: Boolean = true, strTip: String = "正在加载中") {
+    val act = MVVMBaseApplication.getCurActivity()
+    val frameDialog =
+        act?.window?.findViewById<FrameLayout>(com.gavindon.mvvm_lib.R.id.flyLoadingDialog)
+    val loadView: View
+
+    if (frameDialog != null) {
+        loadView = frameDialog
+    } else {
+        val layoutInflater =
+            act?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        loadView =
+            layoutInflater.inflate(com.gavindon.mvvm_lib.R.layout.loading_dialog_view, null, false)
+        act.window?.addContentView(
+            loadView,
+            FrameLayout.LayoutParams(matchParent, matchParent)
+        )
+    }
+
+    if (showDialog) {
+        val tip = loadView.findViewById<TextView>(R.id.tvProgressTip)
+        tip.text = strTip
+        loadView.visibility = View.VISIBLE
+    } else {
+        loadView.visibility = View.GONE
+        loadView.isClickable = false
+        loadView.clearFocus()
+    }
+
+}
+
+//跳转到ai步道页面
+fun goAiBudaoPage(navigatorController: NavController) {
+    if (BuildConfig.DEBUG) {
+        val token = judgeLogin()
+        if (token.isNotEmpty()) {
+            navigatorController.navigate(
+                R.id.fragment_webview_notitle,
+                bundleOf(
+                    "url" to "${WebViewUrl.AI_BUDAO}${SpUtils.get(LOGIN_NAME_SP, "")}",
+                    "title" to R.string.visitor_ai_budao
+                )
+                , navOption
+            )
+        } else {
+            MVVMBaseApplication.appContext.showToast("请先登陆")
+            navigatorController.navigate(R.id.login_activity, null, navOption)
+        }
+    } else {
+        navigatorController.navigate(
+            R.id.fragment_webview_notitle,
+            bundleOf(
+                "url" to WebViewUrl.AI_BUDAO_DEBUG,
+                "title" to R.string.visitor_ai_budao
+            )
+            , navOption
+        )
+    }
 }
 
 

@@ -116,6 +116,18 @@ object ApiService {
     const val FACE_REGISTER_URL =
         "https://aiot.fractaltest.cn/gw-front/externel/bj_wyh/face_register"
 
+    //?education = xxx 认证成功之后更新服务器信息
+    const val FACE_AUTH = "tsvserviceapp/user/updateEducation"
+
+    //换取wx token
+    const val WX_LOGIN = "tsvserviceapp/user/wxlogin"
+    const val WX_USER_INFO = "https://api.weixin.qq.com/sns/userinfo"
+
+    //绑定微信openId=xxx
+    const val BIND_WX = "/tsvserviceapp/user/bindWxOpenIdApp"
+
+    //phone=xxx   &  vcode=xx
+    const val BIND_PHONE = "tsvserviceapp/user/bindPhone"
 
 }
 
@@ -145,6 +157,12 @@ object WebViewUrl {
     //景区天气
     const val WEATHER = "pages/service/weather/weather"
 
+    //热力图
+    const val HOT = "pages/service/hotMap/hotMap"
+
+    //设备查询
+    const val DEVICE_QUERY = "pages/device/device"
+
     //绿色出行
     const val LSCX = "pages/service/traffic/greentravel?device=1"
 
@@ -161,7 +179,8 @@ object WebViewUrl {
     const val CAR_INFO = "pages/user/trip/trip"
 
     /*三方*/
-    const val AI_BUDAO = "https://aiot.ucanuup.cn/mapp/aioth5/?parkCode=WenYuHePark"
+    const val AI_BUDAO_DEBUG = "https://aiot.ucanuup.cn/mapp/aioth5/?parkCode=WenYuHePark"
+    const val AI_BUDAO = "https://aiot.fractaltest.cn/mapp/aioth5/?parkCode=WenYuHePark&phone="
 
     //全景游园
 //    const val AR_720 = "http://manage.wenyuriverpark.com:8082/web/index720.html"

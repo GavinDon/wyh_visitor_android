@@ -1,8 +1,8 @@
 package com.stxx.wyhvisitorandroid.view.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneRegex
 import com.gavindon.mvvm_lib.widgets.showToast
@@ -11,12 +11,15 @@ import com.stxx.wyhvisitorandroid.LOGIN_NAME_SP
 import com.stxx.wyhvisitorandroid.PASSWORD_SP
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
-import com.stxx.wyhvisitorandroid.base.BaseFragment
+import com.stxx.wyhvisitorandroid.bean.WXLoginResp
 import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
+import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
+import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
+import com.stxx.wyhvisitorandroid.wxapi.WXEntryActivity.WXAUTHDATA
+import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.support.v4.startActivity
 import java.util.regex.Pattern
 
 class LoginActivity : BaseActivity() {
@@ -36,6 +39,9 @@ class LoginActivity : BaseActivity() {
         tvGoRegister.setOnClickListener {
             startActivity<RegisterActivity>()
         }
+        btnWxLogin.setOnClickListener {
+            wakeWxApp()
+        }
     }
 
     override fun onResume() {
@@ -44,8 +50,36 @@ class LoginActivity : BaseActivity() {
         inputLayoutPassWord.editText?.setText(SpUtils.get(PASSWORD_SP, ""))
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val wxResp = intent?.getSerializableExtra(WXAUTHDATA)
+        if (wxResp is WXLoginResp) {
+            val openId = wxResp.openid
+            val accessToken = wxResp.access_token
+            if (!this::loginVm.isInitialized) loginVm = getViewModel()
+            if (!openId.isNullOrEmpty() && !accessToken.isNullOrEmpty()) {
+                loginVm.wxLogin(openId, accessToken).observe(this, Observer {
+                    if (it == null) {
+                        showToast("信息同步失败,请重试~")
+                    } else {
+                        //如果没有绑定正确的手机号 则跳转绑定界面
+                        if (!Pattern.matches(phoneRegex, it.phone ?: "")) {
+                            startActivity<WxLoginBindPhoneActivity>()
+                            this.finish()
+                        } else {
+                            this.finish()
+                        }
+                    }
+                })
+            } else {
+                showToast("微信授权失败,请重试~")
+            }
+        }
+
+
+    }
+
     override fun permissionForResult() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun goLogin() {
@@ -75,5 +109,12 @@ class LoginActivity : BaseActivity() {
             .transparentStatusBar()
             .statusBarDarkFont(true)
             .init()
+    }
+
+    private fun wakeWxApp() {
+        val req = SendAuth.Req()
+        req.scope = "snsapi_userinfo"
+        req.state = "wyh_wx_login"
+        WeChatRegister.wxApi?.sendReq(req)
     }
 }

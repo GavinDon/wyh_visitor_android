@@ -2,21 +2,33 @@ package com.stxx.wyhvisitorandroid.view.mine
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.Resource
 import com.gavindon.mvvm_lib.net.SuccessSource
+import com.gavindon.mvvm_lib.utils.getStatusBarHeight
+import com.gavindon.mvvm_lib.utils.rxRequestPermission
+import com.gavindon.mvvm_lib.widgets.showToast
+import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.PictureSelector
 import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.UserInfoResp
+import com.stxx.wyhvisitorandroid.bean.WXLoginResp
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
 import com.stxx.wyhvisitorandroid.graphics.REQUEST_CODE_CHOOSE
 import com.stxx.wyhvisitorandroid.graphics.chooseSinglePicture
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
 import com.stxx.wyhvisitorandroid.transformer.PicassoCircleImage
+import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
+import com.stxx.wyhvisitorandroid.wxapi.WXEntryActivity.WXAUTHDATA
+import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.fragment_user_info.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.io.File
 
 /**
@@ -24,35 +36,35 @@ import java.io.File
  * Created by liNan on 2020/3/2 16:52
 
  */
-class UserInfoFragment : ToolbarFragment() {
-    override val toolbarName: Int = R.string.user_info
+class UserInfoFragment : BaseActivity() {
+    //        override val toolbarName: Int = R.string.user_info
     override val layoutId: Int = R.layout.fragment_user_info
-    private lateinit var mineVm: MineVm
+    private val mineVm: MineVm = MineView.mineVm
 
     private var resourceUseInfo: Resource<BR<UserInfoResp>>? = null
     private var userInfoData: UserInfoResp? = null
     private var nickName: String? = ""
 
     override fun onInit(savedInstanceState: Bundle?) {
-        super.onInit(savedInstanceState)
-        mineVm = getViewModel()
         resourceUseInfo = mineVm.getUserInfo().value
 
         //初始化数据
         if (resourceUseInfo is SuccessSource) {
+            //用户信息
             userInfoData = (resourceUseInfo as SuccessSource).body.data
             nickName = userInfoData?.true_name
-            tvUserName?.text =
-                if (userInfoData?.true_name.isNullOrEmpty()) userInfoData?.name else nickName
+            //绑定微信
+            tvBindAccount.text = if (userInfoData?.wxid.isNullOrEmpty()) "绑定微信" else "解绑微信"
+            //昵称
+            tvUserName?.text = if (nickName.isNullOrEmpty()) userInfoData?.name else nickName
+            //用户头像
             ImageLoader.with().load(userInfoData?.icon).error(R.mipmap.default_icon)
                 .placeHolder(R.mipmap.default_icon).transForm(PicassoCircleImage())
                 .into(ivUserIcon)
         }
-
-
         //修改用户头像
         ivUserIcon.setOnClickListener {
-            requestPermission2(
+            this.rxRequestPermission(
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) {
@@ -72,8 +84,53 @@ class UserInfoFragment : ToolbarFragment() {
                 })
 
             }
-            fullDialogFragment.show(childFragmentManager, "full")
+            fullDialogFragment.show(supportFragmentManager, "full")
         }
+        rlBindAccount.setOnClickListener {
+            if (userInfoData?.wxid.isNullOrEmpty()) {
+                //绑定微信
+                wakeWxApp()
+            } else {
+                //解绑微信
+                mineVm.wxBindOrUnBind(null).observe(this, Observer {
+                    handlerResponseData(it, {
+                        //liveData中微信id置为空
+                        userInfoData?.wxid = ""
+                        mineVm.getUserInfo().postValue(resourceUseInfo)
+                        tvBindAccount.text = "绑定微信"
+                        showToast("解绑成功")
+                    }, {})
+                })
+            }
+
+        }
+    }
+
+
+    private fun wakeWxApp() {
+        val req = SendAuth.Req()
+        req.scope = "snsapi_userinfo"
+        req.state = "wyh_wx_login_userinfo"
+        WeChatRegister.wxApi?.sendReq(req)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val wxResp = intent?.getSerializableExtra(WXAUTHDATA)
+        if (wxResp is WXLoginResp) {
+            val openId = wxResp.openid
+            //绑定微信
+            mineVm.wxBindOrUnBind(openId).observe(this, Observer {
+                handlerResponseData(it, {
+                    //设置wxId不为空即可
+                    userInfoData?.wxid = "1234"
+                    mineVm.getUserInfo().postValue(resourceUseInfo)
+                    tvBindAccount.text = "解绑微信"
+                    showToast("绑定成功")
+                }, {})
+            })
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -95,5 +152,21 @@ class UserInfoFragment : ToolbarFragment() {
             }
 
         }
+    }
+
+    override fun setStatusBar() {
+        super.setStatusBar()
+        titleBar?.layoutParams?.height = getStatusBarHeight(this)
+        titleBar?.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTabSelect))
+        app_tv_Title?.setText(R.string.user_info)
+        frame_layout_title?.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTabSelect))
+        toolbar_back?.setOnClickListener { this.finish() }
+        ImmersionBar.with(this)
+            .transparentStatusBar()
+            .statusBarDarkFont(true)
+            .init()
+    }
+
+    override fun permissionForResult() {
     }
 }

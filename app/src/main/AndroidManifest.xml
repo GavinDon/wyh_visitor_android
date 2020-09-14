@@ -180,7 +180,21 @@
         <activity android:name=".view.scenic.ArNavActivity" />
         <activity android:name=".view.scenic.ArNavActivity2" />
         <activity
+            android:name=".view.mine.UserInfoFragment"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.stxx.wyhvisitorandroid"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
             android:name=".view.ar.BdNavGuideActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.splash.WxLoginBindPhoneActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 

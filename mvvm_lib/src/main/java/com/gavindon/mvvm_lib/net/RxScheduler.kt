@@ -35,20 +35,29 @@ class RxScheduler {
         }
 
         fun <T> applySingleLoading(): SingleTransformer<T, T> {
+
             val act = MVVMBaseApplication.getCurActivity()
-            val layoutInflater =
-                act?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val loadView = layoutInflater.inflate(R.layout.loading_dialog_view, null, false)
-            act.window?.addContentView(
-                loadView,
-                FrameLayout.LayoutParams(matchParent, matchParent)
-            )
+            val frameDialog = act?.window?.findViewById<FrameLayout>(R.id.flyLoadingDialog)
+            val loadView: View
+
+            if (frameDialog != null) {
+                loadView = frameDialog
+            } else {
+                val layoutInflater =
+                    act?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                loadView = layoutInflater.inflate(R.layout.loading_dialog_view, null, false)
+                act.window?.addContentView(
+                    loadView,
+                    FrameLayout.LayoutParams(matchParent, matchParent)
+                )
+            }
             loadView.visibility = View.VISIBLE
             fun clearDialog() {
                 loadView.visibility = View.GONE
                 loadView.isClickable = false
                 loadView.clearFocus()
             }
+
             return SingleTransformer {
                 it.doOnError { clearDialog() }
                     .doOnDispose { clearDialog() }
@@ -58,13 +67,20 @@ class RxScheduler {
 
         fun <T> applyLoading(): ObservableTransformer<T, T> {
             val act = MVVMBaseApplication.getCurActivity()
-            val layoutInflater =
-                act?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val loadView = layoutInflater.inflate(R.layout.loading_dialog_view, null, false)
-            act.window?.addContentView(
-                loadView,
-                FrameLayout.LayoutParams(matchParent, matchParent)
-            )
+            val frameDialog = act?.window?.findViewById<FrameLayout>(R.id.flyLoadingDialog)
+            val loadView: View
+
+            if (frameDialog != null) {
+                loadView = frameDialog
+            } else {
+                val layoutInflater =
+                    act?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                loadView = layoutInflater.inflate(R.layout.loading_dialog_view, null, false)
+                act.window?.addContentView(
+                    loadView,
+                    FrameLayout.LayoutParams(matchParent, matchParent)
+                )
+            }
             loadView.visibility = View.VISIBLE
             fun clearDialog() {
                 loadView.visibility = View.GONE

@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.graphics
 
+import android.app.Activity
 import androidx.fragment.app.Fragment
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -30,7 +31,7 @@ fun Fragment.openAlbum() {
         .forResult(REQUEST_CODE_CHOOSE)
 }
 
-fun Fragment.chooseSinglePicture() {
+fun Fragment.chooseSinglePicture(isCrop: Boolean = true) {
     PictureSelector.create(this)
         .openGallery(PictureMimeType.ofImage())
         .selectionMode(PictureConfig.SINGLE)
@@ -46,14 +47,36 @@ fun Fragment.chooseSinglePicture() {
         .circleDimmedLayer(true)
         .loadImageEngine(SelectorGlideEngine.createGlideEngine())
         .theme(R.style.selectPicture)
-        .enableCrop(true)
+        .enableCrop(isCrop)
         .compress(true)
         .showCropFrame(false)
         .isDragFrame(true)
         .freeStyleCropEnabled(true)
         .forResult(REQUEST_CODE_CHOOSE)
 }
-
+fun Activity.chooseSinglePicture(isCrop: Boolean = true) {
+    PictureSelector.create(this)
+        .openGallery(PictureMimeType.ofImage())
+        .selectionMode(PictureConfig.SINGLE)
+        .isWeChatStyle(false)
+        .setPictureWindowAnimationStyle(
+            PictureWindowAnimationStyle(
+                R.anim.anim_right_in,
+                R.anim.anim_right_out
+            )
+        )
+        .isMultipleSkipCrop(false)
+        .isSingleDirectReturn(true)
+        .circleDimmedLayer(true)
+        .loadImageEngine(SelectorGlideEngine.createGlideEngine())
+        .theme(R.style.selectPicture)
+        .enableCrop(isCrop)
+        .compress(true)
+        .showCropFrame(false)
+        .isDragFrame(true)
+        .freeStyleCropEnabled(true)
+        .forResult(REQUEST_CODE_CHOOSE)
+}
 /**
  * 从相册中选择媒体资源(包括图片,视频)
  */

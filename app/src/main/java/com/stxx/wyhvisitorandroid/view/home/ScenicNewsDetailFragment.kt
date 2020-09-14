@@ -29,7 +29,8 @@ import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.*
 import com.stxx.wyhvisitorandroid.graphics.HtmlTagHandler
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
-import com.stxx.wyhvisitorandroid.utils.WeChatUtil
+import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
+import com.stxx.wyhvisitorandroid.view.helpers.WeChatUtil
 import com.stxx.wyhvisitorandroid.widgets.HtmlUtil
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
@@ -207,7 +208,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
      * 注册 appId
      */
     private fun registerApp() {
-        val appid = "wx697de48974c13c39"
+/*        val appid = "wx697de48974c13c39"
         api = WXAPIFactory.createWXAPI(this.requireContext(), appid, true)
         //建议动态监听微信启动广播进行注册到微信
         broadcastReceiver = object : BroadcastReceiver() {
@@ -217,7 +218,9 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
             }
         }
         this.requireContext()
-            .registerReceiver(broadcastReceiver, IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP))
+            .registerReceiver(broadcastReceiver, IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP))*/
+//        WeChatRegister.register(this.requireContext())
+        api = WeChatRegister.wxApi
     }
 
     private fun createShareDialog() {
@@ -276,9 +279,9 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (this::broadcastReceiver.isInitialized) {
-            this.context?.unregisterReceiver(broadcastReceiver)
-        }
+        /* if (this::broadcastReceiver.isInitialized) {
+             this.context?.unregisterReceiver(broadcastReceiver)
+         }*/
     }
 
 

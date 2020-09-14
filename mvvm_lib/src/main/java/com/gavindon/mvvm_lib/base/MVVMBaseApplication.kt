@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import com.gavindon.mvvm_lib.BuildConfig
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.FormatStrategy
@@ -37,7 +38,7 @@ open class MVVMBaseApplication : Application() {
 
         /*LOGGER初始化*/
         val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
-            .showThreadInfo(false)
+            .showThreadInfo(BuildConfig.DEBUG)
             .tag("wyh-logger") // (Optional) Global tag for every log. Default PRETTY_LOGGER
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
@@ -49,33 +50,41 @@ open class MVVMBaseApplication : Application() {
         activityLifecycle = ActivityLifecycle()
         registerActivityLifecycleCallbacks(ActivityLifecycle())
 
-       /* RxJavaPlugins.setErrorHandler {
-            it.printStackTrace()
-        }*/
+        /* RxJavaPlugins.setErrorHandler {
+             it.printStackTrace()
+         }*/
     }
 
     class ActivityLifecycle : ActivityLifecycleCallbacks {
         override fun onActivityPaused(p0: Activity) {
+
         }
 
         override fun onActivityStarted(p0: Activity) {
+
         }
 
         override fun onActivityDestroyed(p0: Activity) {
-            activityStack.remove(p0)
+            if (activityStack.contains(p0))
+                activityStack.remove(p0)
         }
 
         override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
         }
 
         override fun onActivityStopped(p0: Activity) {
+            if (activityStack.contains(p0))
+                activityStack.remove(p0)
         }
 
         override fun onActivityCreated(p0: Activity, p1: Bundle?) {
-            activityStack.add(p0)
+            if (!activityStack.contains(p0))
+                activityStack.add(p0)
         }
 
         override fun onActivityResumed(p0: Activity) {
+            if (!activityStack.contains(p0))
+                activityStack.add(p0)
         }
 
     }

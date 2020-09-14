@@ -63,12 +63,13 @@ class BannerAdapter(
             ImageLoader.with().load(model as Int)
                 .into(itemView as ImageView)
         }
-        //空气指数
-        val airIndex = holder.getView<TextView>(R.id.tvAir)
+
         //湿度
-        val hum = holder.getView<TextView>(R.id.tvHumidity)
+        val tvHum = holder.getView<TextView>(R.id.tvHum2)
+        //负氧离子
+        val tvNo = holder.getView<TextView>(R.id.tvNo)
         //在园人数
-        val nowPeople = holder.getView<TextView>(R.id.tvVisitorNum)
+        val tvPm25 = holder.getView<TextView>(R.id.tvPm25)
         //游园指数
         val visitIndex = holder.getView<TextView>(R.id.tvVisitorIndex)
         //温度
@@ -144,7 +145,7 @@ class BannerAdapter(
                                             if (weatherData.type == "trav") {
                                                 visitIndex.text = weatherData.brf
                                             } else if (weatherData.type == "air") {
-                                                airIndex.text = weatherData.brf
+//                                                airIndex.text = weatherData.brf
                                             }
                                             visitIndex.text = "较适宜"
                                         }
@@ -159,13 +160,14 @@ class BannerAdapter(
                                         homeTVTempera.text = "${data.tmp}°"
                                     }
                                     if (!data.hum.isNullOrEmpty()) {
-                                        hum.text = "${data.hum}%"
+                                        tvHum.text = "${data.hum}%"
                                     }
                                 }
                                 is PM25Resp -> {
                                     //入园人数
 //                                    nowPeople.text = data.real_time_num_total.toString()
-                                    nowPeople.text = data.pm25.toString()
+                                    tvNo.text = "${data.no}个/cm³"
+                                    tvPm25.text = "${data.pm25}μg/m³"
 
                                 }
                             }
@@ -341,21 +343,7 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
 
                 }
                 R.string.visitor_ai_budao -> {
-
-                    /*  val intent = Intent()
-                      intent.action = "android.intent.action.VIEW";
-                      val content_url = Uri.parse(AI_BUDAO);
-                      intent.data = content_url;
-                      view.context?.startActivity(intent)
-  */
-                    view.findNavController().navigate(
-                        R.id.fragment_webview_notitle,
-                        bundleOf(
-                            "url" to AI_BUDAO,
-                            "title" to R.string.visitor_ai_budao
-                        )
-                        , navOption
-                    )
+                    goAiBudaoPage(view.findNavController())
                 }
                 R.string.grid_plant_wiki -> {
                     view.findNavController().navigate(

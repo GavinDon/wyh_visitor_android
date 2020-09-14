@@ -7,3 +7,5 @@ package com.gavindon.mvvm_lib.net
 data class BR<T>(val code: Int, val msg: String, var data: T, val count: Int)
 
 data class StrBR(val data: String)
+
+

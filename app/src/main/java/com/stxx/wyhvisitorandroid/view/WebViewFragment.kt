@@ -36,7 +36,7 @@ import java.util.*
 
 
 /**
- * description: 提供的webView带标题栏
+ * description: 挂载的h5带有标题栏
  * 自定义title 遮住webView title
  * Created by liNan on  2020/4/15 14:18
  */

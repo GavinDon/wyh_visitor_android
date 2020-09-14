@@ -1,5 +1,7 @@
 package com.stxx.wyhvisitorandroid.view.mine
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -8,30 +10,33 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.get
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigator
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.gavindon.mvvm_lib.net.*
+import com.gavindon.mvvm_lib.net.ErrorSource
+import com.gavindon.mvvm_lib.net.HttpManager
+import com.gavindon.mvvm_lib.net.NotZeroSource
+import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.widgets.TipDialog
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
+import com.luck.picture.lib.PictureSelector
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseFragment
+import com.stxx.wyhvisitorandroid.bean.UserInfoResp
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import com.stxx.wyhvisitorandroid.graphics.REQUEST_CODE_CHOOSE
+import com.stxx.wyhvisitorandroid.graphics.chooseSinglePicture
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
 import com.stxx.wyhvisitorandroid.transformer.PicassoCircleImage
+import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
 import kotlinx.android.synthetic.main.fragment_mine.*
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
+import java.io.File
 
 /**
  * description:个人中心
@@ -43,8 +48,12 @@ class MineFragment : BaseFragment() {
     override val layoutId: Int = R.layout.fragment_mine
 
     private lateinit var mineVm: MineVm
+    private var userInfoResp: UserInfoResp? = null
     private val gridArray = mutableListOf<Pair<Int, String>>()
     private lateinit var gridAdapter: GridAdapter
+
+    //人脸识别跳转过来
+    private val isFaceCome by lazy { arguments?.getBoolean(FACE_IDENTIFY) }
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
@@ -55,7 +64,6 @@ class MineFragment : BaseFragment() {
         }
         gridAdapter = GridAdapter(R.layout.item_mine_grid, gridArray)
         rvMineGrid.adapter = gridAdapter
-//        QBadgeView(requireContext()).bindTarget(ivMessage).badgeNumber = 5
         itemClickListener()
         gridClickListener()
 
@@ -74,17 +82,19 @@ class MineFragment : BaseFragment() {
 
     private fun initUserInfo() {
         mineVm = getViewModel()
+        //保存成单例
+        MineView.mineVm = mineVm
         mineVm.fetchUserInfo().observeForever {
             when (it) {
                 is SuccessSource -> {
-                    val resp = it.body
+                    userInfoResp = it.body.data
                     val loginView =
                         (view ?: MineView.mineView)?.findViewById<TextView>(R.id.tvUserName)
                     loginView?.text =
-                        if (resp.data.true_name.isNullOrEmpty()) resp.data.name else resp.data.true_name
+                        if (userInfoResp?.true_name.isNullOrEmpty()) userInfoResp?.name else userInfoResp?.true_name
                     val iconIv =
                         (view ?: MineView.mineView)?.findViewById<ImageView>(R.id.ivUserIcon)
-                    ImageLoader.with().load(resp.data.icon)
+                    ImageLoader.with().load(userInfoResp?.icon)
                         .placeHolder(R.mipmap.default_icon)
                         .error(R.mipmap.default_icon)
                         .transForm(PicassoCircleImage())
@@ -147,9 +157,17 @@ class MineFragment : BaseFragment() {
                     findNavController().navigate(R.id.fragment_complaint, null, navOption)
                 }
                 2 -> {
-                    findNavController().navigate(R.id.fragment_setting, null, navOption)
+                    //调用人脸识别接口
+                    if (BuildConfig.DEBUG) {
+                        faceDistinguish()
+                    } else {
+                        toast("调试中..")
+                    }
                 }
                 3 -> {
+                    findNavController().navigate(R.id.fragment_setting, null, navOption)
+                }
+                4 -> {
                     TipDialog().builds {
                         message = "确认退出登录?"
                         confirm {
@@ -205,6 +223,127 @@ class MineFragment : BaseFragment() {
         }
     }
 
+    /**
+     * 人脸认证接口调用
+     */
+    private fun faceDistinguish() {
+        val token = judgeLogin()
+        val phone = SpUtils.get(LOGIN_NAME_SP, "")
+        if (token.isNotEmpty()) {
+            if (userInfoResp != null && userInfoResp?.education != "1") {
+                startActivityForResult(
+                    Intent(this.context, WxLoginBindPhoneActivity::class.java),
+                    BIND_PHONE_RESULT
+                )
+           /*     if (phone.isEmpty()) {
+                    //如果没有电话则进行手机认证
+                    startActivityForResult(
+                        Intent(this.context, WxLoginBindPhoneActivity::class.java),
+                        BIND_PHONE_RESULT
+                    )
+                } else {
+                    //调用相册
+                    requestPermission2(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) {
+                        chooseSinglePicture(false)
+                    }
+                }*/
+            } else {
+                chooseSinglePicture(false)
+                toast("您已经完成认证~")
+                startActivityForResult(
+                    Intent(this.context, WxLoginBindPhoneActivity::class.java),
+                    BIND_PHONE_RESULT
+                )
+
+            }
+        } else {
+            toast("请先登录")
+
+            findNavController().navigate(R.id.login_activity, null, navOption)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
+            val select = PictureSelector.obtainMultipleResult(data)
+            if (select.size > 0) {
+                val iconPath = select[0].compressPath
+                if (iconPath.isNullOrEmpty()) {
+                    toast("图片出错,就重新选择")
+                    return
+                }
+                //先进行人脸认证。再进行本地更新用户信息并上传服务器
+                showFaceAuthLoading(true)
+                mineVm.getFaceIdentify(File(iconPath)).observe(this, Observer {
+                    handlerResponseData(it, { faceResp ->
+                        if (faceResp.code == 0) {
+                            //如果返回body为true代表上传成功同步更新用户信息
+                            mineVm.postFaceInfo().observe(this, Observer { updateResp ->
+                                if (updateResp is SuccessSource && updateResp.body) {
+                                    val resourceValue = mineVm.getUserInfo().value
+                                    if (resourceValue is SuccessSource) {
+                                        resourceValue.body.data.education = "1"
+                                        mineVm.getUserInfo().postValue(resourceValue)
+                                    }
+                                }
+                            })
+                            goBudao()
+                        } else {
+                            this.context?.showToast("${faceResp.message}请重新认证！")
+                        }
+                        showFaceAuthLoading(false)
+                    }, {
+                        showFaceAuthLoading(false)
+                    })
+                    showFaceAuthLoading(false)
+                })
+            }
+
+        } else if (requestCode == BIND_PHONE_RESULT && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                val isBind = data.getBooleanExtra("isBind", false)
+                if (isBind) {
+                    goBudao()
+                }
+            }
+
+        }
+    }
+
+    private fun goBudao() {
+        val phone = SpUtils.get(LOGIN_NAME_SP, "")
+        if (phone.isNotEmpty()) {
+            //跳转到步道
+            findNavController().navigate(
+                R.id.fragment_webview_notitle,
+                bundleOf(
+                    "url" to "${WebViewUrl.AI_BUDAO}${phone}",
+                    "title" to R.string.visitor_ai_budao
+                )
+                , navOption
+            )
+        } else {
+
+        }
+
+    }
+
+    private fun showFaceAuthLoading(show: Boolean) {
+        if (show) {
+            flyFaceLoading?.visibility = View.VISIBLE
+            faceLottieView?.playAnimation()
+        } else {
+            flyFaceLoading?.visibility = View.GONE
+            faceLottieView?.clearAnimation()
+        }
+
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         MineView.mineView = view
@@ -240,4 +379,5 @@ class MineFragment : BaseFragment() {
  */
 object MineView {
     var mineView: View? = null
+    lateinit var mineVm: MineVm
 }

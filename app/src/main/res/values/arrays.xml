@@ -4,6 +4,7 @@
     <string-array name="mine_item_source">
         <item>我的足迹</item>
         <item>意见反馈</item>
+        <item>人脸认证</item>
         <item>设置</item>
         <item>退出登录</item>
     </string-array>
