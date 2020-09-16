@@ -67,6 +67,8 @@
     <string name="visitor_server_device">公共设施</string>
     <string name="visitor_server_gjcx">公交出行</string>
     <string name="visitor_ai_budao">AI步道</string>
+    <string name="visitor_wifi_conn">WIFI连接</string>
+
 
 
     <string name="visitor_complaint">投诉</string>

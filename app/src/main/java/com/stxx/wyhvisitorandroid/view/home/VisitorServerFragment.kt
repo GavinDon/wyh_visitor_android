@@ -20,7 +20,6 @@ import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
 import com.stxx.wyhvisitorandroid.mplusvm.ComplaintVm
 import kotlinx.android.synthetic.main.fragment_visitor_server.*
-import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -134,7 +133,7 @@ class VisitorServerFragment : BaseFragment() {
                 }
                 16 -> {
                     //步道
-                    goAiBudaoPage(findNavController())
+                    goAiBudaoPage(this.requireView())
                 }
                 17 -> {
                     navigate(WebViewUrl.DEVICE_QUERY, R.string.visitor_server_device)
@@ -147,6 +146,9 @@ class VisitorServerFragment : BaseFragment() {
                 }
                 20 -> {
                     navigateMap(ScenicMApPointEnum.PARK.ordinal)
+                }
+                21 -> {
+                    findNavController().navigate(R.id.fragment_one_key_wifi, null, navOption)
                 }
             }
         }

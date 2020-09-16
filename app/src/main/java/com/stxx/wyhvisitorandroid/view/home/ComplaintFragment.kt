@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.emailRegex
+import com.gavindon.mvvm_lib.utils.phoneRegex
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -50,6 +51,7 @@ class ComplaintFragment : ToolbarFragment() {
 
 
     private lateinit var mViewModel: ComplaintVm
+
     //选中的投诉类型view索引
     private var typeViewPosition = 0
 
@@ -65,8 +67,8 @@ class ComplaintFragment : ToolbarFragment() {
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         complaintEtPhone?.setText(SpUtils.get(LOGIN_NAME_SP, ""))
-        complaintEtPhone.isFocusable = false
-        complaintEtPhone.isEnabled = false
+        complaintEtPhone.isFocusable = true
+        complaintEtPhone.isEnabled = true
         chooseImage()
         editFilter()
         btnComplaintSubmit.setOnClickListener {
@@ -149,6 +151,9 @@ class ComplaintFragment : ToolbarFragment() {
         val name = complaintEtContact.text.toString().trim()
         val phone = complaintEtPhone.text.toString().trim()
         when {
+            !Pattern.matches(phoneRegex, phone) -> {
+                complaintEtPhone.getFocus("请输入正确的手机号码")
+            }
             name.isEmpty() -> {
                 complaintEtContact.getFocus("请输入您的姓名,以方便联系您")
             }

@@ -1,15 +1,12 @@
 package com.stxx.wyhvisitorandroid.adapter
 
-import android.content.Intent
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterViewFlipper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
@@ -26,7 +23,6 @@ import com.gavindon.mvvm_lib.net.SuccessSource
 import com.mario.baseadapter.holder.VBaseHolderHelper
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
-import com.stxx.wyhvisitorandroid.WebViewUrl.AI_BUDAO
 import com.stxx.wyhvisitorandroid.WebViewUrl.AR_720
 import com.stxx.wyhvisitorandroid.WebViewUrl.ENTER_BOOK_URL
 import com.stxx.wyhvisitorandroid.WebViewUrl.PLANT_WIKI_URL
@@ -166,8 +162,8 @@ class BannerAdapter(
                                 is PM25Resp -> {
                                     //入园人数
 //                                    nowPeople.text = data.real_time_num_total.toString()
-                                    tvNo.text = "${data.no}个/cm³"
-                                    tvPm25.text = "${data.pm25}μg/m³"
+                                    tvNo.text = "${data.no}"
+                                    tvPm25.text = "${data.pm25}"
 
                                 }
                             }
@@ -343,7 +339,7 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
 
                 }
                 R.string.visitor_ai_budao -> {
-                    goAiBudaoPage(view.findNavController())
+                    goAiBudaoPage(view)
                 }
                 R.string.grid_plant_wiki -> {
                     view.findNavController().navigate(

@@ -24,6 +24,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.BUNDLE_DETAIL
 import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.WebViewUrl.LINE_WEB
 import com.stxx.wyhvisitorandroid.WebViewUrl.SHARE_URL
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.*
@@ -98,6 +99,8 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 )
                 tv_menu?.text = "分享"
                 tv_menu?.visibility = View.VISIBLE
+                webviewLine.visibility = View.VISIBLE
+                webviewLine.loadUrl("${LINE_WEB}${detailData.id}")
                 registerApp()
             }
             is PushMessageResp -> {

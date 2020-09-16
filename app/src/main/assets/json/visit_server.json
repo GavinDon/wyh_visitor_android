@@ -110,6 +110,12 @@
     "index": 17
   },
   {
+    "name": "一键wifi",
+    "showType": 1,
+    "iconRes": "ic_wifi",
+    "index": 21
+  },
+  {
     "name": "交通出行",
     "showType": 0
   },

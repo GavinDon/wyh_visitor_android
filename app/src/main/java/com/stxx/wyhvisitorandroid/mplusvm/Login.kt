@@ -222,6 +222,8 @@ class LoginModel(private val mComDis: CompositeDisposable) : MVVMBaseModel() {
                             http?.get(ApiService.UPDATE_ICON, listOf("imgurl" to it.headimgurl))
                                 ?.parse<BR<String>>(strType, { }, { })
                         }
+                        //使用微信登陆如果已经绑定手机号 防止卸载之后没有手机信息
+                        put(LOGIN_NAME_SP, data.phone ?: "")
                         onSuccess(userInfo.data)
                     }, { error ->
                         onFailed(error)

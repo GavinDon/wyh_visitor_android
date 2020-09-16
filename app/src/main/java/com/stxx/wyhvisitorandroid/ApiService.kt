@@ -129,6 +129,9 @@ object ApiService {
     //phone=xxx   &  vcode=xx
     const val BIND_PHONE = "tsvserviceapp/user/bindPhone"
 
+    //查询一键wifi 用户名和密码
+    const val QUERY_WIFI = "tsvserviceapp/user/getDataList?type=WIFI"
+
 }
 
 object WebViewUrl {
@@ -194,4 +197,5 @@ object WebViewUrl {
 
     //入园预约
     const val ENTER_BOOK_URL = "pages/authentication/authentication"
+    const val LINE_WEB = "http://manage.wenyuriverpark.com:8082/iosMap/map/record.html?id="
 }

@@ -61,6 +61,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+//            buildConfigField("String", "baseUrl", "\"http://192.168.100.16:8890\"")
+
             signingConfig signingConfigs.release
         }
     }

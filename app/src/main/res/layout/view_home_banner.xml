@@ -114,6 +114,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:shadowColor="@color/dividerColor"
+                    android:shadowDy="2"
+                    android:shadowRadius="1"
                     android:text="湿度"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12" />
@@ -177,6 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="@color/dividerColor"
+                    android:shadowDy="2"
                     android:shadowRadius="1"
                     android:text="PM2.5"
                     android:textColor="@color/white"
@@ -208,6 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="@color/dividerColor"
+                    android:shadowDy="2"
                     android:shadowRadius="1"
                     android:text="游园指数"
                     android:textColor="@color/white"

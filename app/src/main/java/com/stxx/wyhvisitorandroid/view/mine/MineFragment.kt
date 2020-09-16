@@ -161,7 +161,7 @@ class MineFragment : BaseFragment() {
                     if (BuildConfig.DEBUG) {
                         faceDistinguish()
                     } else {
-                        toast("调试中..")
+                        faceDistinguish()
                     }
                 }
                 3 -> {
@@ -231,11 +231,7 @@ class MineFragment : BaseFragment() {
         val phone = SpUtils.get(LOGIN_NAME_SP, "")
         if (token.isNotEmpty()) {
             if (userInfoResp != null && userInfoResp?.education != "1") {
-                startActivityForResult(
-                    Intent(this.context, WxLoginBindPhoneActivity::class.java),
-                    BIND_PHONE_RESULT
-                )
-           /*     if (phone.isEmpty()) {
+                if (phone.isEmpty()) {
                     //如果没有电话则进行手机认证
                     startActivityForResult(
                         Intent(this.context, WxLoginBindPhoneActivity::class.java),
@@ -249,15 +245,9 @@ class MineFragment : BaseFragment() {
                     ) {
                         chooseSinglePicture(false)
                     }
-                }*/
+                }
             } else {
-                chooseSinglePicture(false)
                 toast("您已经完成认证~")
-                startActivityForResult(
-                    Intent(this.context, WxLoginBindPhoneActivity::class.java),
-                    BIND_PHONE_RESULT
-                )
-
             }
         } else {
             toast("请先登录")
@@ -303,14 +293,13 @@ class MineFragment : BaseFragment() {
                 })
             }
 
-        } else if (requestCode == BIND_PHONE_RESULT && resultCode == Activity.RESULT_OK) {
+        } else if (resultCode == BIND_PHONE_RESULT) {
             if (data != null) {
                 val isBind = data.getBooleanExtra("isBind", false)
                 if (isBind) {
                     goBudao()
                 }
             }
-
         }
     }
 

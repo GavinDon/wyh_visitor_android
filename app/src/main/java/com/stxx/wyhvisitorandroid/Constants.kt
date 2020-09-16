@@ -1,25 +1,23 @@
 package com.stxx.wyhvisitorandroid
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.baidu.mapapi.model.LatLng
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getCurrentDateMillSeconds
 import com.gavindon.mvvm_lib.widgets.showToast
-import com.stxx.wyhvisitorandroid.bean.UserInfoResp
-import com.stxx.wyhvisitorandroid.graphics.chooseSinglePicture
-import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
+import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.view.home.HomeFragment
+import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
 import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.support.v4.toast
 
 /**
  * description:
@@ -147,31 +145,33 @@ fun showLoadingDialog(showDialog: Boolean = true, strTip: String = "正在加载
 }
 
 //跳转到ai步道页面
-fun goAiBudaoPage(navigatorController: NavController) {
-    if (BuildConfig.DEBUG) {
-        val token = judgeLogin()
-        if (token.isNotEmpty()) {
-            navigatorController.navigate(
+fun goAiBudaoPage(view: View) {
+    val token = judgeLogin()
+    val phone = SpUtils.get(LOGIN_NAME_SP, "")
+    if (token.isNotEmpty()) {
+        if (phone.isNotEmpty()) {
+            Logger.i("${WebViewUrl.AI_BUDAO}$phone")
+            view.findNavController().navigate(
                 R.id.fragment_webview_notitle,
                 bundleOf(
-                    "url" to "${WebViewUrl.AI_BUDAO}${SpUtils.get(LOGIN_NAME_SP, "")}",
+                    "url" to "${WebViewUrl.AI_BUDAO}$phone",
                     "title" to R.string.visitor_ai_budao
                 )
                 , navOption
             )
         } else {
-            MVVMBaseApplication.appContext.showToast("请先登陆")
-            navigatorController.navigate(R.id.login_activity, null, navOption)
-        }
-    } else {
-        navigatorController.navigate(
-            R.id.fragment_webview_notitle,
-            bundleOf(
-                "url" to WebViewUrl.AI_BUDAO_DEBUG,
-                "title" to R.string.visitor_ai_budao
+            view.context.startActivity(
+                Intent(
+                    view.context,
+                    WxLoginBindPhoneActivity::class.java
+                )
             )
-            , navOption
-        )
+        }
+
+
+    } else {
+        MVVMBaseApplication.appContext.showToast("请先登陆")
+        view.findNavController().navigate(R.id.login_activity, null, navOption)
     }
 }
 
