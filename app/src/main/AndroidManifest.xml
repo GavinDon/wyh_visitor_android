@@ -181,7 +181,7 @@
         <activity android:name=".view.scenic.ArNavActivity2" />
         <activity
             android:name=".view.mine.UserInfoFragment"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"

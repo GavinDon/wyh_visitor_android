@@ -1,11 +1,13 @@
 package com.stxx.wyhvisitorandroid.wxapi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication;
 import com.gavindon.mvvm_lib.utils.GsonUtil;
 import com.gavindon.mvvm_lib.widgets.ToastUtil;
 import com.google.gson.reflect.TypeToken;
@@ -53,15 +55,22 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             if (result != null) {
                 WXLoginResp resp = GsonUtil.Companion.str2Obj(result, token);
                 Intent intent = null;
+                //get到activity可能为null导致异常
+                Context act = wxEntryActivityWeakReference.get();
+                if (act == null) {
+                    act = MVVMBaseApplication.appContext;
+                }
                 //个人信息中绑定微信或者解绑微信
                 if (tag == NetworkUtil.GET_INFO) {
-                    intent = new Intent(wxEntryActivityWeakReference.get(), UserInfoFragment.class);
+                    intent = new Intent(act, UserInfoFragment.class);
                 }
                 if (tag == NetworkUtil.GET_TOKEN) {
-                    intent = new Intent(wxEntryActivityWeakReference.get(), LoginActivity.class);
+                    intent = new Intent(act, LoginActivity.class);
                 }
                 intent.putExtra(WXAUTHDATA, resp);
-                wxEntryActivityWeakReference.get().startActivity(intent);
+                //Calling startActivity() from outside of an Activity context requires the FLAG_ACTIVITY_NEW_TASK flag.
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                act.startActivity(intent);
                 WxOpenIdInfo.INSTANCE.setWxLoginResp(resp);
             }
         }

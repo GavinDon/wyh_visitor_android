@@ -39,8 +39,9 @@ class MyApplication : MVVMBaseApplication() {
         SDKInitializer.initialize(this)
         RxJavaPlugins.setErrorHandler { }
         //腾讯bugly
-        Bugly.init(this, "4fa626abc1", false)
-        Bugly.setIsDevelopmentDevice(this, true)
+//        Bugly.setIsDevelopmentDevice(this, BuildConfig.DEBUG)
+//        Bugly.init(this, "4fa626abc1", false)
+        Bugly.init(this, "a2d9f005d6", BuildConfig.DEBUG)
         //腾讯x5
         initX5()
         //极光推送
