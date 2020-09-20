@@ -60,6 +60,7 @@ class MineFragment : BaseFragment() {
         if (gridArray.isNullOrEmpty()) {
             gridArray.add(R.mipmap.ic_message to getString(R.string.str_my_message))
             gridArray.add(R.mipmap.ic_car_info to getString(R.string.str_car_info))
+            gridArray.add(R.mipmap.ic_order to getString(R.string.str_my_order))
             gridArray.add(R.mipmap.ic_scenic_server to getString(R.string.str_scenic_server))
         }
         gridAdapter = GridAdapter(R.layout.item_mine_grid, gridArray)
@@ -216,6 +217,9 @@ class MineFragment : BaseFragment() {
                     }
                 }
                 2 -> {
+                    findNavController().navigate(R.id.fragment_order_list, null, navOption)
+                }
+                3 -> {
                     findNavController().navigate(R.id.fragment_scenic_server, null, navOption)
                 }
 

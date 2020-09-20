@@ -208,6 +208,9 @@
     <fragment
         android:id="@+id/fragment_one_key_wifi"
         android:name="com.stxx.wyhvisitorandroid.view.home.OneKeyWifiFragment" />
+    <fragment
+        android:id="@+id/fragment_order_list"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.OrderListFragment" />
     <dialog
         android:id="@+id/dialog_smart_tip"
         android:name="com.stxx.wyhvisitorandroid.view.dialog.SmartTipDialog" />
