@@ -1,15 +1,20 @@
 package com.stxx.wyhvisitorandroid.view.home
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gavindon.mvvm_lib.utils.GsonUtil
 import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.VisitorServerGridAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
@@ -35,6 +40,9 @@ class VisitorServerFragment : BaseFragment() {
     private val complaintVm: ComplaintVm by lazy { getViewModel<ComplaintVm>() }
 
     private val mGridAdapter: VisitorServerGridAdapter by lazy { VisitorServerGridAdapter(null) }
+
+    private var lastOffset = 0
+
     override fun setStatusBar() {
         ImmersionBar.with(this)
             .transparentStatusBar()
@@ -45,7 +53,13 @@ class VisitorServerFragment : BaseFragment() {
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         toolbar_back.setOnClickListener { it.findNavController().navigateUp() }
-        initData()
+
+        if (mGridAdapter.getData().isNullOrEmpty()) {
+            initData()
+        } else {
+            scrollVisitor.scrollY = lastOffset
+        }
+        resumePosition()
         rvVisitorServerGrid.adapter = mGridAdapter
         complaintVm.getBanner().observe(this, Observer {
             handlerResponseData(it, { resp ->
@@ -153,6 +167,15 @@ class VisitorServerFragment : BaseFragment() {
             }
         }
 
+    }
+
+    /**
+     * 记录view位置
+     */
+    private fun resumePosition() {
+        scrollVisitor.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            lastOffset = scrollY
+        })
     }
 
     private fun navigateMap(index: Int) {
