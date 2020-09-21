@@ -132,6 +132,8 @@ object ApiService {
     //查询一键wifi 用户名和密码
     const val QUERY_WIFI = "tsvserviceapp/user/getDataList?type=WIFI"
 
+    const val LINE_POINT = "tsv/routerecommendation/findByid"
+
 }
 
 object WebViewUrl {

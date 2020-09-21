@@ -98,7 +98,8 @@ class HomeVm : MVVMBaseViewModel() {
 
 //        val nowPe = Fuel.get(ApiService.REAL_TIME_NUM_TOTAL)
 //            .rxResponseObject(gsonDeserializer<BR<RealPeopleNum>>()).toObservable()
-        val pm25 = Fuel.get(ApiService.PM25).rxResponseObject(gsonDeserializer<BR<PM25Resp>>()).toObservable()
+        val pm25 = Fuel.get(ApiService.PM25).rxResponseObject(gsonDeserializer<BR<PM25Resp>>())
+            .toObservable()
         val banner =
             Fuel.get(ApiService.BANNER)
                 .rxResponseObject(gsonDeserializer<BR<List<BannerResp>>>()).toObservable()
@@ -195,6 +196,16 @@ class HomeVm : MVVMBaseViewModel() {
         })
         return arMoreLiveData
     }
+
+    fun getLinePointById(id: Int): singLiveData<LineRecorderPointResp> {
+        val livedata = singLiveData<LineRecorderPointResp>()
+        model.fetchLinePoint(id, {
+            livedata.value = create(it)
+        }, {
+            livedata.value = create(it)
+        })
+        return livedata
+    }
 }
 
 
@@ -262,6 +273,26 @@ class HomeRepositories(private val mComDis: CompositeDisposable) : MVVMBaseModel
                 })
         )
 
+    }
+
+    /**
+     * 获取线路推荐经纬度
+     */
+    fun fetchLinePoint(
+        id: Int,
+        onSuccessT: onSuccessT<BR<LineRecorderPointResp>>,
+        onFailed: onFailed
+
+    ) {
+        val type = object : TypeToken<BR<LineRecorderPointResp>>() {}.type
+        mComDis.add(
+            http!!.get(ApiService.LINE_POINT, listOf(Pair("id", id)))
+                .parse2<BR<LineRecorderPointResp>>(type, {
+                    onSuccessT.invoke(it)
+                }, {
+                    onFailed(it)
+                })
+        )
     }
 
 

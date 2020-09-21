@@ -1,31 +1,17 @@
 package com.stxx.wyhvisitorandroid.mplusvm
 
-import android.widget.Toast
-import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.base.MVVMBaseModel
 import com.gavindon.mvvm_lib.base.MVVMBaseViewModel
 import com.gavindon.mvvm_lib.net.*
-import com.gavindon.mvvm_lib.net.ExceptionHandle.handleException
 import com.gavindon.mvvm_lib.utils.*
-import com.gavindon.mvvm_lib.widgets.showToast
-import com.github.kittinunf.fuel.core.FileDataPart
-import com.github.kittinunf.fuel.gson.gsonDeserializer
-import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.httpUpload
-import com.github.kittinunf.fuel.rx.rxResponseObject
 import com.google.gson.reflect.TypeToken
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.LOGIN_NAME_SP
 import com.stxx.wyhvisitorandroid.bean.FaceIdentifyResp
 import com.stxx.wyhvisitorandroid.bean.ScenicServerResp
 import com.stxx.wyhvisitorandroid.bean.UploadRespSrc
 import com.stxx.wyhvisitorandroid.bean.UserInfoResp
-import com.stxx.wyhvisitorandroid.showLoadingDialog
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.toast
 import java.io.File
 
 /**

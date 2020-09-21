@@ -1,9 +1,6 @@
 package com.stxx.wyhvisitorandroid.view.home
 
 import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,39 +10,50 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.Observer
 import androidx.transition.TransitionInflater
+import com.baidu.mapapi.map.BitmapDescriptorFactory
+import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.OverlayOptions
+import com.baidu.mapapi.model.LatLng
+import com.baidu.mapapi.search.core.RouteNode
+import com.baidu.mapapi.search.route.*
+import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.net.http
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.BUNDLE_DETAIL
 import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.WebViewUrl.LINE_WEB
 import com.stxx.wyhvisitorandroid.WebViewUrl.SHARE_URL
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.*
+import com.stxx.wyhvisitorandroid.convertBaidu
 import com.stxx.wyhvisitorandroid.graphics.HtmlTagHandler
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import com.stxx.wyhvisitorandroid.mplusvm.HomeVm
+import com.stxx.wyhvisitorandroid.view.helpers.SimpleOnGetRoutePlanResultListener
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatUtil
-import com.stxx.wyhvisitorandroid.widgets.HtmlUtil
-import com.tencent.mm.opensdk.constants.ConstantsAPI
+import com.stxx.wyhvisitorandroid.view.overlayutil.WalkingRouteOverlay
+import com.stxx.wyhvisitorandroid.widgets.*
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXImageObject
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
 import com.tencent.mm.opensdk.openapi.IWXAPI
-import com.tencent.mm.opensdk.openapi.WXAPIFactory
-import kotlinx.android.synthetic.main.bottom_share.*
-import kotlinx.android.synthetic.main.fragment_notice.*
+import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
+import kotlinx.android.synthetic.main.fragment_scenic_news_detail.mapView
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.find
-import org.jetbrains.anko.imageBitmap
 
 
 /**
@@ -55,8 +63,10 @@ import org.jetbrains.anko.imageBitmap
 class ScenicNewsDetailFragment : ToolbarFragment() {
     override val layoutId: Int = R.layout.fragment_scenic_news_detail
 
-
+    private lateinit var mViewModel: HomeVm
     private lateinit var broadcastReceiver: BroadcastReceiver
+    private val search by lazy { RoutePlanSearch.newInstance() }
+
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         frame_layout_title.setBackgroundColor(Color.WHITE)
@@ -99,9 +109,10 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 )
                 tv_menu?.text = "分享"
                 tv_menu?.visibility = View.VISIBLE
-                webviewLine.visibility = View.VISIBLE
-                webviewLine.loadUrl("${LINE_WEB}${detailData.id}")
+//                webviewLine.visibility = View.VISIBLE
+//                webviewLine.loadUrl("${LINE_WEB}${detailData.id}")
                 registerApp()
+                loadLineGuide(detailData.id)
             }
             is PushMessageResp -> {
                 initView(
@@ -211,19 +222,98 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
      * 注册 appId
      */
     private fun registerApp() {
-/*        val appid = "wx697de48974c13c39"
-        api = WXAPIFactory.createWXAPI(this.requireContext(), appid, true)
-        //建议动态监听微信启动广播进行注册到微信
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                // 将该app注册到微信
-                api?.registerApp(appid)
-            }
-        }
-        this.requireContext()
-            .registerReceiver(broadcastReceiver, IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP))*/
-//        WeChatRegister.register(this.requireContext())
         api = WeChatRegister.wxApi
+    }
+
+    private fun loadLineGuide(id: Int) {
+        mViewModel = getViewModel()
+        mapView.visibility = View.VISIBLE
+
+        mapView?.init()
+        mapView?.mapStatusBuild()
+        mapView?.customMap(this.requireContext())
+        mapView?.map?.addTileLayer(overLayOptions)
+
+        mViewModel.getLinePointById(id).observe(this, Observer {
+            if (it is SuccessSource) {
+                searchRoute(it.body.data.points)
+            }
+        })
+
+    }
+
+    private fun searchRoute(points: List<Point>) {
+        if (points.isNullOrEmpty()) return
+        /*       val tRoutePlanResultListener = object : SimpleOnGetRoutePlanResultListener() {
+                   override fun onGetWalkingRouteResult(walkResult: WalkingRouteResult) {
+                       val overlay = WalkingRouteOverlay(mapView?.map)
+                       val routeLines = walkResult.routeLines
+                       if (!routeLines.isNullOrEmpty()) {
+                           val walkingRouteLine = mutableListOf<WalkingRouteLine.WalkingStep>()
+                           val routeLine = walkResult.routeLines[0]
+                           for (point in points) {
+                               val p = convertBaidu(
+                                   point.y.toDouble(), point.x.toDouble()
+                               )
+                               val step = WalkingRouteLine.WalkingStep()
+                               step.entrance = RouteNode.location(p)
+                               walkingRouteLine.add(step)
+                           }
+                           routeLine.setSteps(walkingRouteLine)
+                           overlay.setData(routeLine)
+                           overlay.addToMap()
+                       }
+                   }
+               }
+               search.setOnGetRoutePlanResultListener(tRoutePlanResultListener)
+               val start = convertBaidu(
+                   points[0].y.toDouble(), points[0].x.toDouble()
+               )
+               val end = convertBaidu(
+                   points[points.lastIndex].y.toDouble(), points[points.lastIndex].x.toDouble()
+               )
+
+               search.walkingSearch(
+                   WalkingRoutePlanOption()
+                       .from(PlanNode.withLocation(start))
+                       .to(PlanNode.withLocation(end))
+               )
+       */
+
+        val overlay = WalkingRouteOverlay(mapView?.map)
+        val walkingRouteSteps = mutableListOf<WalkingRouteLine.WalkingStep>()
+        val walkingRouteLine = WalkingRouteLine()
+        val listLatLng = mutableListOf<LatLng>()
+        val step = WalkingRouteLine.WalkingStep()
+        points.forEachIndexed { _, point ->
+            listLatLng.add(convertBaidu(point.y.toDouble(), point.x.toDouble()))
+            step.wayPoints = listLatLng
+        }
+        walkingRouteLine.setSteps(listOf(step))
+        overlay.setData(walkingRouteLine)
+        overlay.addToMap()
+        markerPointIndex(points)
+    }
+
+    /**
+     * 标注景点顺序
+     */
+    private fun markerPointIndex(points: List<Point>) {
+        val markerView = layoutInflater.inflate(R.layout.marker_number, null, false)
+        val markerOptions = mutableListOf<OverlayOptions>()
+        points.forEachIndexed { index, point ->
+            val tvIndex = markerView.findViewById<TextView>(R.id.tvMarkerIndex)
+            tvIndex.text = "${index.plus(1)}\n${point.name}"
+            val bitmapDescriptorFactory = BitmapDescriptorFactory.fromView(markerView)
+            val options = with(MarkerOptions()) {
+                position(convertBaidu(point.y.toDouble(), point.x.toDouble()))
+                icon(bitmapDescriptorFactory)
+                zIndex(17)
+                animateType(MarkerOptions.MarkerAnimateType.grow)
+            }
+            markerOptions.add(options)
+        }
+        mapView?.map?.addOverlays(markerOptions)
     }
 
     private fun createShareDialog() {
@@ -282,9 +372,21 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        search.destroy()
+        mapView?.onDestroy()
         /* if (this::broadcastReceiver.isInitialized) {
              this.context?.unregisterReceiver(broadcastReceiver)
          }*/
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView?.onPause()
     }
 
 

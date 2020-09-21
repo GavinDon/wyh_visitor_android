@@ -280,6 +280,7 @@ class MineFragment : BaseFragment() {
                                 if (updateResp is SuccessSource && updateResp.body) {
                                     val resourceValue = mineVm.getUserInfo().value
                                     if (resourceValue is SuccessSource) {
+                                        //人脸认证成功之后更新liveData
                                         resourceValue.body.data.education = "1"
                                         mineVm.getUserInfo().postValue(resourceValue)
                                     }

@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,17 +8,26 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.baidu.mapapi.model.LatLng
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.gavindon.mvvm_lib.base.ViewModelProviders
+import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getCurrentDateMillSeconds
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.mplusvm.MineVm
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
+import com.stxx.wyhvisitorandroid.view.mine.MineView
+import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
 import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
 import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.toast
 
 /**
  * description:
@@ -148,17 +158,36 @@ fun showLoadingDialog(showDialog: Boolean = true, strTip: String = "正在加载
 fun goAiBudaoPage(view: View) {
     val token = judgeLogin()
     val phone = SpUtils.get(LOGIN_NAME_SP, "")
+    /**
+     *   1.判断是否登陆
+     *   2.判断是否绑定了手机号
+     *   3.判断是否已经人脸认证
+     */
     if (token.isNotEmpty()) {
         if (phone.isNotEmpty()) {
-            Logger.i("${WebViewUrl.AI_BUDAO}$phone")
-            view.findNavController().navigate(
-                R.id.fragment_webview_notitle,
-                bundleOf(
-                    "url" to "${WebViewUrl.AI_BUDAO}$phone",
-                    "title" to R.string.visitor_ai_budao
-                )
-                , navOption
-            )
+            val ctx = view.context
+            if (ctx is MultiFragments) {
+                val mineVm = ViewModelProviders.of(ctx).get(MineVm::class.java)
+                mineVm.fetchUserInfo().observe(ctx, Observer {
+                    if (it is SuccessSource) {
+                        if (it.body.data.education == "1") {
+                            view.findNavController().navigate(
+                                R.id.fragment_webview_notitle,
+                                bundleOf(
+                                    "url" to "${WebViewUrl.AI_BUDAO}$phone",
+                                    "title" to R.string.visitor_ai_budao
+                                )
+                                , navOption
+                            )
+                        } else {
+                            ctx.toast("请先进行人脸认证")
+                            view.findNavController().navigate(R.id.fragment_mine, null, navOption)
+                        }
+                    } else {
+                        ctx.toast("数据出错.请稍候再试")
+                    }
+                })
+            }
         } else {
             view.context.startActivity(
                 Intent(
@@ -167,8 +196,6 @@ fun goAiBudaoPage(view: View) {
                 )
             )
         }
-
-
     } else {
         MVVMBaseApplication.appContext.showToast("请先登陆")
         view.findNavController().navigate(R.id.login_activity, null, navOption)

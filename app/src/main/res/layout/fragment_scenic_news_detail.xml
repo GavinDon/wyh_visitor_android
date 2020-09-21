@@ -66,8 +66,14 @@
                 app:layout_constraintTop_toBottomOf="@id/tvNewsDetailDate" />
 
 
-            <com.stxx.wyhvisitorandroid.widgets.X5WebView
-                android:id="@+id/webviewLine"
+            <!--            <com.stxx.wyhvisitorandroid.widgets.X5WebView-->
+            <!--                android:id="@+id/webviewLine"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/dp_360"-->
+            <!--                android:layout_marginHorizontal="@dimen/dp_8"-->
+            <!--                android:visibility="gone" />-->
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_360"
                 android:layout_marginHorizontal="@dimen/dp_8"
