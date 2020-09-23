@@ -1,6 +1,5 @@
 package com.stxx.wyhvisitorandroid
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,8 +7,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -20,10 +17,7 @@ import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getCurrentDateMillSeconds
 import com.gavindon.mvvm_lib.widgets.showToast
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
-import com.stxx.wyhvisitorandroid.view.home.HomeFragment
-import com.stxx.wyhvisitorandroid.view.mine.MineView
 import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
 import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
 import org.jetbrains.anko.matchParent

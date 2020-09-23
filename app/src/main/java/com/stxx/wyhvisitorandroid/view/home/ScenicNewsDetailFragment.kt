@@ -227,6 +227,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
 
     private fun loadLineGuide(id: Int) {
         mViewModel = getViewModel()
+        lifecycle.addObserver(mViewModel)
         mapView.visibility = View.VISIBLE
 
         mapView?.init()

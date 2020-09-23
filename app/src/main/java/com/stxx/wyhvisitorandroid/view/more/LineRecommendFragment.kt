@@ -42,7 +42,7 @@ class LineRecommendFragment : ToolbarFragment() {
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
         mViewModel = getViewModel()
-        lifecycle.addObserver(mViewModel)
+//        lifecycle.addObserver(mViewModel)
         commentRv.adapter = mAdapter
         mAdapter.setOnItemClickListener { adapter, _, position ->
             findNavController().navigate(
