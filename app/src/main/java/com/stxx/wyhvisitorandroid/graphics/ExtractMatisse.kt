@@ -31,7 +31,8 @@ fun Fragment.openAlbum() {
         .forResult(REQUEST_CODE_CHOOSE)
 }
 
-fun Fragment.chooseSinglePicture(isCrop: Boolean = true) {
+//矩形裁剪
+fun Fragment.gridSinglePicture() {
     PictureSelector.create(this)
         .openGallery(PictureMimeType.ofImage())
         .selectionMode(PictureConfig.SINGLE)
@@ -42,18 +43,19 @@ fun Fragment.chooseSinglePicture(isCrop: Boolean = true) {
                 R.anim.anim_right_out
             )
         )
-        .isMultipleSkipCrop(false)
-        .isSingleDirectReturn(true)
-        .circleDimmedLayer(true)
         .loadImageEngine(SelectorGlideEngine.createGlideEngine())
         .theme(R.style.selectPicture)
-        .enableCrop(isCrop)
+        .enableCrop(true)
+        .circleDimmedLayer(false)
         .compress(true)
-        .showCropFrame(false)
+        .showCropFrame(true)
+        .showCropGrid(true)
         .isDragFrame(true)
+        .rotateEnabled(true)
         .freeStyleCropEnabled(true)
         .forResult(REQUEST_CODE_CHOOSE)
 }
+
 fun Activity.chooseSinglePicture(isCrop: Boolean = true) {
     PictureSelector.create(this)
         .openGallery(PictureMimeType.ofImage())
@@ -77,6 +79,7 @@ fun Activity.chooseSinglePicture(isCrop: Boolean = true) {
         .freeStyleCropEnabled(true)
         .forResult(REQUEST_CODE_CHOOSE)
 }
+
 /**
  * 从相册中选择媒体资源(包括图片,视频)
  */

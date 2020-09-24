@@ -29,12 +29,11 @@ import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.bean.UserInfoResp
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
 import com.stxx.wyhvisitorandroid.graphics.REQUEST_CODE_CHOOSE
-import com.stxx.wyhvisitorandroid.graphics.chooseSinglePicture
+import com.stxx.wyhvisitorandroid.graphics.gridSinglePicture
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
 import com.stxx.wyhvisitorandroid.transformer.PicassoCircleImage
 import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
 import kotlinx.android.synthetic.main.fragment_mine.*
-import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
 
@@ -247,7 +246,7 @@ class MineFragment : BaseFragment() {
                         android.Manifest.permission.CAMERA,
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                     ) {
-                        chooseSinglePicture(false)
+                        gridSinglePicture()
                     }
                 }
             } else {
@@ -265,7 +264,8 @@ class MineFragment : BaseFragment() {
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == Activity.RESULT_OK) {
             val select = PictureSelector.obtainMultipleResult(data)
             if (select.size > 0) {
-                val iconPath = select[0].compressPath
+                //获取裁剪之后的路径
+                val iconPath = select[0].cutPath ?: select[0].compressPath
                 if (iconPath.isNullOrEmpty()) {
                     toast("图片出错,就重新选择")
                     return

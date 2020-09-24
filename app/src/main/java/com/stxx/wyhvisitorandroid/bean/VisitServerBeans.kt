@@ -32,7 +32,14 @@ data class ReportResultResp(
 ) : Serializable
 
 /*展示游客服务网格数据*/
-data class VisitGridData(val name: String, val iconRes: String, val showType: Int, val index: Int)
+data class VisitGridData(
+    val name: String,
+    val iconRes: String,
+    val showType: Int,
+    val index: Int,
+    //是否显示
+    val hidden: Boolean? = false
+)
 
 
 

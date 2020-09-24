@@ -72,6 +72,9 @@ class VisitorServerGridAdapter(private var dataSource: List<VisitGridData>?) :
             holder.itemView.setOnClickListener {
                 listener?.invoke(dataSource?.get(position)?.index ?: 0)
             }
+            if (dataSource?.get(position)?.hidden == true) {
+                holder.itemView.visibility = View.GONE
+            }
         }
 
 

@@ -25,11 +25,12 @@
         <item>@string/visitor_server_khjy</item>
         <item>@string/visitor_server_tsjb</item>
         <item>@string/visitor_server_yljz</item>
-    <!--    <item>@string/visitor_server_ryzs</item>
-        <item>@string/visitor_server_xwqs</item>-->
+        <item>@string/visitor_server_ryzs</item>
+        <item>@string/visitor_server_xwqs</item>
         <item>@string/visitor_server_wzafu</item>
         <item>@string/visitor_server_zajb</item>
         <item>@string/visitor_server_khzx</item>
+
     </string-array>
 
 

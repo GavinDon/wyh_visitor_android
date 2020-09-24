@@ -2,14 +2,12 @@ package com.stxx.wyhvisitorandroid.widgets
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.os.Build
+import android.content.Intent
+import android.net.Uri
 import android.util.AttributeSet
-import android.view.View
-import com.gavindon.mvvm_lib.widgets.ToastUtil
-import com.gavindon.mvvm_lib.widgets.showToast
-import com.tencent.smtt.sdk.QbSdk
+import androidx.core.content.ContextCompat.startActivity
+import com.orhanobut.logger.Logger
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 
@@ -26,8 +24,6 @@ class X5WebView : WebView {
 
     constructor(p0: Context?, p1: AttributeSet?) : super(p0, p1) {
         this.webViewClient = client
-        // this.setWebChromeClient(chromeClient);
-        // WebStorage webStorage = WebStorage.getInstance();
         removeJavascriptInterface("searchBoxJavaBridge_")
         removeJavascriptInterface("accessibility")
         removeJavascriptInterface("accessibilityTraversal")
@@ -41,7 +37,22 @@ class X5WebView : WebView {
      */
     private val client = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            view?.loadUrl(url)
+            Logger.i(url.toString())
+            //调用微信或者支付宝支付 在header中添加refrer
+            when {
+                url?.contains("wx.tenpay.com") == true -> {
+                    val headers = HashMap<String, String>()
+//                    headers["Referer"] = "https://keytop.cn/"
+                    view?.loadUrl(url, headers)
+                }
+                url?.contains("https://mclient.alipay.com") == true -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    view?.context?.startActivity(intent)
+                }
+                else -> {
+                    view?.loadUrl(url)
+                }
+            }
             return true
         }
     }
@@ -56,13 +67,13 @@ class X5WebView : WebView {
             allowFileAccess = true
             useWideViewPort = true
             setAppCacheEnabled(true)
-            setAppCachePath(context.externalCacheDir?.path+"webview")
+            setAppCachePath(context.externalCacheDir?.path + "webview")
             setGeolocationEnabled(true)
             domStorageEnabled = true
-            useWideViewPort=true
+            useWideViewPort = true
             setAllowFileAccessFromFileURLs(true)
             setAllowUniversalAccessFromFileURLs(true)
-            allowContentAccess=true
+            allowContentAccess = true
         }
     }
 
