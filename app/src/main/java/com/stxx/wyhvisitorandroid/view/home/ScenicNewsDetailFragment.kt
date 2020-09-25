@@ -65,7 +65,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
 
     private lateinit var mViewModel: HomeVm
     private lateinit var broadcastReceiver: BroadcastReceiver
-    private val search by lazy { RoutePlanSearch.newInstance() }
+    private var walkSearchLst = mutableListOf<RoutePlanSearch>()
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
@@ -243,57 +243,60 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
 
     }
 
+    private val tRoutePlanResultListener = object : SimpleOnGetRoutePlanResultListener() {
+        override fun onGetWalkingRouteResult(walkResult: WalkingRouteResult) {
+            val overlay = WalkingRouteOverlay(mapView?.map)
+            val routeLines = walkResult.routeLines
+            if (!routeLines.isNullOrEmpty()) {
+                val routeLine = walkResult.routeLines[0]
+                overlay.setData(routeLine)
+                overlay.addToMap()
+            }
+        }
+    }
+
+
     private fun searchRoute(points: List<Point>) {
         if (points.isNullOrEmpty()) return
-        /*       val tRoutePlanResultListener = object : SimpleOnGetRoutePlanResultListener() {
-                   override fun onGetWalkingRouteResult(walkResult: WalkingRouteResult) {
-                       val overlay = WalkingRouteOverlay(mapView?.map)
-                       val routeLines = walkResult.routeLines
-                       if (!routeLines.isNullOrEmpty()) {
-                           val walkingRouteLine = mutableListOf<WalkingRouteLine.WalkingStep>()
-                           val routeLine = walkResult.routeLines[0]
-                           for (point in points) {
-                               val p = convertBaidu(
-                                   point.y.toDouble(), point.x.toDouble()
-                               )
-                               val step = WalkingRouteLine.WalkingStep()
-                               step.entrance = RouteNode.location(p)
-                               walkingRouteLine.add(step)
-                           }
-                           routeLine.setSteps(walkingRouteLine)
-                           overlay.setData(routeLine)
-                           overlay.addToMap()
-                       }
-                   }
-               }
-               search.setOnGetRoutePlanResultListener(tRoutePlanResultListener)
-               val start = convertBaidu(
-                   points[0].y.toDouble(), points[0].x.toDouble()
-               )
-               val end = convertBaidu(
-                   points[points.lastIndex].y.toDouble(), points[points.lastIndex].x.toDouble()
-               )
 
-               search.walkingSearch(
-                   WalkingRoutePlanOption()
-                       .from(PlanNode.withLocation(start))
-                       .to(PlanNode.withLocation(end))
-               )
-       */
+        points.forEachIndexed { index, point ->
+            //如果经纬度数据不是最后一个则设置起终点进行路线规划
+            if (index != points.lastIndex) {
+                val start = convertBaidu(
+                    point.y.toDouble(), point.x.toDouble()
+                )
+                val end = convertBaidu(
+                    points[index + 1].y.toDouble(), points[index + 1].x.toDouble()
+                )
 
-        val overlay = WalkingRouteOverlay(mapView?.map)
-        val walkingRouteSteps = mutableListOf<WalkingRouteLine.WalkingStep>()
-        val walkingRouteLine = WalkingRouteLine()
-        val listLatLng = mutableListOf<LatLng>()
-        val step = WalkingRouteLine.WalkingStep()
-        points.forEachIndexed { _, point ->
-            listLatLng.add(convertBaidu(point.y.toDouble(), point.x.toDouble()))
-            step.wayPoints = listLatLng
+                val search = RoutePlanSearch.newInstance()
+                walkSearchLst.add(search)
+
+                search.setOnGetRoutePlanResultListener(tRoutePlanResultListener)
+                search.walkingSearch(
+                    WalkingRoutePlanOption().from(PlanNode.withLocation(start))
+                        .to(PlanNode.withLocation(end))
+                )
+
+            }
+
         }
-        walkingRouteLine.setSteps(listOf(step))
-        overlay.setData(walkingRouteLine)
-        overlay.addToMap()
         markerPointIndex(points)
+
+
+//        val overlay = WalkingRouteOverlay(mapView?.map)
+//        val walkingRouteSteps = mutableListOf<WalkingRouteLine.WalkingStep>()
+//        val walkingRouteLine = WalkingRouteLine()
+//        val listLatLng = mutableListOf<LatLng>()
+//        val step = WalkingRouteLine.WalkingStep()
+//        points.forEachIndexed { _, point ->
+//            listLatLng.add(convertBaidu(point.y.toDouble(), point.x.toDouble()))
+//            step.wayPoints = listLatLng
+//        }
+//        walkingRouteLine.setSteps(listOf(step))
+//        overlay.setData(walkingRouteLine)
+//        overlay.addToMap()
+//        markerPointIndex(points)
     }
 
     /**
@@ -304,7 +307,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
         val markerOptions = mutableListOf<OverlayOptions>()
         points.forEachIndexed { index, point ->
             val tvIndex = markerView.findViewById<TextView>(R.id.tvMarkerIndex)
-            tvIndex.text = "${index.plus(1)}\n${point.name}"
+            tvIndex.text = "${index.plus(1)}-${point.name}"
             val bitmapDescriptorFactory = BitmapDescriptorFactory.fromView(markerView)
             val options = with(MarkerOptions()) {
                 position(convertBaidu(point.y.toDouble(), point.x.toDouble()))
@@ -373,7 +376,10 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        search.destroy()
+//        search.destroy()
+        walkSearchLst.forEach {
+            it.destroy()
+        }
         mapView?.onDestroy()
         /* if (this::broadcastReceiver.isInitialized) {
              this.context?.unregisterReceiver(broadcastReceiver)

@@ -6,33 +6,23 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
-import androidx.activity.OnBackPressedCallback
+import android.widget.FrameLayout
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
-import com.stxx.wyhvisitorandroid.*
+import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.WEB_VIEW_TITLE
+import com.stxx.wyhvisitorandroid.WEB_VIEW_URL
+import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
-import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.fragment_webview.*
-import kotlinx.android.synthetic.main.fragment_webview.app_tv_Title
-import kotlinx.android.synthetic.main.fragment_webview.frame_layout_title
-import kotlinx.android.synthetic.main.fragment_webview.progressBar
-import kotlinx.android.synthetic.main.fragment_webview.titleBar
-import kotlinx.android.synthetic.main.fragment_webview.toolbar_back
-import kotlinx.android.synthetic.main.fragment_webview.x5WebView
-import kotlinx.android.synthetic.main.fragment_webview_notitle.*
-import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
-import java.util.*
 
 
 /**
@@ -68,6 +58,7 @@ class WebViewFragment : BaseFragment() {
         toolbar_back?.setOnClickListener {
             if (x5WebView?.canGoBack() == true) {
                 x5WebView?.goBack()
+                backWebView()
             } else {
                 findNavController().navigateUp()
             }
@@ -75,12 +66,21 @@ class WebViewFragment : BaseFragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, true) {
             if (x5WebView?.canGoBack() == true) {
                 x5WebView?.goBack()
+                backWebView()
             } else {
                 findNavController().navigateUp()
             }
         }
     }
 
+    //webview返回时恢复margin 适配停车场
+    private fun backWebView() {
+        val lp = x5WebView?.layoutParams as FrameLayout.LayoutParams
+        lp.topMargin = dip(26)
+        x5WebView.layoutParams = lp
+    }
+
+    //设置标题跟随h5 title
     private val webViewClient = object : WebViewClient() {
         override fun onPageFinished(view: WebView?, p1: String?) {
             super.onPageFinished(view, p1)
@@ -127,11 +127,18 @@ class WebViewFragment : BaseFragment() {
             progressBar?.visibility = View.VISIBLE
             progressBar?.progress = p1
             if (p1 == 100) {
+//                if (p0?.url?.contains("http://s.keytop.cn/wewm16")==true ) {
+//                    val lp = p0.layoutParams as FrameLayout.LayoutParams
+//                    lp.topMargin = dip(44).plus(getStatusBarHeight(context))
+//                    p0.layoutParams = lp
+//                }
                 progressBar?.visibility = View.GONE
                 progressBar?.progress = 0
             }
+
             super.onProgressChanged(p0, p1)
         }
+
 
         override fun onShowFileChooser(
             p0: WebView?,

@@ -40,6 +40,8 @@ data class ServerPointResp(
     val number: String,
     val details: String,
     val parkingFee: String?,
+    //停车场收费单位
+    val until: String? = "元/小时",
     val state: String,
     //厕所
     val thirdInfo: ToiletNumBean?,

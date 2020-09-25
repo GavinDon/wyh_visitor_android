@@ -50,9 +50,10 @@ fun Fragment.gridSinglePicture() {
         .compress(true)
         .showCropFrame(true)
         .showCropGrid(true)
-        .isDragFrame(true)
+        .withAspectRatio(1,1)
+        .isDragFrame(false)
         .rotateEnabled(true)
-        .freeStyleCropEnabled(true)
+        .freeStyleCropEnabled(false)
         .forResult(REQUEST_CODE_CHOOSE)
 }
 

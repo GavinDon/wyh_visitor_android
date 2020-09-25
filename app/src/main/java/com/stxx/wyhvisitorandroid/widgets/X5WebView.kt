@@ -5,11 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.AttributeSet
-import androidx.core.content.ContextCompat.startActivity
+import com.gavindon.mvvm_lib.utils.getStatusBarHeight
+import com.gavindon.mvvm_lib.widgets.showToast
 import com.orhanobut.logger.Logger
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest
+import com.tencent.smtt.export.external.interfaces.SslError
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
+import org.jetbrains.anko.dip
 
 
 /**
@@ -38,22 +41,53 @@ class X5WebView : WebView {
     private val client = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             Logger.i(url.toString())
+            if (url == null) return false
             //调用微信或者支付宝支付 在header中添加refrer
             when {
-                url?.contains("wx.tenpay.com") == true -> {
+//                https://cloud.keytop.cn/pc/page/payment_confirm.html
+                url.startsWith("https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?") -> {
                     val headers = HashMap<String, String>()
-//                    headers["Referer"] = "https://keytop.cn/"
+                    headers["Referer"] = "https://keytop.cn/"
                     view?.loadUrl(url, headers)
                 }
-                url?.contains("https://mclient.alipay.com") == true -> {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    view?.context?.startActivity(intent)
+                //第一步添加ref 再跳转支付
+                url.startsWith("weixin://wap/pay?") || url.startsWith("http://weixin/wap/pay") -> {
+                    return try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        view?.context?.startActivity(intent)
+                        true
+                    } catch (e: Exception) {
+                        view?.context?.showToast("未安装微信")
+                        false
+                    }
+                }
+                //支付宝支付
+                url.contains("alipays://platformapi") -> {
+                    return try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        view?.context?.startActivity(intent)
+                        true
+                    } catch (e: Exception) {
+                        view?.context?.showToast("未安装支付宝")
+                        false
+                    }
+                }
+                //停车场没有标题  动态设置margin
+                url.startsWith("http://s.keytop.cn/wewm16") -> {
+                    view?.loadUrl(url)
+                    val lp = view?.layoutParams as LayoutParams
+                    lp.topMargin = dip(44).plus(getStatusBarHeight(view.context))
+                    view.layoutParams = lp
                 }
                 else -> {
                     view?.loadUrl(url)
                 }
             }
             return true
+        }
+
+        override fun onReceivedSslError(p0: WebView?, p1: SslErrorHandler?, p2: SslError?) {
+            p1?.proceed()
         }
     }
 

@@ -13,8 +13,8 @@ enum class ComplaintEnum(@StringRes private val cons: Int) {
     SUGGEST(R.string.visitor_server_khjy),
     COMPLAINT(R.string.visitor_server_tsjb),
     MEDICAL_HELPER(R.string.visitor_server_yljz),
-    PERSONNEL_LOSE(R.string.visitor_server_ryzs),
     FINDING_THINGS(R.string.visitor_server_xwqs),
+    PERSONNEL_LOSE(R.string.visitor_server_ryzs),
     ACCESSIBILITY_SERVICES(R.string.visitor_server_wzafu),
     PUBLIC_SECURITY_REPORT(R.string.visitor_server_zajb),
     CLIENT_ASK(R.string.visitor_server_khzx);

@@ -111,10 +111,8 @@ object ApiService {
 
     //获取720列表
     const val AR720_URL = "complex/panorama/tableData"
-
-    //?faceUrl=XXX&phone=XXX
     const val FACE_REGISTER_URL =
-        "https://aiot.fractaltest.cn/gw-front/externel/bj_wyh/face_register"
+        "https://aiot.ucanuup.cn/gw-front/externel/bj_wyh/face_register"
 
     //?education = xxx 认证成功之后更新服务器信息
     const val FACE_AUTH = "tsvserviceapp/user/updateEducation"
@@ -184,8 +182,7 @@ object WebViewUrl {
     const val CAR_INFO = "pages/user/trip/trip"
 
     /*三方*/
-    const val AI_BUDAO_DEBUG = "https://aiot.ucanuup.cn/mapp/aioth5/?parkCode=WenYuHePark"
-    const val AI_BUDAO = "https://aiot.fractaltest.cn/mapp/aioth5/?parkCode=WenYuHePark&phone="
+    const val AI_BUDAO = "https://aiot.ucanuup.cn/mapp/aioth5/?parkCode=WenYuHePark&phone="
 
     //全景游园
 //    const val AR_720 = "http://manage.wenyuriverpark.com:8082/web/index720.html"

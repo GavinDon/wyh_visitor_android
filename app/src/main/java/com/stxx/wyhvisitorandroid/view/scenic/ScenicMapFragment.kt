@@ -669,7 +669,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
             total.text = "共有车位:"
             retail.text = "剩余车位:"
-            rule.text = "收费规则:${pointData.parkingFee ?: "--"}元/小时"
+            rule.text = "收费规则:${pointData.parkingFee ?: "--"}${pointData.until}"
             retailNum.text = pointData.residue
             parkSubscriber.visibility = View.INVISIBLE
             parkSubscriber.setOnClickListener {
