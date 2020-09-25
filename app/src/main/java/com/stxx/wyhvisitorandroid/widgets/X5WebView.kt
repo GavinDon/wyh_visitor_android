@@ -52,17 +52,20 @@ class X5WebView : WebView {
      * 若设置WebViewClient 且该方法返回 false，则说明由 WebView 处理该 url，即用 WebView 加载该 url。
      */
 
-    private var isPush = false
+    private var lastUrl = ""
+    private var isFirst = true
     private val client = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             if (url == null) return false
-            Logger.i(view?.hitTestResult?.type.toString())
+            Logger.i("result=${url}")
+            lastUrl = url
             when {
 //                https://cloud.keytop.cn/pc/page/payment_confirm.html
                 url.startsWith("https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?") -> {
                     val headers = HashMap<String, String>()
                     headers["Referer"] = "https://keytop.cn/"
                     view?.loadUrl(url, headers)
+                    return true
                 }
                 //第一步添加ref 再跳转支付
                 url.startsWith("weixin://wap/pay?") || url.startsWith("http://weixin/wap/pay") -> {
@@ -86,11 +89,25 @@ class X5WebView : WebView {
                         false
                     }
                 }
+//
+                (lastUrl.contains("https://cloud.keytop.cn/stcfront/Payment/Success")) -> {
+                    if (isFirst) {
+                        isFirst = !isFirst
+                    } else {
+                        goBack()
+                    }
+                    return false
+                }
+                (view?.x5HitTestResult?.extra == null) -> {
+                    //转发交给webview自己处理
+                    return false
+                }
                 else -> {
-                    view?.loadUrl(url)
+                    view.loadUrl(url)
+                    return false
                 }
             }
-            return true
+
         }
 
         override fun onReceivedSslError(p0: WebView?, p1: SslErrorHandler?, p2: SslError?) {
@@ -99,28 +116,30 @@ class X5WebView : WebView {
 
         override fun onPageStarted(x5WebView: WebView?, p1: String, p2: Bitmap?) {
             super.onPageStarted(x5WebView, p1, p2)
-            if (p1.contains("keytop.cn") && isPush) {
-                isPush = true
-                return
+            if (p1.startsWith("https://cloud.keytop.cn/page/order/common_order_paying.html")) {
+//                goBack()
             }
-            if (x5WebView?.hitTestResult?.type != HitTestResult.UNKNOWN_TYPE) {
-                return
-            }
-            mUrls.add(p1)
+//            if (p1.contains("keytop.cn") && isPush) {
+//                isPush = true
+//                return
+//            }
+//            if (x5WebView?.hitTestResult?.type != HitTestResult.UNKNOWN_TYPE) {
+//                return
+//            }
+//            mUrls.add(p1)
         }
 
 
         override fun onPageFinished(view: WebView, url: String) {
-            super.onPageFinished(view, url)
-            if (url.contains("s.keytop.cn/wewm")) {
-                val lp = view.layoutParams as LayoutParams
-                lp.topMargin = dip(44).plus(getStatusBarHeight(view.context))
-                view.layoutParams = lp
-            } else if (url.contains(WebViewUrl.CAR_INFO)) {
-                val lp = view.layoutParams as LayoutParams
-                lp.topMargin = dip(26)
-                view.layoutParams = lp
-            }
+            /*        if (url.contains("s.keytop.cn/wewm")) {
+                        val lp = view.layoutParams as LayoutParams
+                        lp.topMargin = dip(44).plus(getStatusBarHeight(view.context))
+                        view.layoutParams = lp
+                    } else if (url.contains(WebViewUrl.CAR_INFO)) {
+                        val lp = view.layoutParams as LayoutParams
+                        lp.topMargin = dip(26)
+                        view.layoutParams = lp
+                    }*/
         }
     }
 

@@ -35,7 +35,7 @@ open class WebViewNoTitleFragment : BaseFragment() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-        x5WebView.webViewClient = webViewClient
+//        x5WebView.webViewClient = webViewClient
         x5WebView.webChromeClient = webChromeClient
         val url = arguments?.getString("url")
         if (url?.startsWith("http") == true) {

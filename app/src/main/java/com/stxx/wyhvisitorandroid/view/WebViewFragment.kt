@@ -58,16 +58,16 @@ class WebViewFragment : BaseFragment() {
 
         toolbar_back?.setOnClickListener {
             if (x5WebView?.canGoBack() == true) {
-//                x5WebView?.goBack()
-               x5WebView.backUp()
+                x5WebView?.goBack()
+//               x5WebView.backUp()
             } else {
                 findNavController().navigateUp()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, true) {
             if (x5WebView?.canGoBack() == true) {
-//                x5WebView?.goBack()
-                x5WebView.backUp()
+                x5WebView?.goBack()
+//                x5WebView.backUp()
             } else {
                 findNavController().navigateUp()
             }

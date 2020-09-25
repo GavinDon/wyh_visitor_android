@@ -203,7 +203,7 @@ class MineFragment : BaseFragment() {
                     val token = judgeLogin()
                     if (token.isNotEmpty()) {
                         findNavController().navigate(
-                            R.id.fragment_webview,
+                            R.id.fragment_webview_notitle,
                             bundleOf(
                                 WEB_VIEW_URL to "${WebViewUrl.CAR_INFO}?token=$token",
                                 WEB_VIEW_TITLE to R.string.str_car_info

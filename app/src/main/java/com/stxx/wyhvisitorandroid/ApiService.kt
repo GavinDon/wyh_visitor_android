@@ -179,7 +179,8 @@ object WebViewUrl {
     const val BOOK = "pages/appointment/appointment?device=1"
 
     //车辆信息
-    const val CAR_INFO = "pages/user/trip/trip"
+    const val CAR_INFO = "pages/user/trip/triptwo"
+
 
     /*三方*/
     const val AI_BUDAO = "https://aiot.ucanuup.cn/mapp/aioth5/?parkCode=WenYuHePark&phone="
