@@ -3,16 +3,21 @@ package com.stxx.wyhvisitorandroid.widgets
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
+import androidx.navigation.findNavController
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.tencent.smtt.export.external.interfaces.SslError
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import org.jetbrains.anko.dip
+import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
@@ -21,6 +26,11 @@ import org.jetbrains.anko.dip
 
  */
 class X5WebView : WebView {
+
+
+    //    private val mUrls: Stack<String> = Stack()
+    private val mUrls = mutableSetOf<String>()
+
     constructor(p0: Context?) : super(p0) {
         setBackgroundColor(85621)
     }
@@ -37,12 +47,16 @@ class X5WebView : WebView {
 
     /**
      * 防止加载网页时调起系统浏览器
+     * 若没有设置 WebViewClient 则在点击链接之后由系统处理该 url，通常是使用浏览器打开或弹出浏览器选择对话框。
+     * 若设置WebViewClient 且该方法返回 true ，则说明由应用的代码处理该 url，WebView 不处理。
+     * 若设置WebViewClient 且该方法返回 false，则说明由 WebView 处理该 url，即用 WebView 加载该 url。
      */
+
+    private var isPush = false
     private val client = object : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            Logger.i(url.toString())
             if (url == null) return false
-            //调用微信或者支付宝支付 在header中添加refrer
+            Logger.i(view?.hitTestResult?.type.toString())
             when {
 //                https://cloud.keytop.cn/pc/page/payment_confirm.html
                 url.startsWith("https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?") -> {
@@ -72,13 +86,6 @@ class X5WebView : WebView {
                         false
                     }
                 }
-                //停车场没有标题  动态设置margin
-                url.startsWith("http://s.keytop.cn/wewm16") -> {
-                    view?.loadUrl(url)
-                    val lp = view?.layoutParams as LayoutParams
-                    lp.topMargin = dip(44).plus(getStatusBarHeight(view.context))
-                    view.layoutParams = lp
-                }
                 else -> {
                     view?.loadUrl(url)
                 }
@@ -88,6 +95,32 @@ class X5WebView : WebView {
 
         override fun onReceivedSslError(p0: WebView?, p1: SslErrorHandler?, p2: SslError?) {
             p1?.proceed()
+        }
+
+        override fun onPageStarted(x5WebView: WebView?, p1: String, p2: Bitmap?) {
+            super.onPageStarted(x5WebView, p1, p2)
+            if (p1.contains("keytop.cn") && isPush) {
+                isPush = true
+                return
+            }
+            if (x5WebView?.hitTestResult?.type != HitTestResult.UNKNOWN_TYPE) {
+                return
+            }
+            mUrls.add(p1)
+        }
+
+
+        override fun onPageFinished(view: WebView, url: String) {
+            super.onPageFinished(view, url)
+            if (url.contains("s.keytop.cn/wewm")) {
+                val lp = view.layoutParams as LayoutParams
+                lp.topMargin = dip(44).plus(getStatusBarHeight(view.context))
+                view.layoutParams = lp
+            } else if (url.contains(WebViewUrl.CAR_INFO)) {
+                val lp = view.layoutParams as LayoutParams
+                lp.topMargin = dip(26)
+                view.layoutParams = lp
+            }
         }
     }
 
@@ -111,34 +144,44 @@ class X5WebView : WebView {
         }
     }
 
-    /*override fun drawChild(canvas: Canvas?, child: View?, drawingTime: Long): Boolean {
-        val ret = super.drawChild(canvas, child, drawingTime)
-        canvas!!.save()
-        val paint = Paint()
-        paint.color = 0x7fff0000
-        paint.textSize = 24f
-        paint.isAntiAlias = true
-        if (x5WebViewExtension != null) {
-            canvas.drawText(
-                this.context.packageName + "-pid:"
-                        + android.os.Process.myPid(), 10f, 50f, paint
-            )
-            canvas.drawText(
-                "X5  Core:" + QbSdk.getTbsVersion(this.context), 10f,
-                100f, paint
-            )
-        } else {
-            canvas.drawText(
-                this.context.packageName + "-pid:"
-                        + android.os.Process.myPid(), 10f, 50f, paint
-            )
-            canvas.drawText("Sys Core", 10f, 100f, paint)
-        }
-        canvas.drawText(Build.MANUFACTURER, 10f, 150f, paint)
-        canvas.drawText(Build.MODEL, 10f, 200f, paint)
-        canvas.restore()
-        this.context?.showToast("sys core")
-        return ret
 
-    }*/
+    fun backUp() {
+        if (mUrls.size > 1) {
+            this.loadUrl(mUrls.elementAt(mUrls.size - 2))
+            mUrls.remove(mUrls.elementAt(mUrls.size - 2))
+        } else if (mUrls.size <= 1) {
+            findNavController().navigateUp()
+        }
+    }
+
+/*override fun drawChild(canvas: Canvas?, child: View?, drawingTime: Long): Boolean {
+    val ret = super.drawChild(canvas, child, drawingTime)
+    canvas!!.save()
+    val paint = Paint()
+    paint.color = 0x7fff0000
+    paint.textSize = 24f
+    paint.isAntiAlias = true
+    if (x5WebViewExtension != null) {
+        canvas.drawText(
+            this.context.packageName + "-pid:"
+                    + android.os.Process.myPid(), 10f, 50f, paint
+        )
+        canvas.drawText(
+            "X5  Core:" + QbSdk.getTbsVersion(this.context), 10f,
+            100f, paint
+        )
+    } else {
+        canvas.drawText(
+            this.context.packageName + "-pid:"
+                    + android.os.Process.myPid(), 10f, 50f, paint
+        )
+        canvas.drawText("Sys Core", 10f, 100f, paint)
+    }
+    canvas.drawText(Build.MANUFACTURER, 10f, 150f, paint)
+    canvas.drawText(Build.MODEL, 10f, 200f, paint)
+    canvas.restore()
+    this.context?.showToast("sys core")
+    return ret
+
+}*/
 }

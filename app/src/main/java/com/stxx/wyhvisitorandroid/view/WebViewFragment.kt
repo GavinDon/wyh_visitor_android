@@ -15,6 +15,7 @@ import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WEB_VIEW_TITLE
 import com.stxx.wyhvisitorandroid.WEB_VIEW_URL
 import com.stxx.wyhvisitorandroid.WebViewUrl
+import com.stxx.wyhvisitorandroid.WebViewUrl.CAR_INFO
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
@@ -57,27 +58,20 @@ class WebViewFragment : BaseFragment() {
 
         toolbar_back?.setOnClickListener {
             if (x5WebView?.canGoBack() == true) {
-                x5WebView?.goBack()
-                backWebView()
+//                x5WebView?.goBack()
+               x5WebView.backUp()
             } else {
                 findNavController().navigateUp()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, true) {
             if (x5WebView?.canGoBack() == true) {
-                x5WebView?.goBack()
-                backWebView()
+//                x5WebView?.goBack()
+                x5WebView.backUp()
             } else {
                 findNavController().navigateUp()
             }
         }
-    }
-
-    //webview返回时恢复margin 适配停车场
-    private fun backWebView() {
-        val lp = x5WebView?.layoutParams as FrameLayout.LayoutParams
-        lp.topMargin = dip(26)
-        x5WebView.layoutParams = lp
     }
 
     //设置标题跟随h5 title
@@ -145,7 +139,6 @@ class WebViewFragment : BaseFragment() {
             p1: ValueCallback<Array<Uri>>?,
             p2: FileChooserParams?
         ): Boolean {
-            toast("aa")
             return true
         }
 
