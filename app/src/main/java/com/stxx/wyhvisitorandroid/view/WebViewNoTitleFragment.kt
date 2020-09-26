@@ -1,6 +1,5 @@
 package com.stxx.wyhvisitorandroid.view
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -20,10 +19,8 @@ import com.stxx.wyhvisitorandroid.view.helpers.WebViewCameraHelper
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
-import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
 import kotlinx.android.synthetic.main.toolbar.*
-import org.jetbrains.anko.support.v4.toast
 
 
 /**
@@ -35,7 +32,6 @@ open class WebViewNoTitleFragment : BaseFragment() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
-//        x5WebView.webViewClient = webViewClient
         x5WebView.webChromeClient = webChromeClient
         val url = arguments?.getString("url")
         if (url?.startsWith("http") == true) {
@@ -49,6 +45,13 @@ open class WebViewNoTitleFragment : BaseFragment() {
             } else {
                 findNavController().navigateUp()
             }
+        }
+        toolbar_close?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        x5WebView.addUrlListener {
+            toolbar_close?.visibility = if (it.size > 1) View.VISIBLE else View.GONE
         }
     }
 
@@ -113,16 +116,6 @@ open class WebViewNoTitleFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         WebCameraHelper.getInstance().onActivityResult(requestCode, resultCode, intent)
-    }
-
-    private val webViewClient = object : WebViewClient() {
-        override fun onPageFinished(view: WebView?, p1: String?) {
-            super.onPageFinished(view, p1)
-            val title = view?.title ?: "详情"
-            app_tv_Title?.text = title
-            app_tv_Title?.isFocusable = true
-
-        }
     }
 
     override fun onDestroyView() {

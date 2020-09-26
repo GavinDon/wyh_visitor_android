@@ -6,15 +6,19 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.tencent.smtt.export.external.interfaces.SslError
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
+import kotlinx.android.synthetic.main.toolbar.view.*
 import org.jetbrains.anko.dip
 import java.util.*
 import kotlin.collections.HashMap
@@ -28,8 +32,9 @@ import kotlin.collections.HashMap
 class X5WebView : WebView {
 
 
-    //    private val mUrls: Stack<String> = Stack()
-    private val mUrls = mutableSetOf<String>()
+//    private val mUrls: Stack<String> = Stack()
+
+    private val mUrls = mutableSetOf<String?>()
 
     constructor(p0: Context?) : super(p0) {
         setBackgroundColor(85621)
@@ -43,7 +48,6 @@ class X5WebView : WebView {
         initWebViewSettings()
         this.view.isClickable = true
     }
-
 
     /**
      * 防止加载网页时调起系统浏览器
@@ -59,6 +63,10 @@ class X5WebView : WebView {
             if (url == null) return false
             Logger.i("result=${url}")
             lastUrl = url
+            Logger.i(url.toString())
+//            if (!mUrls.empty()) {
+//                mUrls.pop()
+//            }
             when {
 //                https://cloud.keytop.cn/pc/page/payment_confirm.html
                 url.startsWith("https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?") -> {
@@ -114,33 +122,29 @@ class X5WebView : WebView {
             p1?.proceed()
         }
 
-        override fun onPageStarted(x5WebView: WebView?, p1: String, p2: Bitmap?) {
-            super.onPageStarted(x5WebView, p1, p2)
-            if (p1.startsWith("https://cloud.keytop.cn/page/order/common_order_paying.html")) {
-//                goBack()
-            }
-//            if (p1.contains("keytop.cn") && isPush) {
-//                isPush = true
-//                return
-//            }
-//            if (x5WebView?.hitTestResult?.type != HitTestResult.UNKNOWN_TYPE) {
-//                return
-//            }
-//            mUrls.add(p1)
+        override fun onPageStarted(p0: WebView?, p1: String?, p2: Bitmap?) {
+            super.onPageStarted(p0, p1, p2)
+            Logger.i(p1.toString())
         }
 
-
-        override fun onPageFinished(view: WebView, url: String) {
-            /*        if (url.contains("s.keytop.cn/wewm")) {
-                        val lp = view.layoutParams as LayoutParams
-                        lp.topMargin = dip(44).plus(getStatusBarHeight(view.context))
-                        view.layoutParams = lp
-                    } else if (url.contains(WebViewUrl.CAR_INFO)) {
-                        val lp = view.layoutParams as LayoutParams
-                        lp.topMargin = dip(26)
-                        view.layoutParams = lp
-                    }*/
+        override fun onPageFinished(p0: WebView?, p1: String?) {
+            Logger.i(p1.toString())
+            /*     if (mUrls.empty()) {
+                     mUrls.push(p1)
+                 } else {
+                     if (mUrls.search(p1) != -1) {
+                         mUrls.push(p1)
+                     }
+                 }*/
+            mUrls.add(p1)
+            urlListener?.invoke(mUrls)
         }
+    }
+
+    private var urlListener: ((MutableSet<String?>) -> Unit)? = null
+
+    fun addUrlListener(urlStack: ((MutableSet<String?>) -> Unit)) {
+        this.urlListener = urlStack
     }
 
     @SuppressLint("SetJavaScriptEnabled")

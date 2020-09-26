@@ -22,6 +22,11 @@ import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.fragment_webview.*
+import kotlinx.android.synthetic.main.fragment_webview.app_tv_Title
+import kotlinx.android.synthetic.main.fragment_webview.frame_layout_title
+import kotlinx.android.synthetic.main.fragment_webview.titleBar
+import kotlinx.android.synthetic.main.fragment_webview.toolbar_back
+import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
 
@@ -40,7 +45,6 @@ class WebViewFragment : BaseFragment() {
         super.onInit(savedInstanceState)
         x5WebView.addJavascriptInterface(JavaInterfaceClose(), "android")
         x5WebView.webChromeClient = webChromeClient
-//        x5WebView.webViewClient = webViewClient
         val url = arguments?.getString(WEB_VIEW_URL)
         if (url?.startsWith("http") == true) {
             x5WebView.loadUrl(url)
@@ -71,17 +75,6 @@ class WebViewFragment : BaseFragment() {
             } else {
                 findNavController().navigateUp()
             }
-        }
-    }
-
-    //设置标题跟随h5 title
-    private val webViewClient = object : WebViewClient() {
-        override fun onPageFinished(view: WebView?, p1: String?) {
-            super.onPageFinished(view, p1)
-            val title = view?.title ?: "详情"
-            app_tv_Title?.text = title
-            app_tv_Title?.isFocusable = true
-
         }
     }
 
