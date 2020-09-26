@@ -51,7 +51,13 @@ open class WebViewNoTitleFragment : BaseFragment() {
         }
 
         x5WebView.addUrlListener {
-            toolbar_close?.visibility = if (it.size > 1) View.VISIBLE else View.GONE
+            if (it.size >= 1) {
+                if (x5WebView.url == it.first()) {
+                    toolbar_close?.visibility = View.GONE
+                } else {
+                    toolbar_close?.visibility = if (it.size > 1) View.VISIBLE else View.GONE
+                }
+            }
         }
     }
 
