@@ -72,3 +72,7 @@ fun EditText.hideSoftInputWord() {
 
 }
 
+fun getActionBarSize() {
+
+}
+

@@ -3,25 +3,14 @@ package com.stxx.wyhvisitorandroid.widgets
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.AttributeSet
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.orhanobut.logger.Logger
-import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.tencent.smtt.export.external.interfaces.SslError
 import com.tencent.smtt.export.external.interfaces.SslErrorHandler
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
-import kotlinx.android.synthetic.main.toolbar.view.*
-import org.jetbrains.anko.dip
-import java.util.*
-import kotlin.collections.HashMap
 
 
 /**
@@ -63,10 +52,6 @@ class X5WebView : WebView {
             if (url == null) return false
             Logger.i("result=${url}")
             lastUrl = url
-            Logger.i(url.toString())
-//            if (!mUrls.empty()) {
-//                mUrls.pop()
-//            }
             when {
 //                https://cloud.keytop.cn/pc/page/payment_confirm.html
                 url.startsWith("https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?") -> {
@@ -97,7 +82,7 @@ class X5WebView : WebView {
                         false
                     }
                 }
-//
+                //当展示支付完成页面时
                 (lastUrl.contains("https://cloud.keytop.cn/stcfront/Payment/Success")) -> {
                     if (isFirst) {
                         isFirst = !isFirst
@@ -106,12 +91,13 @@ class X5WebView : WebView {
                     }
                     return false
                 }
+                //当重定向页面时
                 (view?.x5HitTestResult?.extra == null) -> {
                     //转发交给webview自己处理
                     return false
                 }
                 else -> {
-                    view.loadUrl(url)
+//                    view.loadUrl(url)
                     return false
                 }
             }
@@ -122,22 +108,14 @@ class X5WebView : WebView {
             p1?.proceed()
         }
 
-        override fun onPageStarted(p0: WebView?, p1: String?, p2: Bitmap?) {
-            super.onPageStarted(p0, p1, p2)
-            Logger.i(p1.toString())
-        }
 
         override fun onPageFinished(p0: WebView?, p1: String?) {
-            Logger.i(p1.toString())
-            /*     if (mUrls.empty()) {
-                     mUrls.push(p1)
-                 } else {
-                     if (mUrls.search(p1) != -1) {
-                         mUrls.push(p1)
-                     }
-                 }*/
+            //不能写在onStarted
             mUrls.add(p1)
-            urlListener?.invoke(mUrls)
+            if (mUrls.size > 1) {
+                urlListener?.invoke(mUrls)
+            }
+
         }
     }
 
@@ -167,14 +145,14 @@ class X5WebView : WebView {
         }
     }
 
-
-    fun backUp() {
-        if (mUrls.size > 1) {
-            this.loadUrl(mUrls.elementAt(mUrls.size - 2))
-            mUrls.remove(mUrls.elementAt(mUrls.size - 2))
-        } else if (mUrls.size <= 1) {
-            findNavController().navigateUp()
-        }
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mUrls.clear()
+        this.removeAllViews()
+        this.clearCache(true)
+        this.clearHistory()
+        this.destroy()
+        Logger.i("result=onDetached")
     }
 
 /*override fun drawChild(canvas: Canvas?, child: View?, drawingTime: Long): Boolean {

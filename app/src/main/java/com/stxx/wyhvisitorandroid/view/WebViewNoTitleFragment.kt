@@ -6,11 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
@@ -21,6 +23,7 @@ import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import kotlinx.android.synthetic.main.fragment_webview_notitle.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.support.v4.px2dip
 
 
 /**
@@ -51,15 +54,15 @@ open class WebViewNoTitleFragment : BaseFragment() {
         }
 
         x5WebView.addUrlListener {
-            if (it.size >= 1) {
-                if (x5WebView.url == it.first()) {
-                    toolbar_close?.visibility = View.GONE
-                } else {
-                    toolbar_close?.visibility = if (it.size > 1) View.VISIBLE else View.GONE
-                }
+            //set集合中first数据和WebView当前展示的url相同则说明当前在第一页。应该隐藏关闭按钮
+            if (x5WebView.url == it.first()) {
+                toolbar_close?.visibility = View.GONE
+            } else {
+                toolbar_close?.visibility = View.VISIBLE
             }
         }
     }
+
 
     override fun setStatusBar() {
         if (context != null) {
@@ -78,6 +81,7 @@ open class WebViewNoTitleFragment : BaseFragment() {
                 }
             }
             titleBar?.layoutParams?.height = getStatusBarHeight(this.context)
+
             ImmersionBar.with(this)
                 .fitsSystemWindows(false)
                 .statusBarDarkFont(true)
@@ -98,7 +102,6 @@ open class WebViewNoTitleFragment : BaseFragment() {
         }
 
         override fun onReceivedTitle(p0: WebView?, p1: String?) {
-            super.onReceivedTitle(p0, p1)
             val title = p0?.title ?: "详情"
             app_tv_Title?.text = title
             app_tv_Title?.isFocusable = true

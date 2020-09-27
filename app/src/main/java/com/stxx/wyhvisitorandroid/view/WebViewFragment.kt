@@ -1,34 +1,27 @@
 package com.stxx.wyhvisitorandroid.view
 
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.widget.FrameLayout
 import androidx.activity.addCallback
+import androidx.appcompat.app.ActionBar
 import androidx.navigation.fragment.findNavController
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WEB_VIEW_TITLE
 import com.stxx.wyhvisitorandroid.WEB_VIEW_URL
 import com.stxx.wyhvisitorandroid.WebViewUrl
-import com.stxx.wyhvisitorandroid.WebViewUrl.CAR_INFO
 import com.stxx.wyhvisitorandroid.base.BaseFragment
-import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
-import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.android.synthetic.main.fragment_webview.*
-import kotlinx.android.synthetic.main.fragment_webview.app_tv_Title
-import kotlinx.android.synthetic.main.fragment_webview.frame_layout_title
-import kotlinx.android.synthetic.main.fragment_webview.titleBar
-import kotlinx.android.synthetic.main.fragment_webview.toolbar_back
-import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.px2dip
 
 
 /**
@@ -99,6 +92,11 @@ class WebViewFragment : BaseFragment() {
             titleBar.setBackgroundColor(Color.WHITE)
             frame_layout_title.setBackgroundColor(Color.WHITE)
             titleBar.layoutParams.height = getStatusBarHeight(this.context)
+            //H5标题栏高度固定为44
+            val h5Offset = dip(56) - 45
+            val lp = x5WebView.layoutParams as FrameLayout.LayoutParams
+            lp.topMargin = h5Offset
+            x5WebView.layoutParams = lp
             ImmersionBar.with(this)
                 .fitsSystemWindows(false)
                 .statusBarDarkFont(true)
@@ -114,27 +112,12 @@ class WebViewFragment : BaseFragment() {
             progressBar?.visibility = View.VISIBLE
             progressBar?.progress = p1
             if (p1 == 100) {
-//                if (p0?.url?.contains("http://s.keytop.cn/wewm16")==true ) {
-//                    val lp = p0.layoutParams as FrameLayout.LayoutParams
-//                    lp.topMargin = dip(44).plus(getStatusBarHeight(context))
-//                    p0.layoutParams = lp
-//                }
                 progressBar?.visibility = View.GONE
                 progressBar?.progress = 0
             }
 
             super.onProgressChanged(p0, p1)
         }
-
-
-        override fun onShowFileChooser(
-            p0: WebView?,
-            p1: ValueCallback<Array<Uri>>?,
-            p2: FileChooserParams?
-        ): Boolean {
-            return true
-        }
-
     }
 
     inner class JavaInterfaceClose {
