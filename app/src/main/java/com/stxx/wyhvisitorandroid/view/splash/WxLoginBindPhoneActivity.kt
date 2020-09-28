@@ -16,13 +16,8 @@ import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
 import com.stxx.wyhvisitorandroid.view.mine.MineView
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.fragment_webview.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.toolbar.frame_layout_title
-import kotlinx.android.synthetic.main.toolbar.titleBar
 import kotlinx.android.synthetic.main.wx_login_bind_phone.*
-import org.jetbrains.anko.backgroundColorResource
 import java.lang.Exception
 import java.util.regex.Pattern
 
@@ -40,6 +35,7 @@ class WxLoginBindPhoneActivity : BaseActivity() {
         bindSendSmsView.setOnSmsClickListener() {
             loginVm.getSmsCode(listOf(Pair("phone", it)))
         }
+
 
         btnBindPhone.setOnClickListener {
             val strPhone = tvBindPhone.text.toString().trim()
@@ -82,6 +78,9 @@ class WxLoginBindPhoneActivity : BaseActivity() {
         titleBar.layoutParams.height = getStatusBarHeight(this)
         titleBar.setBackgroundColor(Color.WHITE)
         frame_layout_title.setBackgroundColor(Color.WHITE)
+        toolbar_back?.setOnClickListener {
+            this.finish()
+        }
         ImmersionBar.with(this)
             .transparentStatusBar()
             .statusBarDarkFont(true)
