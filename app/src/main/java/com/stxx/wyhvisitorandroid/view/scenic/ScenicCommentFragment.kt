@@ -5,27 +5,18 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.SparseBooleanArray
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RatingBar
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.baidu.geofence.GeoFence
-import com.baidu.geofence.GeoFenceClient
-import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.model.LatLng
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.gavindon.mvvm_lib.net.http
+import com.baidu.mapapi.utils.route.BaiduMapRoutePlan
 import com.gavindon.mvvm_lib.utils.NotificationUtil
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.ScenicCommentAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
@@ -35,15 +26,9 @@ import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.CommentViewModel
-import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
 import com.stxx.wyhvisitorandroid.service.PlaySoundService
-import com.stxx.wyhvisitorandroid.transformer.PicassoCircleImage
 import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil
-import com.stxx.wyhvisitorandroid.widgets.ExpandableTextView
-import com.stxx.wyhvisitorandroid.widgets.NineGridView
 import kotlinx.android.synthetic.main.fragment_comment.*
-import kotlinx.android.synthetic.main.fragment_multi_root.*
-import kotlinx.android.synthetic.main.fragment_scenic.*
 
 
 /**
@@ -264,7 +249,13 @@ class ScenicCommentFragment : BaseFragment() {
         } else {
             //未进入园区
             if (this.context != null && currentLongitude != null) {
-                showWakeApp(this.requireContext(), currentLatitude!!, currentLongitude!!)
+                showWakeApp(
+                    this.requireContext(),
+                    LatLng(currentLatitude!!, currentLongitude!!),
+                    latLng,
+                    detailData?.name
+                )
+
             } else {
                 this.context?.showToast("无法获取当前位置,暂不能导航")
             }
@@ -282,6 +273,10 @@ class ScenicCommentFragment : BaseFragment() {
         ).startNav()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        BaiduMapRoutePlan.finish(this.context)
+    }
 
     override fun setStatusBar() {
         ImmersionBar.with(this)

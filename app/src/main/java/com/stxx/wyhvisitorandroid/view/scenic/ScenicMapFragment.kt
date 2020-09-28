@@ -24,6 +24,7 @@ import com.baidu.geofence.GeoFenceClient
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.model.LatLngBounds
+import com.baidu.mapapi.utils.route.BaiduMapRoutePlan
 import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.SuccessSource
@@ -747,6 +748,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     /**
      * 后台返回
+     * @param latLng 导航终点经纬度(百度坐标)
      */
     private fun goWalkNav(
         pointData: ServerPointResp,
@@ -765,7 +767,12 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         } else {
             //未进入园区
             if (this.context != null && currentLongitude != null) {
-                showWakeApp(this.requireContext(), currentLatitude!!, currentLongitude!!)
+                showWakeApp(
+                    this.requireContext(),
+                    LatLng(currentLatitude!!, currentLongitude!!),
+                    latLng,
+                    pointData.name
+                )
             } else {
                 this.context?.showToast("无法获取当前位置,暂不能导航")
             }
@@ -896,6 +903,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         super.onDestroy()
         try {
             this.context?.unregisterReceiver(GeoBroadCast)
+            BaiduMapRoutePlan.finish(this.context)
         } catch (e: Exception) {
             e.printStackTrace()
         }
