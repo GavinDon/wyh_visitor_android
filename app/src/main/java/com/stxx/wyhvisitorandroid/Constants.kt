@@ -116,37 +116,6 @@ fun getTimeDiffMinute(preTime: Long): Boolean {
     return diff <= 120
 }
 
-//显示加载框
-fun showLoadingDialog(showDialog: Boolean = true, strTip: String = "正在加载中") {
-    val act = MVVMBaseApplication.getCurActivity()
-    val frameDialog =
-        act?.window?.findViewById<FrameLayout>(com.gavindon.mvvm_lib.R.id.flyLoadingDialog)
-    val loadView: View
-
-    if (frameDialog != null) {
-        loadView = frameDialog
-    } else {
-        val layoutInflater =
-            act?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        loadView =
-            layoutInflater.inflate(com.gavindon.mvvm_lib.R.layout.loading_dialog_view, null, false)
-        act.window?.addContentView(
-            loadView,
-            FrameLayout.LayoutParams(matchParent, matchParent)
-        )
-    }
-
-    if (showDialog) {
-        val tip = loadView.findViewById<TextView>(R.id.tvProgressTip)
-        tip.text = strTip
-        loadView.visibility = View.VISIBLE
-    } else {
-        loadView.visibility = View.GONE
-        loadView.isClickable = false
-        loadView.clearFocus()
-    }
-
-}
 
 //跳转到ai步道页面
 fun goAiBudaoPage(view: View) {

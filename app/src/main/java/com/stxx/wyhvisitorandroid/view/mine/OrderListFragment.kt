@@ -14,6 +14,7 @@ class OrderListFragment : ToolbarFragment() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
+        mStatusView?.hideAllView()
         mStatusView?.showEmpty()
 
     }

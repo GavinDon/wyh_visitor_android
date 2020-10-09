@@ -28,6 +28,7 @@ open class MVVMBaseApplication : Application() {
         private val activityStack = Stack<Activity>()
         val instance: MVVMBaseApplication by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { MVVMBaseApplication() }
         fun getCurActivity(): Activity? {
+            if (activityStack.empty()) return null
             return activityStack.lastElement()
         }
     }

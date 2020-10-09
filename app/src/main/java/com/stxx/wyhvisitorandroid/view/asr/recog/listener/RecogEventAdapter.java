@@ -35,7 +35,9 @@ public class RecogEventAdapter implements EventListener {
         if (false) { // 可以调试，不需要后续逻辑
             return;
         }
-
+        if (listener == null) {
+            return;
+        }
         if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_LOADED)) {
             listener.onOfflineLoaded();
         } else if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_UNLOADED)) {
@@ -83,6 +85,7 @@ public class RecogEventAdapter implements EventListener {
         } else if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_VOLUME)) {
             // Logger.info(TAG, "asr volume event:" + params);
             Volume vol = parseVolumeJson(params);
+
             listener.onAsrVolume(vol.volumePercent, vol.volume);
         } else if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_AUDIO)) {
             if (data.length != length) {
