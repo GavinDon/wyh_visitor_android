@@ -156,7 +156,8 @@ data class WeatherLifestyle(
 data class RealPeopleNum(
     val history_num_total: Int,
     val same_day_num_total: Int = 0,
-    val real_time_num_total: Int = 0
+    val real_time_num_total: Int = 0,
+    val total: Int = 0
 
 )
 

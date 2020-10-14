@@ -1,11 +1,16 @@
 package com.stxx.wyhvisitorandroid.view.home
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.github.kittinunf.fuel.Fuel
 import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.tools.PictureFileUtils
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.adapter.AlbumOnlyShowAdapter
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
@@ -13,6 +18,7 @@ import com.stxx.wyhvisitorandroid.bean.ReportResultResp
 import com.stxx.wyhvisitorandroid.enums.ComplaintEnum
 import com.stxx.wyhvisitorandroid.graphics.SelectorGlideEngine
 import kotlinx.android.synthetic.main.fragment_report_detail.*
+import java.io.File
 
 /**
  * description:举报查询详情
@@ -66,6 +72,10 @@ class ReportResultDetailFragment : ToolbarFragment() {
                     val localMediaLst = mutableListOf<LocalMedia>()
                     for (i in urls) {
                         val localMedia = LocalMedia().apply {
+                            if (i.endsWith("mp4") || i.endsWith("avi") || i.endsWith("3gp")) {
+                                this.chooseModel = PictureConfig.TYPE_VIDEO
+                                this.mimeType = PictureMimeType.MIME_TYPE_VIDEO
+                            }
                             path = i
                         }
                         localMediaLst.add(localMedia)
@@ -74,11 +84,32 @@ class ReportResultDetailFragment : ToolbarFragment() {
                     rvImage.adapter = imageAdapter
                     rvImage.addItemDecoration(GridSpacingItemDecoration(4, 2, false))
                     imageAdapter.setOnItemClickListener { _, position ->
-                        PictureSelector.create(MVVMBaseApplication.getCurActivity())
-                            .themeStyle(R.style.picture_default_style)
-                            .isNotPreviewDownload(true)
-                            .loadImageEngine(SelectorGlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
-                            .openExternalPreview(position, imageAdapter.data)
+                        if (localMediaLst.isNotEmpty()) {
+                            val media = localMediaLst[position]
+                            /*    when (media.chooseModel) {
+                                    PictureConfig.TYPE_VIDEO -> {
+                                        PictureSelector.create(this)
+                                            .externalPictureVideo(media.path)
+                                    }
+                                    else -> {
+                                        PictureSelector.create(MVVMBaseApplication.getCurActivity())
+                                            .themeStyle(R.style.picture_default_style)
+                                            .isNotPreviewDownload(true)
+                                            .loadImageEngine(SelectorGlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                                            .openExternalPreview(
+                                                position,
+                                                imageAdapter.data)
+                                    }
+                                }*/
+                            PictureSelector.create(MVVMBaseApplication.getCurActivity())
+                                .themeStyle(R.style.picture_default_style)
+                                .isNotPreviewDownload(true)
+                                .loadImageEngine(SelectorGlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                                .openExternalPreview(
+                                    position,
+                                    imageAdapter.data
+                                )
+                        }
                     }
                 } else {
                     tvAttachImage.visibility = View.GONE
@@ -86,5 +117,8 @@ class ReportResultDetailFragment : ToolbarFragment() {
             }
         }
 
+    }
+
+    private fun url2file(url: String) {
     }
 }

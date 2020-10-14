@@ -50,7 +50,7 @@ fun Fragment.gridSinglePicture() {
         .compress(true)
         .showCropFrame(true)
         .showCropGrid(true)
-        .withAspectRatio(1,1)
+        .withAspectRatio(1, 1)
         .isDragFrame(false)
         .rotateEnabled(true)
         .freeStyleCropEnabled(false)
@@ -98,6 +98,33 @@ fun Fragment.chooseAlbum(selectionMedia: List<LocalMedia>) {
         .maxVideoSelectNum(1)
         .maxSelectNum(3)
         .isWithVideoImage(true)
+        .loadImageEngine(SelectorGlideEngine.createGlideEngine())
+        .theme(R.style.selectPicture)
+        .previewEggs(true)
+        .compress(true)
+        .previewImage(true)
+        .selectionMedia(selectionMedia)
+        .forResult(REQUEST_CODE_CHOOSE)
+}
+
+/**
+ * 选择图片，视频，音频
+ */
+fun Fragment.chooseAlbumAll(selectionMedia: List<LocalMedia>) {
+    PictureSelector.create(this)
+        .openGallery(PictureMimeType.ofAll())
+        .isWeChatStyle(false)
+        .setPictureWindowAnimationStyle(
+            PictureWindowAnimationStyle(
+                R.anim.anim_right_in,
+                R.anim.anim_right_out
+            )
+        )
+        .imageSpanCount(3)
+        .maxVideoSelectNum(1)
+        .maxSelectNum(3)
+        .isWithVideoImage(true)
+        .enablePreviewAudio(true)
         .loadImageEngine(SelectorGlideEngine.createGlideEngine())
         .theme(R.style.selectPicture)
         .previewEggs(true)

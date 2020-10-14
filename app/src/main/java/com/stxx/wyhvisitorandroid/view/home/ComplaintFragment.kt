@@ -26,15 +26,11 @@ import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.AlbumGridAdapter
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.enums.ComplaintEnum
-import com.stxx.wyhvisitorandroid.graphics.GalleryLayoutManager
-import com.stxx.wyhvisitorandroid.graphics.REQUEST_CODE_CHOOSE
-import com.stxx.wyhvisitorandroid.graphics.SelectorGlideEngine
-import com.stxx.wyhvisitorandroid.graphics.chooseAlbum
+import com.stxx.wyhvisitorandroid.graphics.*
 import com.stxx.wyhvisitorandroid.mplusvm.ComplaintVm
 import com.yalantis.ucrop.util.ScreenUtils
 import kotlinx.android.synthetic.main.fragment_complaint.*
 import kotlinx.android.synthetic.main.toolbar.*
-import org.jetbrains.anko.support.v4.email
 import java.util.regex.Pattern
 
 
@@ -177,7 +173,7 @@ class ComplaintFragment : ToolbarFragment() {
                     "type" to type,
                     "sources" to BuildConfig.source
                 )
-                val mediaData = selectList.map { if (it.isCompressed) it.compressPath else it.path }
+                val mediaData = selectList.map { if (it.isCompressed) it.compressPath else it.realPath }
                 mViewModel.complaint(param, mediaData).observe(this, Observer {
                     handlerResponseData(it, {
                         requireContext().showToast("操作成功")
@@ -191,7 +187,7 @@ class ComplaintFragment : ToolbarFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            selectList = PictureSelector.obtainMultipleResult(data);
+            selectList = PictureSelector.obtainMultipleResult(data)
             albumAdapter?.setList(selectList)
             albumAdapter?.notifyDataSetChanged()
         }
@@ -206,7 +202,7 @@ class ComplaintFragment : ToolbarFragment() {
                     android.Manifest.permission.CAMERA,
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 ) {
-                    chooseAlbum(selectList)
+                    chooseAlbumAll(selectList)
                 }
             })
         rvAlbum.apply {

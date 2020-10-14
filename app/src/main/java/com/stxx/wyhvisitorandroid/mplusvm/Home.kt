@@ -96,8 +96,8 @@ class HomeVm : MVVMBaseViewModel() {
             .rxResponseObject(gsonDeserializer<BR<List<WeatherLifestyle>>>())
             .toObservable()
 
-//        val nowPe = Fuel.get(ApiService.REAL_TIME_NUM_TOTAL)
-//            .rxResponseObject(gsonDeserializer<BR<RealPeopleNum>>()).toObservable()
+        val nowPe = Fuel.get(ApiService.REAL_PASSAGER)
+            .rxResponseObject(gsonDeserializer<BR<RealPeopleNum>>()).toObservable()
         val pm25 = Fuel.get(ApiService.PM25).rxResponseObject(gsonDeserializer<BR<PM25Resp>>())
             .toObservable()
         val banner =
@@ -107,15 +107,16 @@ class HomeVm : MVVMBaseViewModel() {
 
         val source = mutableListOf<Resource<BR<*>>>()
         mCompositeDisposable.add(
-            Observable.mergeDelayError(
+            Observable.mergeArrayDelayError(
                 banner,
                 weatherNow,
                 lifestyle,
+                nowPe,
                 pm25
             ).compose(RxScheduler.applyScheduler())
                 .subscribe({
                     source.add(create(it))
-                    if (source.size == 4) {
+                    if (source.size == 5) {
                         liveDataBanner.value = source
                     }
                 }, {

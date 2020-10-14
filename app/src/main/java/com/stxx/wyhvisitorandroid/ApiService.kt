@@ -132,6 +132,8 @@ object ApiService {
 
     const val LINE_POINT = "tsv/routerecommendation/findByid"
 
+    const val REAL_PASSAGER = "passengerFlow/realPassager"
+
 }
 
 object WebViewUrl {

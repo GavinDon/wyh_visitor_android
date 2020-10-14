@@ -37,7 +37,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextClock
-            android:id="@+id/homeTVTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
@@ -47,11 +46,11 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@id/homeTvLocation"
             app:layout_constraintTop_toBottomOf="@id/homeTvLocation" />
 
         <TextClock
-            android:id="@+id/homeTVDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-10dp"
@@ -63,8 +62,44 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_12"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@id/homeTvLocation"
             app:layout_constraintTop_toBottomOf="@id/homeTVTime"
+            tools:text="2019-10-01" />
+
+        <TextView
+            android:id="@+id/homeTVTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center"
+            android:text="实时在园人数"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toLeftOf="@id/homeTvLocation"
+            app:layout_constraintTop_toBottomOf="@id/homeTvLocation" />
+
+        <TextView
+            android:id="@+id/homeTVDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_28"
+            app:layout_constraintLeft_toLeftOf="@id/homeTvLocation"
+            app:layout_constraintTop_toBottomOf="@id/homeTVTime"
+            tools:text="2019-10-01" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:text="人"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@id/homeTVDate"
+            app:layout_constraintLeft_toRightOf="@id/homeTVDate"
             tools:text="2019-10-01" />
 
         <TextView

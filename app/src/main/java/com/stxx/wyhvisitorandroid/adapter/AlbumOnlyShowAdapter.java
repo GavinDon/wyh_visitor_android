@@ -21,6 +21,7 @@ import com.luck.picture.lib.tools.DateUtils;
 import com.stxx.wyhvisitorandroid.R;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,22 +46,6 @@ public class AlbumOnlyShowAdapter extends
 
     public interface onAddPicClickListener {
         void onAddPicClick();
-    }
-
-    /**
-     * 删除
-     */
-    public void delete(int position) {
-        try {
-
-            if (position != RecyclerView.NO_POSITION && list.size() > position) {
-                list.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, list.size());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public AlbumOnlyShowAdapter(Context context, onAddPicClickListener mOnAddPicClickListener) {
@@ -181,8 +166,14 @@ public class AlbumOnlyShowAdapter extends
                 Log.i(TAG, "开启原图功能后地址::" + media.getOriginalPath());
             }
 
-            long duration = media.getDuration();
-            viewHolder.tvDuration.setVisibility(PictureMimeType.eqVideo(media.getMimeType())
+//            long duration = media.getDuration();
+//            viewHolder.tvDuration.setVisibility(PictureMimeType.eqVideo(media.getMimeType())
+//                    ? View.VISIBLE : View.GONE);
+            long duration = 0;
+            if (media.getChooseModel() == PictureMimeType.ofVideo()) {
+//                duration = getDuration(media.getPath());
+            }
+            viewHolder.tvDuration.setVisibility((media.getChooseModel() == PictureMimeType.ofVideo())
                     ? View.VISIBLE : View.GONE);
             if (chooseModel == PictureMimeType.ofAudio()) {
                 viewHolder.tvDuration.setVisibility(View.VISIBLE);
@@ -193,7 +184,7 @@ public class AlbumOnlyShowAdapter extends
                 viewHolder.tvDuration.setCompoundDrawablesRelativeWithIntrinsicBounds
                         (R.drawable.picture_icon_video, 0, 0, 0);
             }
-            viewHolder.tvDuration.setText(DateUtils.formatDurationTime(duration));
+//            viewHolder.tvDuration.setText(DateUtils.formatDurationTime(duration));
             if (chooseModel == PictureMimeType.ofAudio()) {
                 viewHolder.mImg.setImageResource(R.drawable.picture_audio_placeholder);
             } else {
@@ -238,5 +229,21 @@ public class AlbumOnlyShowAdapter extends
     public interface OnItemLongClickListener {
         void onItemLongClick(RecyclerView.ViewHolder holder, int position, View v);
     }
+
+    /**
+     * @param url 视频地址
+     *            获取服务端视频的时长
+     * @return
+     */
+    private long getDuration(String url) {
+        try {
+//            File file = new File(url);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }
 

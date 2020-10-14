@@ -72,50 +72,7 @@ class BannerAdapter(
         val homeTVTempera = holder.getView<TextView>(R.id.homeTVTempera)
         //多云转睛
         val weather = holder.getView<TextView>(R.id.homeTvWeather)
-
-        /*  val weatherNow =
-              Fuel.get(ApiService.WEATHER_NOW).rxResponseObject(gsonDeserializer<BR<WeatherResp>>())
-                  .toObservable()
-          val lifestyle = Fuel.get(ApiService.WEATHER_LIFESTYLE)
-              .rxResponseObject(gsonDeserializer<BR<List<WeatherLifestyle>>>())
-              .toObservable()
-
-          val nowPe = Fuel.get(ApiService.REAL_TIME_NUM_TOTAL)
-              .rxResponseObject(gsonDeserializer<BR<RealPeopleNum>>()).toObservable()*/
-
-        /*    val a = Observable.mergeDelayError(
-                weatherNow,
-                lifestyle,
-                nowPe
-            ).compose(RxScheduler.applyScheduler())
-                .subscribe({
-                    if (null != it) {
-                        val data = it.data
-                        when (data) {
-                            is WeatherResp -> {
-                                weather.text = data.cond_txt
-                                if (data.tmp.isNotEmpty()) {
-                                    homeTVTempera.text = "${data.tmp}°"
-                                }
-                                if (!data.hum.isNullOrEmpty()) {
-                                    hum.text = "${data.hum}%"
-                                }
-                            }
-                            is RealPeopleNum -> {
-                                nowPeople.text = data.history_num_total.toString()
-                            }
-                            else -> {
-                                val lifestyle = data as List<WeatherLifestyle>
-                                airIndex.text = "舒适"
-                                visitIndex.text = "适宜"
-    //                            visitIndex.text = lifestyle[6].brf
-                            }
-                        }
-                    } else {
-                    }
-                }, {
-                })*/
-
+        val peopleNum = holder.getView<TextView>(R.id.homeTVDate)
 
         /////////////////////////
 
@@ -160,11 +117,12 @@ class BannerAdapter(
                                     }
                                 }
                                 is PM25Resp -> {
-                                    //入园人数
-//                                    nowPeople.text = data.real_time_num_total.toString()
                                     tvNo.text = "${data.no}"
                                     tvPm25.text = "${data.pm25}"
-
+                                }
+                                is RealPeopleNum -> {
+                                    //入园人数
+                                    peopleNum.text = "${data.total}"
                                 }
                             }
                         }
