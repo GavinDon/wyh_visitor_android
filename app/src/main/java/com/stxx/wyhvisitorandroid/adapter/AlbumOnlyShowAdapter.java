@@ -61,6 +61,11 @@ public class AlbumOnlyShowAdapter extends
         this.list = list;
     }
 
+    public void addData(List<LocalMedia> data) {
+        this.list.addAll(data);
+        notifyDataSetChanged();
+    }
+
     public List<LocalMedia> getData() {
         return list == null ? new ArrayList<>() : list;
     }
@@ -137,6 +142,7 @@ public class AlbumOnlyShowAdapter extends
                 return;
             }
             int chooseModel = media.getChooseModel();
+            String mimeType = media.getMimeType();
             String path;
             if (media.isCut() && !media.isCompressed()) {
                 // 裁剪过
@@ -148,39 +154,21 @@ public class AlbumOnlyShowAdapter extends
                 // 原图
                 path = media.getPath();
             }
-
-            Log.i(TAG, "原图地址::" + media.getPath());
-
-            if (media.isCut()) {
-                Log.i(TAG, "裁剪地址::" + media.getCutPath());
-            }
-            if (media.isCompressed()) {
-                Log.i(TAG, "压缩地址::" + media.getCompressPath());
-                Log.i(TAG, "压缩后文件大小::" + new File(media.getCompressPath()).length() / 1024 + "k");
-            }
-            if (!TextUtils.isEmpty(media.getAndroidQToPath())) {
-                Log.i(TAG, "Android Q特有地址::" + media.getAndroidQToPath());
-            }
-            if (media.isOriginal()) {
-                Log.i(TAG, "是否开启原图功能::" + true);
-                Log.i(TAG, "开启原图功能后地址::" + media.getOriginalPath());
-            }
-
-//            long duration = media.getDuration();
-//            viewHolder.tvDuration.setVisibility(PictureMimeType.eqVideo(media.getMimeType())
-//                    ? View.VISIBLE : View.GONE);
-            long duration = 0;
-            if (media.getChooseModel() == PictureMimeType.ofVideo()) {
-//                duration = getDuration(media.getPath());
-            }
-            viewHolder.tvDuration.setVisibility((media.getChooseModel() == PictureMimeType.ofVideo())
+            viewHolder.tvDuration.setVisibility(PictureMimeType.eqVideo(media.getMimeType())
                     ? View.VISIBLE : View.GONE);
-            if (chooseModel == PictureMimeType.ofAudio()) {
+            long duration = 0;
+            if (media.getMimeType().equals(PictureMimeType.MIME_TYPE_VIDEO)) {
+//                duration = getDuration(media.getPath());
+                viewHolder.tvDuration.setVisibility(View.VISIBLE);
+            }
+
+
+            if (mimeType.equals(PictureMimeType.MIME_TYPE_AUDIO)) {
                 viewHolder.tvDuration.setVisibility(View.VISIBLE);
                 viewHolder.tvDuration.setCompoundDrawablesRelativeWithIntrinsicBounds
                         (R.drawable.picture_icon_audio, 0, 0, 0);
 
-            } else {
+            } else if (mimeType.equals(PictureMimeType.MIME_TYPE_VIDEO)) {
                 viewHolder.tvDuration.setCompoundDrawablesRelativeWithIntrinsicBounds
                         (R.drawable.picture_icon_video, 0, 0, 0);
             }

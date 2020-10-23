@@ -73,7 +73,7 @@ class MultiFragments : BaseActivity() {
         //在xml中不设置tint的话会默认createDefaultColorStateList导致自定义的图标失效
         bottomBarView.itemIconTintList = null
         initDrag()
-        BdLocation2.startLocation
+//        BdLocation2.startLocation
         lifecycle.addObserver(BdLocation2)
         volumeControlStream = AudioManager.STREAM_MUSIC
         //返回后台

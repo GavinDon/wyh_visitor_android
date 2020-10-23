@@ -1,6 +1,8 @@
 package com.stxx.wyhvisitorandroid.view.home
 
+import android.Manifest
 import android.content.BroadcastReceiver
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -16,16 +18,23 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.transition.TransitionInflater
+import com.baidu.geofence.GeoFence
+import com.baidu.geofence.GeoFenceClient
 import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.core.RouteNode
 import com.baidu.mapapi.search.route.*
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.net.http
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
+import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
 import com.orhanobut.logger.Logger
@@ -38,7 +47,11 @@ import com.stxx.wyhvisitorandroid.bean.*
 import com.stxx.wyhvisitorandroid.convertBaidu
 import com.stxx.wyhvisitorandroid.graphics.HtmlTagHandler
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
+import com.stxx.wyhvisitorandroid.location.BdLocation2
+import com.stxx.wyhvisitorandroid.location.GeoBroadCast
+import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.HomeVm
+import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil
 import com.stxx.wyhvisitorandroid.view.helpers.SimpleOnGetRoutePlanResultListener
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatUtil
@@ -66,6 +79,10 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
     private lateinit var mViewModel: HomeVm
     private lateinit var broadcastReceiver: BroadcastReceiver
     private var walkSearchLst = mutableListOf<RoutePlanSearch>()
+
+    //当前经纬度
+    private var currentLatitude: Double? = null
+    private var currentLongitude: Double? = null
 
     override fun onInit(savedInstanceState: Bundle?) {
         super.onInit(savedInstanceState)
@@ -109,9 +126,9 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 )
                 tv_menu?.text = "分享"
                 tv_menu?.visibility = View.VISIBLE
-//                webviewLine.visibility = View.VISIBLE
-//                webviewLine.loadUrl("${LINE_WEB}${detailData.id}")
+                //初始化位置和微信sdk
                 registerApp()
+                //规划线路
                 loadLineGuide(detailData.id)
             }
             is PushMessageResp -> {
@@ -168,30 +185,8 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
     /**
      * 路线推荐分享至微信
      */
-    private fun shareWeChat(scenic: Int) {
-        val req = SendMessageToWX.Req()
-        val bmp = view2Image(ivNewsDetailHead)
-        //分享媒体对象
-        val msg = WXMediaMessage()
-
-        val imageObj = WXImageObject(bmp)
-        msg.mediaObject = imageObj
-        val thumbBmp: Bitmap =
-            Bitmap.createScaledBitmap(bmp, 100, 300, true)
-        bmp.recycle()
-        msg.mediaObject = imageObj
-
-        req.transaction = buildTransaction("img")
-        req.message = msg
-        req.scene = scenic
-
-        api?.sendReq(req)
-
-    }
-
     private fun shareUrlWeChat(scenic: Int) {
         val data = arguments?.getSerializable(BUNDLE_DETAIL) as LineRecommendResp
-        //初始化一个WXWebpageObject，填写url
         val webpage = WXWebpageObject()
         webpage.webpageUrl = "$SHARE_URL${data.id}"
 
@@ -217,12 +212,43 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
     }
 
     private var api: IWXAPI? = null
+    private val mGeoFenceClient = GeoFenceClient(MVVMBaseApplication.appContext)
 
     /**
      * 注册 appId
      */
     private fun registerApp() {
         api = WeChatRegister.wxApi
+        initLocation2()
+    }
+
+    private fun initLocation2() {
+        //开始定位
+        requestPermission2(Manifest.permission.ACCESS_FINE_LOCATION) {
+            BdLocation2.startLocation.bdLocationListener {
+                //先移除围栏再添加围栏可使再次调用广播进行回调位置信息
+                mGeoFenceClient.removeGeoFence()
+                mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
+                //防止定位回调时 View已经注销
+                currentLatitude = it.latitude //获取纬度信息
+                currentLongitude = it.longitude //获取经度信息
+            }.setDistanceListener {
+                findNavController().navigate(R.id.dialog_smart_tip,
+                    bundleOf("locationBean" to it),
+                    navOptions {
+                        launchSingleTop = true
+                        popUpTo(R.id.dialog_smart_tip) { inclusive = true }
+                        anim {
+                            enter = R.anim.alpha_enter
+                            exit = R.anim.alpha_exit
+                        }
+                    })
+            }
+        }
+        //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
+        mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
+        mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
     }
 
     private fun loadLineGuide(id: Int) {
@@ -277,26 +303,10 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                     WalkingRoutePlanOption().from(PlanNode.withLocation(start))
                         .to(PlanNode.withLocation(end))
                 )
-
             }
 
         }
         markerPointIndex(points)
-
-
-//        val overlay = WalkingRouteOverlay(mapView?.map)
-//        val walkingRouteSteps = mutableListOf<WalkingRouteLine.WalkingStep>()
-//        val walkingRouteLine = WalkingRouteLine()
-//        val listLatLng = mutableListOf<LatLng>()
-//        val step = WalkingRouteLine.WalkingStep()
-//        points.forEachIndexed { _, point ->
-//            listLatLng.add(convertBaidu(point.y.toDouble(), point.x.toDouble()))
-//            step.wayPoints = listLatLng
-//        }
-//        walkingRouteLine.setSteps(listOf(step))
-//        overlay.setData(walkingRouteLine)
-//        overlay.addToMap()
-//        markerPointIndex(points)
     }
 
     /**
@@ -314,10 +324,62 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 icon(bitmapDescriptorFactory)
                 zIndex(17)
                 animateType(MarkerOptions.MarkerAnimateType.grow)
+                    .extraInfo(bundleOf(Pair("index", index)))
             }
             markerOptions.add(options)
         }
         mapView?.map?.addOverlays(markerOptions)
+        //点击marker进行导航
+        mapView?.map?.setOnMarkerClickListener { marker ->
+            val index = marker.extraInfo.getInt("index")
+            val point = points[index]
+            goWalkNav(point, marker.position)
+            return@setOnMarkerClickListener true
+        }
+    }
+
+    /**
+     * 后台返回
+     * @param latLng 导航终点经纬度(百度坐标)
+     */
+    private fun goWalkNav(
+        pointData: Point,
+        latLng: LatLng
+    ) {
+        if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN) {
+            //进入园区则使用园区导航
+            requestPermission2(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ) {
+                //                customWalkNav(latLng)
+                baiduWalkNav(latLng)
+            }
+        } else {
+            //未进入园区
+            if (this.context != null && currentLongitude != null) {
+                showWakeApp(
+                    this.requireContext(),
+                    LatLng(currentLatitude!!, currentLongitude!!),
+                    latLng,
+                    pointData.name
+                )
+            } else {
+                this.context?.showToast("无法获取当前位置,暂不能导航")
+            }
+        }
+    }
+
+    /**
+     * 使用百度步行导航
+     */
+    private fun baiduWalkNav(latLng: LatLng) {
+        WalkNavUtil.setParam(
+            LatLng(currentLatitude!!, currentLongitude!!),
+            latLng,
+            this.requireActivity()
+        ).startNav()
     }
 
     private fun createShareDialog() {

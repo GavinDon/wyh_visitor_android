@@ -125,6 +125,8 @@ fun Fragment.chooseAlbumAll(selectionMedia: List<LocalMedia>) {
         .maxSelectNum(3)
         .isWithVideoImage(true)
         .enablePreviewAudio(true)
+        .videoMaxSecond(20)
+        .recordVideoSecond(19)
         .loadImageEngine(SelectorGlideEngine.createGlideEngine())
         .theme(R.style.selectPicture)
         .previewEggs(true)

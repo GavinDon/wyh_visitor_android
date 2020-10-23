@@ -3,7 +3,10 @@ package com.stxx.wyhvisitorandroid.view.home
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
+import com.bumptech.glide.Glide
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.gavindon.mvvm_lib.net.RxScheduler
+import com.gavindon.mvvm_lib.utils.url2File
 import com.github.kittinunf.fuel.Fuel
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -11,14 +14,22 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.tools.PictureFileUtils
+import com.orhanobut.logger.Logger
+import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.adapter.AlbumOnlyShowAdapter
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.ReportResultResp
 import com.stxx.wyhvisitorandroid.enums.ComplaintEnum
 import com.stxx.wyhvisitorandroid.graphics.SelectorGlideEngine
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_report_detail.*
 import java.io.File
+import java.net.URI
+import java.net.URL
+import kotlin.concurrent.thread
 
 /**
  * description:举报查询详情
@@ -70,37 +81,26 @@ class ReportResultDetailFragment : ToolbarFragment() {
                 if (urls.isNotEmpty()) {
                     tvAttachImage.visibility = View.VISIBLE
                     val localMediaLst = mutableListOf<LocalMedia>()
-                    for (i in urls) {
-                        val localMedia = LocalMedia().apply {
-                            if (i.endsWith("mp4") || i.endsWith("avi") || i.endsWith("3gp")) {
-                                this.chooseModel = PictureConfig.TYPE_VIDEO
-                                this.mimeType = PictureMimeType.MIME_TYPE_VIDEO
-                            }
-                            path = i
-                        }
-                        localMediaLst.add(localMedia)
-                    }
                     imageAdapter.setList(localMediaLst)
                     rvImage.adapter = imageAdapter
                     rvImage.addItemDecoration(GridSpacingItemDecoration(4, 2, false))
+                    for (url in urls) {
+                        url2File(url) { convertUrl: String, file: File ->
+                            val localMedia = LocalMedia().apply {
+                                if (convertUrl.endsWith("mp4") || convertUrl.endsWith("avi")) {
+                                    //0是video
+                                    this.chooseModel = 0
+                                    this.mimeType = PictureMimeType.MIME_TYPE_VIDEO
+                                    this.fileName = file.name
+                                }
+                                path = convertUrl
+                            }
+                            imageAdapter.addData(listOf(localMedia))
+                        }
+                    }
                     imageAdapter.setOnItemClickListener { _, position ->
                         if (localMediaLst.isNotEmpty()) {
                             val media = localMediaLst[position]
-                            /*    when (media.chooseModel) {
-                                    PictureConfig.TYPE_VIDEO -> {
-                                        PictureSelector.create(this)
-                                            .externalPictureVideo(media.path)
-                                    }
-                                    else -> {
-                                        PictureSelector.create(MVVMBaseApplication.getCurActivity())
-                                            .themeStyle(R.style.picture_default_style)
-                                            .isNotPreviewDownload(true)
-                                            .loadImageEngine(SelectorGlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
-                                            .openExternalPreview(
-                                                position,
-                                                imageAdapter.data)
-                                    }
-                                }*/
                             PictureSelector.create(MVVMBaseApplication.getCurActivity())
                                 .themeStyle(R.style.picture_default_style)
                                 .isNotPreviewDownload(true)
@@ -109,6 +109,22 @@ class ReportResultDetailFragment : ToolbarFragment() {
                                     position,
                                     imageAdapter.data
                                 )
+                            /*         when (media.chooseModel) {
+                                         0 -> {
+                                             PictureSelector.create(this)
+                                                 .externalPictureVideo(media.path)
+                                         }
+                                         else -> {
+                                             PictureSelector.create(MVVMBaseApplication.getCurActivity())
+                                                 .themeStyle(R.style.picture_default_style)
+                                                 .isNotPreviewDownload(true)
+                                                 .loadImageEngine(SelectorGlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                                                 .openExternalPreview(
+                                                     position,
+                                                     imageAdapter.data
+                                                 )
+                                         }
+                                     }*/
                         }
                     }
                 } else {
@@ -119,6 +135,4 @@ class ReportResultDetailFragment : ToolbarFragment() {
 
     }
 
-    private fun url2file(url: String) {
-    }
 }

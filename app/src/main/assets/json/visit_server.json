@@ -22,7 +22,7 @@
     "index": 3
   },
   {
-    "name": "寻人寻物",
+    "name": "寻物启事",
     "showType": 1,
     "iconRes": "ic_xwqs",
     "index": 4
@@ -50,7 +50,7 @@
     "showType": 1,
     "iconRes": "ic_hot",
     "index": 8,
-    "hidden": true
+    "hidden": false
   },
   {
     "name": "游玩助手",
@@ -115,7 +115,7 @@
     "showType": 1,
     "iconRes": "ic_pb",
     "index": 17,
-    "hidden": true
+    "hidden": false
   },
   {
     "name": "交通出行",

@@ -34,6 +34,7 @@ object BdLocation2 : LifecycleObserver {
     private lateinit var mLocationOption: LocationClientOption
     private var locationObj: List<LocationBean>? = null
     private var lastShowDialogId = -1
+
     //已经提示过的景点不再提示
     private var hasShowNameLst = mutableSetOf<String>()
 
@@ -98,6 +99,7 @@ object BdLocation2 : LifecycleObserver {
     private var locationListener: ((location: BDLocation) -> Unit)? = null
 
 
+    /*根据位置来弹出一些内容*/
     fun setDistanceListener(listener: ((bean: LocationBean) -> Unit)? = null): BdLocation2 {
         this.distanceListener = listener
         return this
@@ -154,8 +156,10 @@ object BdLocation2 : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun stopLocation() {
-        mLocationClient.stop()
-        mLocationClient.removeNotifyEvent(bdNotifyLister)
+        if (mLocationClient.isStarted) {
+            mLocationClient.stop()
+            mLocationClient.removeNotifyEvent(bdNotifyLister)
+        }
     }
 
 }

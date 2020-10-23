@@ -106,9 +106,9 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //创建围栏广播
-        val filter = IntentFilter()
-        filter.addAction(GeoBroadCast.fenceaction)
-        this.context?.registerReceiver(GeoBroadCast, filter)
+//        val filter = IntentFilter()
+//        filter.addAction(GeoBroadCast.fenceaction)
+//        this.context?.registerReceiver(GeoBroadCast, filter)
     }
 
     override fun onInit(savedInstanceState: Bundle?) {
