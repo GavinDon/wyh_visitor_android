@@ -6,6 +6,7 @@ import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
+import com.stxx.wyhvisitorandroid.getFocus
 import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
@@ -21,11 +22,35 @@ class RegisterActivity : BaseActivity() {
         loginVm = getViewModel()
         listenerRegister()
         listenerSendCode()
+        listenerFocus()
     }
 
     private fun listenerSendCode() {
         sendSmsView.setOnSmsClickListener() {
             loginVm.getSmsCode(listOf(Pair("phone", it)))
+        }
+    }
+
+    /**
+     * 监听输入焦点判断手机号是否输入正确
+     */
+    private fun listenerFocus() {
+
+        tvInputPwd.setOnFocusChangeListener { v, hasFocus ->
+            val strPhone = tvRegisterPhone.text.toString().trim()
+            if (hasFocus) {
+                if (!Pattern.matches(phoneRegex, strPhone)) {
+                    tvRegisterPhone.getFocus("请输入正确的手机号")
+                }
+            }
+        }
+        tvInputPwdAgain.setOnFocusChangeListener { v, hasFocus ->
+            val strPhone = tvRegisterPhone.text.toString().trim()
+            if (hasFocus) {
+                if (!Pattern.matches(phoneRegex, strPhone)) {
+                    tvRegisterPhone.getFocus("请输入正确的手机号")
+                }
+            }
         }
     }
 

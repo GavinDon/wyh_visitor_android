@@ -112,13 +112,14 @@ class BannerAdapter(
                                     if (data.tmp.isNotEmpty()) {
                                         homeTVTempera.text = "${data.tmp}°"
                                     }
-                                    if (!data.hum.isNullOrEmpty()) {
-                                        tvHum.text = "${data.hum}%"
-                                    }
+//                                    if (!data.hum.isNullOrEmpty()) {
+//                                        tvHum.text = "${data.hum}%"
+//                                    }
                                 }
                                 is PM25Resp -> {
                                     tvNo.text = "${data.no}"
                                     tvPm25.text = "${data.pm25}"
+                                    tvHum.text = "${data.hum}%"
                                 }
                                 is RealPeopleNum -> {
                                     //入园人数

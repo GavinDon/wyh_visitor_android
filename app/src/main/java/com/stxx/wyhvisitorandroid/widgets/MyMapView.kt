@@ -14,7 +14,7 @@ import com.stxx.wyhvisitorandroid.location.BdUtil
 
 fun MapView.init() {
     map?.setMaxAndMinZoomLevel(19f, 15f)
-    map?.uiSettings?.isRotateGesturesEnabled=false
+    map?.uiSettings?.isRotateGesturesEnabled = false
     showZoomControls(false)
 }
 
@@ -28,7 +28,7 @@ fun MapView.customMap(context: Context) {
     //在线加载
     val mapCustomStyleOptions = MapCustomStyleOptions()
     mapCustomStyleOptions.apply {
-        customStyleId("a5d30240334ed1721316416e4d49ba05")
+        customStyleId("5ef2cb015de59ad8f3f9af763e86c4a0")
         localCustomStylePath(customStyleFilePath)
     }
     setMapCustomStyle(mapCustomStyleOptions, object : CustomMapStyleCallBack {
@@ -64,13 +64,26 @@ fun MapView.mapStatusBuild(target: LatLng = SCENIC_CENTER_LATLNG, zoom: Float = 
     this.map?.setMapStatus(mMapStatusUpdate)
 }
 
+fun MapView.textOverlay() {
+    val mTextOptions: OverlayOptions = TextOptions()
+        .text("百度地图SDK") //文字内容
+        .fontSize(24) //字号
+        .fontColor(-0xff01) //文字颜色
+        .position(LatLng(12.2, 12.2))
+    this.map?.addOverlays(listOf(mTextOptions))
+}
+
 val urlTileProvider = object : UrlTileProvider() {
     override fun getMinDisLevel(): Int = 15
     override fun getMaxDisLevel(): Int = 19
     override fun getTileUrl(): String {
-        return "http://223.70.181.106:8082/mapTiles/{z}/tile{x}_{y}.png"
+        //223.70.181.106
+//        return "http://223.70.181.106:8082/mapTiles/{z}/tile{x}_{y}.png"
+        return "http://223.221.37.181:8082/tiles/{z}/tile{x}_{y}.png"
+
     }
 }
+
 val overLayOptions = TileOverlayOptions().apply {
     val northEast = LatLng(40.06048593512643, 116.39524272759365)
     val southEast = LatLng(40.071822098761984, 116.46385409389569)

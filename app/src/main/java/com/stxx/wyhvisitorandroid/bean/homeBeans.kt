@@ -58,6 +58,10 @@ data class LineRecommendResp(
     var type: String
 ) : Serializable
 
+/*分享转换实体*/
+data class Share(var id: Int, var title: String, var content: String?)
+
+
 /*热门推荐*/
 data class HotRecommendResp(
     var content: String?,

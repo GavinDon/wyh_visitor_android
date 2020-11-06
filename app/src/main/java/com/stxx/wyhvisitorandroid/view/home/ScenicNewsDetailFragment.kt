@@ -114,6 +114,12 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                     detailData.content ?: "",
                     detailData.gmt_modfy
                 )
+                tv_menu?.text = "分享"
+                tv_menu?.visibility = View.VISIBLE
+                //初始化位置和微信sdk
+                registerApp()
+                //规划线路
+                loadLineGuide(detailData.id)
             }
             is LineRecommendResp -> {
                 //推荐路线
@@ -186,14 +192,19 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
      * 路线推荐分享至微信
      */
     private fun shareUrlWeChat(scenic: Int) {
-        val data = arguments?.getSerializable(BUNDLE_DETAIL) as LineRecommendResp
+        val data = arguments?.getSerializable(BUNDLE_DETAIL)
+        var shareBean: Share? = null
+        if (data is LineRecommendResp) {
+            shareBean = Share(data.id, data.title, data.content)
+        } else if (data is HotRecommendResp) {
+            shareBean = Share(data.id, data.title, data.content)
+        }
         val webpage = WXWebpageObject()
-        webpage.webpageUrl = "$SHARE_URL${data.id}"
-
+        webpage.webpageUrl = "$SHARE_URL${shareBean?.id}"
         val msg = WXMediaMessage(webpage)
-        msg.title = data.title
+        msg.title = shareBean?.title
         val spanned = HtmlCompat.fromHtml(
-            "${data.content}",
+            "${shareBean?.content}",
             HtmlCompat.FROM_HTML_MODE_COMPACT,
             null,
             HtmlTagHandler()

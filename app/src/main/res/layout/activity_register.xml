@@ -76,32 +76,51 @@
             app:layout_constraintTop_toBottomOf="@id/tvRegisterPhone"
             app:leftDrawable="@mipmap/ic_security" />
 
-        <EditText
-            android:id="@+id/tvInputPwd"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_42"
-            android:layout_marginLeft="@dimen/dp_31"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutInputPwd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginRight="@dimen/dp_31"
-            android:background="@drawable/underline"
-            android:drawableStart="@mipmap/ic_pwd_ccc"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:hint="@string/str_input_pwd"
-            android:inputType="textPassword"
-            android:maxLength="20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_16"
+            app:hintEnabled="false"
+            android:layout_marginHorizontal="@dimen/dp_31"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sendSmsView" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sendSmsView"
+            app:passwordToggleEnabled="true">
 
-        <EditText
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvInputPwd"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_42"
+                android:background="@drawable/underline"
+                android:drawableStart="@mipmap/ic_pwd_ccc"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="@string/str_input_pwd"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sendSmsView" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutInputPwdAgain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            app:hintEnabled="false"
+            android:layout_marginHorizontal="@dimen/dp_31"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputLayoutInputPwd"
+            app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvInputPwdAgain"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_42"
-            android:layout_marginLeft="@dimen/dp_31"
-            android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginRight="@dimen/dp_31"
             android:background="@drawable/underline"
             android:drawableStart="@mipmap/ic_pwd_ccc"
             android:drawablePadding="10dp"
@@ -111,8 +130,8 @@
             android:maxLength="20"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_16"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvInputPwd" />
+          />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.gavindon.mvvm_lib.widgets.DonButton
             android:id="@+id/btnRegister"
@@ -127,7 +146,7 @@
             app:circleRadius="@dimen/dp_26"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvInputPwdAgain"
+            app:layout_constraintTop_toBottomOf="@id/inputLayoutInputPwdAgain"
             app:normalBackgroundColor="#FDD655"
             app:pressBackgroundColor="#CDDC39" />
 

@@ -115,7 +115,7 @@
     "showType": 1,
     "iconRes": "ic_pb",
     "index": 17,
-    "hidden": false
+    "hidden": true
   },
   {
     "name": "交通出行",

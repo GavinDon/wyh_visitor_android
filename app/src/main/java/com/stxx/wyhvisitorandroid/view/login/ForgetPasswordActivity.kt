@@ -1,12 +1,15 @@
 package com.stxx.wyhvisitorandroid.view.login
 
 import android.os.Bundle
+import com.gavindon.mvvm_lib.utils.phoneRegex
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
+import com.stxx.wyhvisitorandroid.getFocus
 import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
 import kotlinx.android.synthetic.main.activity_forget_password.*
+import java.util.regex.Pattern
 
 class ForgetPasswordActivity : BaseActivity() {
 
@@ -17,6 +20,7 @@ class ForgetPasswordActivity : BaseActivity() {
     override fun onInit(savedInstanceState: Bundle?) {
         listenerSendCode()
         listenerForget()
+        listenerFocus()
         ivLeftArrow.setOnClickListener { this.finish() }
     }
 
@@ -27,6 +31,25 @@ class ForgetPasswordActivity : BaseActivity() {
         }
     }
 
+    private fun listenerFocus() {
+        etResetPwd.setOnFocusChangeListener { v, hasFocus ->
+            val strPhone = etResetPhone.text.toString().trim()
+            if (hasFocus) {
+                if (!Pattern.matches(phoneRegex, strPhone)) {
+                    etResetPhone.getFocus("请输入正确的手机号")
+                }
+            }
+        }
+        etResetPwdAgain.setOnFocusChangeListener { _, hasFocus ->
+            val strPhone = etResetPhone.text.toString().trim()
+            if (hasFocus) {
+                if (!Pattern.matches(phoneRegex, strPhone)) {
+                    etResetPhone.getFocus("请输入正确的手机号")
+                }
+            }
+        }
+    }
+
     private fun listenerForget() {
         btnUpdate.setOnClickListener {
             val phone = etResetPhone.text.toString().trim()
@@ -34,7 +57,7 @@ class ForgetPasswordActivity : BaseActivity() {
             val password = etResetPwd.text.toString().trim()
             val againPwd = etResetPwdAgain.text.toString().trim()
             when {
-                phone.isEmpty() -> {
+                !Pattern.matches(phoneRegex, phone) -> {
                     showToast(getString(R.string.input_right_phone))
                 }
                 smsCode.isEmpty() -> {

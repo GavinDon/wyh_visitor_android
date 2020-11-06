@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/dp_10"
+    android:layout_marginHorizontal="@dimen/dp_5"
     android:layout_marginTop="@dimen/dp_5">
 
 
@@ -45,11 +45,12 @@
 
     <include
         android:id="@+id/adaLlToilet"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/adaTvServerPoint"
+        app:layout_constraintRight_toLeftOf="@+id/adaIvNav"
         layout="@layout/info_window_toilet" />
 
     <TextView

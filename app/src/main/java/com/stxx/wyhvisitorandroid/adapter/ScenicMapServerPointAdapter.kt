@@ -3,6 +3,7 @@ package com.stxx.wyhvisitorandroid.adapter
 import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
@@ -56,7 +57,6 @@ class ScenicMapServerPointAdapter(layoutResId: Int, data: MutableList<ServerPoin
                 val cslMan = holder.getView<ConstraintLayout>(R.id.cslMan)
                 val cslWoman = holder.getView<ConstraintLayout>(R.id.cslWoman)
                 val cslBarrierFree = holder.getView<ConstraintLayout>(R.id.cslBarrierFree)
-
                 holder.setText(R.id.adaTvServerPoint, item.name)
                     .setText(R.id.adaTvScenicTotal, "总位数:${item.sum}")
                     .setGone(R.id.adaTvServerPointIntroduce, true)
@@ -65,6 +65,7 @@ class ScenicMapServerPointAdapter(layoutResId: Int, data: MutableList<ServerPoin
                     .setGone(R.id.adaTvScenicRetail, true)
 
                 if (item.manInfo != null) {
+                    cslMan.visibility = View.VISIBLE
                     manRetailNumber.text =
                         "剩余:${item.manInfo.sum - item.manInfo.occupation}"
                 } else {
@@ -78,6 +79,7 @@ class ScenicMapServerPointAdapter(layoutResId: Int, data: MutableList<ServerPoin
                     cslWoman.visibility = View.GONE
                 }
                 if (item.thirdInfo != null) {
+                    cslBarrierFree.visibility = View.VISIBLE
                     brRetailNumber.text =
                         "剩余:${item.thirdInfo.sum - item.thirdInfo.occupation}"
                 } else {
