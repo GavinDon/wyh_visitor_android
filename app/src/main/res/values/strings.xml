@@ -58,6 +58,7 @@
 
     <string name="visitor_server_ryzs">人员走失</string>
     <string name="visitor_server_xwqs">寻物启事</string>
+    <string name="visitor_server_xrxw">寻人寻物</string>
     <string name="visitor_server_wzafu">无障碍服务</string>
     <string name="visitor_server_zajb">治安举报</string>
     <string name="visitor_server_khzx">客户咨询</string>

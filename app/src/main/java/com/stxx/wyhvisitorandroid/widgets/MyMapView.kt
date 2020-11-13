@@ -3,6 +3,8 @@ package com.stxx.wyhvisitorandroid.widgets
 import android.content.Context
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
+import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.BuildConfig
 import com.stxx.wyhvisitorandroid.SCENIC_CENTER_LATLNG
 import com.stxx.wyhvisitorandroid.location.BdUtil
 
@@ -15,6 +17,8 @@ import com.stxx.wyhvisitorandroid.location.BdUtil
 fun MapView.init() {
     map?.setMaxAndMinZoomLevel(19f, 15f)
     map?.uiSettings?.isRotateGesturesEnabled = false
+    map?.uiSettings?.isOverlookingGesturesEnabled = false
+    map?.showMapPoi(false)
     showZoomControls(false)
 }
 
@@ -64,22 +68,14 @@ fun MapView.mapStatusBuild(target: LatLng = SCENIC_CENTER_LATLNG, zoom: Float = 
     this.map?.setMapStatus(mMapStatusUpdate)
 }
 
-fun MapView.textOverlay() {
-    val mTextOptions: OverlayOptions = TextOptions()
-        .text("百度地图SDK") //文字内容
-        .fontSize(24) //字号
-        .fontColor(-0xff01) //文字颜色
-        .position(LatLng(12.2, 12.2))
-    this.map?.addOverlays(listOf(mTextOptions))
-}
-
 val urlTileProvider = object : UrlTileProvider() {
     override fun getMinDisLevel(): Int = 15
     override fun getMaxDisLevel(): Int = 19
     override fun getTileUrl(): String {
-        //223.70.181.106
 //        return "http://223.70.181.106:8082/mapTiles/{z}/tile{x}_{y}.png"
-        return "http://223.221.37.181:8082/tiles/{z}/tile{x}_{y}.png"
+//        return "http://223.221.37.181:8082/tiles/{z}/tile{x}_{y}.png"
+        Logger.i("${BuildConfig.tileUrl}/tiles/{z}/tile{x}_{y}.png")
+        return "${BuildConfig.tileUrl}/tiles/{z}/tile{x}_{y}.png"
 
     }
 }

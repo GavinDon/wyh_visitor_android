@@ -34,7 +34,7 @@ android {
           }*/
         resConfigs "zh", "en"
         buildConfigField("int", "source", "0")
-        buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
+//        buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "5ab70a3331b4a48026a4cc5c", //JPush 上注册的包名对应的 Appkey.
@@ -59,10 +59,14 @@ android {
             zipAlignEnabled false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
+            // 单双引号的写法，不用转义
+            buildConfigField('String', 'tileUrl', '"http://223.70.181.106:8082"')
         }
         debug {
-//            buildConfigField("String", "baseUrl", "\"http://192.168.100.16:8890\"")
-
+            buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894\"")
+            // 单双引号的写法，不用转义
+            buildConfigField('String', 'tileUrl', '"http://223.221.37.181:8082"')
             signingConfig signingConfigs.release
         }
     }

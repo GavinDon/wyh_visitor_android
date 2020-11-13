@@ -65,19 +65,41 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvNewsDetailDate" />
 
-
-            <!--            <com.stxx.wyhvisitorandroid.widgets.X5WebView-->
-            <!--                android:id="@+id/webviewLine"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="@dimen/dp_360"-->
-            <!--                android:layout_marginHorizontal="@dimen/dp_8"-->
-            <!--                android:visibility="gone" />-->
-            <com.baidu.mapapi.map.MapView
-                android:id="@+id/mapView"
+            <FrameLayout
+                android:id="@+id/frlMapView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_360"
-                android:layout_marginHorizontal="@dimen/dp_8"
-                android:visibility="gone" />
+                android:visibility="gone">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="start|bottom"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    app:cardCornerRadius="@dimen/dp_16"
+                    app:cardElevation="@dimen/dp_3">
+
+                    <ImageButton
+                        android:id="@+id/ivMoveToScenicCenterLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="@dimen/dp_6"
+                        android:src="@mipmap/icon_move_map_current" />
+                </androidx.cardview.widget.CardView>
+
+                <com.baidu.mapapi.map.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_360"
+                    android:layout_marginHorizontal="@dimen/dp_8" />
+
+            </FrameLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>

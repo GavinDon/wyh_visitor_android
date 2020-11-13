@@ -10,6 +10,7 @@ import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.utils.phoneRegex
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
+import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.BIND_PHONE_RESULT
 import com.stxx.wyhvisitorandroid.LOGIN_NAME_SP
 import com.stxx.wyhvisitorandroid.R
@@ -30,8 +31,12 @@ class WxLoginBindPhoneActivity : BaseActivity() {
         get() = R.layout.wx_login_bind_phone
 
 
+    private val isBindPhone: Boolean by lazy { intent.getBooleanExtra("isBindPhone", true) }
     private val loginVm: LoginVm by lazy { getViewModel<LoginVm>() }
     override fun onInit(savedInstanceState: Bundle?) {
+
+        tvBindPhoneTip.text = if (isBindPhone) "绑定手机号" else "更换手机号"
+
         bindSendSmsView.setOnSmsClickListener() {
             loginVm.getSmsCode(listOf(Pair("phone", it)))
         }
@@ -47,32 +52,76 @@ class WxLoginBindPhoneActivity : BaseActivity() {
                 smsCode.isEmpty() -> {
                     showToast(getString(R.string.code_error))
                 }
+                isBindPhone -> {
+                    loadBindPhoneData(strPhone, smsCode)
+                }
                 else -> {
-                    loginVm.bindPhone(strPhone, smsCode).observe(this, Observer {
-                        handlerResponseData(it, {
-                            SpUtils.put(LOGIN_NAME_SP, strPhone)
-                            showToast("绑定成功")
-                            //绑定成功更新个人信息
-                            try {
-                                val resourceValue = MineView.mineVm.getUserInfo().value
-                                if (resourceValue is SuccessSource) {
-                                    resourceValue.body.data.phone = strPhone
-                                    MineView.mineVm.getUserInfo().postValue(resourceValue)
-                                }
-                                val i = Intent()
-                                i.putExtra("isBind", true)
-                                setResult(BIND_PHONE_RESULT, i)
-                                this.finish()
-                            } catch (ex: Exception) {
-                                ex.printStackTrace()
-                            }
-                        }, {})
-                    })
+                    //更换手机
+                    updatePhoneData(strPhone, smsCode)
                 }
             }
         }
 
     }
+
+    /**
+     * 更新手机号码
+     */
+    private fun updatePhoneData(strPhone: String, smsCode: String) {
+        loginVm.bindPhone(strPhone, smsCode, ApiService.UPDATE_PHONE).observe(this, Observer {
+            handlerResponseData(it, {
+                SpUtils.put(LOGIN_NAME_SP, strPhone)
+                showToast("更换成功")
+                //绑定成功更新个人信息
+                try {
+                    val resourceValue = MineView.mineVm.getUserInfo().value
+                    if (resourceValue is SuccessSource) {
+                        resourceValue.body.data.phone = strPhone
+                        MineView.mineVm.getUserInfo().postValue(resourceValue)
+                    }
+                    val i = Intent()
+//                    i.putExtra("isBind", true)
+                    i.putExtra("phone", strPhone)
+                    setResult(BIND_PHONE_RESULT, i)
+                    this.finish()
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+
+
+            }, {
+
+            })
+        })
+    }
+
+    /**
+     * 绑定手机号码
+     */
+    private fun loadBindPhoneData(strPhone: String, smsCode: String) {
+        loginVm.bindPhone(strPhone, smsCode).observe(this, Observer {
+            handlerResponseData(it, {
+                SpUtils.put(LOGIN_NAME_SP, strPhone)
+                showToast("绑定成功")
+                //绑定成功更新个人信息
+                try {
+                    val resourceValue = MineView.mineVm.getUserInfo().value
+                    if (resourceValue is SuccessSource) {
+                        resourceValue.body.data.phone = strPhone
+                        MineView.mineVm.getUserInfo().postValue(resourceValue)
+                    }
+                    val i = Intent()
+                    i.putExtra("isBind", true)
+                    i.putExtra("phone", strPhone)
+                    setResult(BIND_PHONE_RESULT, i)
+                    this.finish()
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+            }, {})
+        })
+    }
+
 
     override fun setStatusBar() {
         titleBar.layoutParams.height = getStatusBarHeight(this)

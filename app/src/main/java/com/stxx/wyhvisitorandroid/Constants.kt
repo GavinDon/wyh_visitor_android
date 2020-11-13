@@ -68,7 +68,8 @@ const val WEB_VIEW_TITLE = "title"
 const val FACE_IDENTIFY = "face_identify"
 
 //景点中心点
-val SCENIC_CENTER_LATLNG = LatLng(40.082681, 116.474134)
+//val SCENIC_CENTER_LATLNG = LatLng(40.082681, 116.474134)
+val SCENIC_CENTER_LATLNG = LatLng(40.082681, 116.477431)
 const val wxappid = "wx697de48974c13c39"
 const val wxSecret = "e8cdc89c4adfdf89bc1ddd814bd64515"
 

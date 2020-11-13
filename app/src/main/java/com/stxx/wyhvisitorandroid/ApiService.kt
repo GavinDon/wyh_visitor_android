@@ -134,10 +134,14 @@ object ApiService {
 
     const val REAL_PASSAGER = "passengerFlow/realPassager"
 
+    //phone =xx &vcode=xx
+    const val UPDATE_PHONE = "tsvserviceapp/user/updatePhone"
+
 }
 
 object WebViewUrl {
     const val WEB_BASE = "https://tourist.wenyuriverpark.com/h5/#/"
+//    const val WEB_BASE = "http://223.221.37.181:8082/h5/#/"
 //    const val WEB_BASE = "https://tourist.wenyuriverpark.com/app"
 
     const val SHARE_URL = "${WEB_BASE}pages/road/details/details?id="

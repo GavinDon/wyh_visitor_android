@@ -62,6 +62,8 @@ class LoginActivity : BaseActivity() {
                     if (it == null) {
                         showToast("信息同步失败,请重试~")
                     } else {
+                        //微信登陆 清除可能存在的密码信息，防止判断是否显示更换手机号码错误
+
                         //如果没有绑定正确的手机号 则跳转绑定界面
                         if (!Pattern.matches(phoneRegex, it.phone ?: "")) {
                             startActivity<WxLoginBindPhoneActivity>()

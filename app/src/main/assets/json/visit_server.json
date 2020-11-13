@@ -22,7 +22,7 @@
     "index": 3
   },
   {
-    "name": "寻物启事",
+    "name": "寻人寻物",
     "showType": 1,
     "iconRes": "ic_xwqs",
     "index": 4
@@ -50,7 +50,7 @@
     "showType": 1,
     "iconRes": "ic_hot",
     "index": 8,
-    "hidden": false
+    "hidden": true
   },
   {
     "name": "游玩助手",
@@ -95,13 +95,13 @@
   {
     "name": "AI导游",
     "showType": 1,
-    "iconRes": "ai_dy",
+    "iconRes": "ic_ai_dy",
     "index": 15
   },
   {
     "name": "AI步道",
     "showType": 1,
-    "iconRes": "ic_mine",
+    "iconRes": "ic_ai_bd",
     "index": 16
   },
   {
@@ -124,7 +124,7 @@
   {
     "name": "绿色出行",
     "showType": 1,
-    "iconRes": "ic_khjy",
+    "iconRes": "ic_lscx",
     "index": 18
   },
   {

@@ -77,10 +77,14 @@ class LoginVm : MVVMBaseViewModel() {
         loginModel.register(reqParam)
     }
 
-    fun bindPhone(strPhone: String, code: String): singLiveData<String> {
+    fun bindPhone(
+        strPhone: String,
+        code: String,
+        url: String = ApiService.BIND_PHONE
+    ): singLiveData<String> {
         val reqParam = listOf("phone" to strPhone, "vcode" to code)
         val singleLiveEvent = singLiveData<String>()
-        loginModel.bindPhone(reqParam, {
+        loginModel.bindPhone(reqParam, url, {
             singleLiveEvent.value = Resource.create(it)
         }, {
             singleLiveEvent.value = Resource.create(it)
@@ -162,8 +166,8 @@ class LoginModel(private val mComDis: CompositeDisposable) : MVVMBaseModel() {
         })
     }
 
-    fun bindPhone(param: Parameters, onSuccess: onSuccessBr, onFailed: onFailed) {
-        http?.get(ApiService.BIND_PHONE, param)?.parse<BR<String>>(strType, {
+    fun bindPhone(param: Parameters, url: String, onSuccess: onSuccessBr, onFailed: onFailed) {
+        http?.get(url, param)?.parse<BR<String>>(strType, {
             onSuccess(it)
         }, {
             onFailed(it)

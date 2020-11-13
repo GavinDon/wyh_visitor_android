@@ -11,6 +11,7 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.widget.MediaController
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -141,8 +142,7 @@ class PlaySoundService : Service() {
     fun getMediaPlay() = player
 
     private fun playSound(data: ServerPointResp) {
-
-        if (!data.explain.isNullOrEmpty()) {
+        if (!data.explain.isNullOrEmpty() && data.explain.startsWith("http")) {
             //当重复点击同一个语音时 判断是暂停播放还是开始播放
             if (data.explain == lastVoiceUrl) {
                 if (player.isPlaying) {

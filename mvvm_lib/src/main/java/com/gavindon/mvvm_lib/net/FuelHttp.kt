@@ -1,5 +1,6 @@
 package com.gavindon.mvvm_lib.net
 
+import android.annotation.SuppressLint
 import com.gavindon.mvvm_lib.utils.GsonUtil
 import com.gavindon.mvvm_lib.utils.Parameters
 import com.gavindon.mvvm_lib.utils.onFailed
@@ -100,6 +101,7 @@ class FuelHttp private constructor() : IFuelHttp {
     }
 }
 
+@SuppressLint("CheckResult")
 inline fun <reified T> Single<String>.parse(
     type: Type,
     crossinline onSuccess: onSuccessT<T>,

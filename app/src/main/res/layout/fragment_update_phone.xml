@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <EditText
+        android:id="@+id/etUpdatePhone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_42"
+        android:layout_marginHorizontal="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_40"
+        android:background="@drawable/underline"
+        android:drawableStart="@mipmap/ic_phone_ccc"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:hint="@string/str_input_phone"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16" />
+
+    <com.stxx.wyhvisitorandroid.widgets.SendSmsView
+        android:id="@+id/sendSmsView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_42"
+        android:layout_marginStart="@dimen/dp_31"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_31"
+        android:maxLength="6"
+        app:background="@drawable/underline"
+        app:etPhoneId="@id/etUpdatePhone"
+        app:leftDrawable="@mipmap/ic_security" />
+
+    <com.gavindon.mvvm_lib.widgets.DonButton
+        android:id="@+id/btnUpdatePhone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:layout_marginHorizontal="@dimen/dp_42"
+        android:layout_marginTop="@dimen/dp_38"
+        android:text="@string/confirm"
+        android:textSize="@dimen/sp_18"
+        app:circleRadius="@dimen/dp_26"
+        app:normalTextColor="@color/white"
+        app:normalBackgroundColor="#FDD655"
+        app:pressBackgroundColor="#CDDC39" />
+</LinearLayout>

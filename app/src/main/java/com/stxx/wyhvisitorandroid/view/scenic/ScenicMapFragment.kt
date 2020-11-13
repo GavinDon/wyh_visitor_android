@@ -715,6 +715,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
 
             if (pointData.manInfo != null) {
+                cslMan.visibility = View.VISIBLE
                 manRetailNumber.text =
                     "剩余:${pointData.manInfo.sum - pointData.manInfo.occupation}/${pointData.manInfo.sum}"
             } else {
@@ -728,6 +729,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 cslWoman.visibility = View.GONE
             }
             if (pointData.thirdInfo != null) {
+                cslBarrierFree.visibility = View.VISIBLE
                 brRetailNumber.text =
                     "剩余:${pointData.thirdInfo.sum - pointData.thirdInfo.occupation}/${pointData.thirdInfo.sum}"
             } else {

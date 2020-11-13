@@ -2,7 +2,6 @@ package com.stxx.wyhvisitorandroid.view.home
 
 import android.Manifest
 import android.content.BroadcastReceiver
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -25,11 +24,12 @@ import com.baidu.geofence.GeoFence
 import com.baidu.geofence.GeoFenceClient
 import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MarkerOptions
-import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.model.LatLng
-import com.baidu.mapapi.search.core.RouteNode
-import com.baidu.mapapi.search.route.*
+import com.baidu.mapapi.search.route.PlanNode
+import com.baidu.mapapi.search.route.RoutePlanSearch
+import com.baidu.mapapi.search.route.WalkingRoutePlanOption
+import com.baidu.mapapi.search.route.WalkingRouteResult
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.net.http
@@ -37,7 +37,6 @@ import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.BUNDLE_DETAIL
 import com.stxx.wyhvisitorandroid.R
@@ -58,13 +57,10 @@ import com.stxx.wyhvisitorandroid.view.helpers.WeChatUtil
 import com.stxx.wyhvisitorandroid.view.overlayutil.WalkingRouteOverlay
 import com.stxx.wyhvisitorandroid.widgets.*
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
-import com.tencent.mm.opensdk.modelmsg.WXImageObject
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
 import com.tencent.mm.opensdk.openapi.IWXAPI
-import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
-import kotlinx.android.synthetic.main.fragment_scenic_news_detail.mapView
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.find
 
@@ -114,12 +110,12 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                     detailData.content ?: "",
                     detailData.gmt_modfy
                 )
-                tv_menu?.text = "分享"
+              /*  tv_menu?.text = "分享"
                 tv_menu?.visibility = View.VISIBLE
                 //初始化位置和微信sdk
                 registerApp()
                 //规划线路
-                loadLineGuide(detailData.id)
+                loadLineGuide(detailData.id)*/
             }
             is LineRecommendResp -> {
                 //推荐路线
@@ -265,11 +261,12 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
     private fun loadLineGuide(id: Int) {
         mViewModel = getViewModel()
         lifecycle.addObserver(mViewModel)
-        mapView.visibility = View.VISIBLE
+        frlMapView.visibility = View.VISIBLE
 
         mapView?.init()
         mapView?.mapStatusBuild()
         mapView?.customMap(this.requireContext())
+        ivMoveToScenicCenterLocation.setOnClickListener { mapView?.fixedLocation2Center() }
         mapView?.map?.addTileLayer(overLayOptions)
 
         mViewModel.getLinePointById(id).observe(this, Observer {

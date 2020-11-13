@@ -2,7 +2,6 @@ package com.stxx.wyhvisitorandroid.view.mine
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -16,10 +15,11 @@ import com.gavindon.mvvm_lib.utils.rxRequestPermission
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.PictureSelector
+import com.stxx.wyhvisitorandroid.BIND_PHONE_RESULT
 import com.stxx.wyhvisitorandroid.LOGIN_NAME_SP
+import com.stxx.wyhvisitorandroid.PASSWORD_SP
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
-import com.stxx.wyhvisitorandroid.base.ToolbarFragment
 import com.stxx.wyhvisitorandroid.bean.UserInfoResp
 import com.stxx.wyhvisitorandroid.bean.WXLoginResp
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
@@ -28,10 +28,14 @@ import com.stxx.wyhvisitorandroid.graphics.chooseSinglePicture
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
 import com.stxx.wyhvisitorandroid.transformer.PicassoCircleImage
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
+import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
 import com.stxx.wyhvisitorandroid.wxapi.WXEntryActivity.WXAUTHDATA
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.fragment_user_info.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.wx_login_bind_phone.*
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.startActivityForResult
 import java.io.File
 
 /**
@@ -56,14 +60,16 @@ class UserInfoFragment : BaseActivity() {
             //用户信息
             userInfoData = (resourceUseInfo as SuccessSource).body.data
             nickName = userInfoData?.true_name
-            //如果用户信息表中没有手机号码 则认为是微信登陆且没有绑定手机号
+            //如果用户信息表中没有手机号码 则认为是微信登陆且没有绑定手机号。
             if (userInfoData?.phone.isNullOrEmpty()) {
+                tvUserPhoneName.text = "绑定手机号"
                 rlBindAccount.visibility = View.GONE
             } else {
                 //绑定微信
                 tvBindAccount.text = if (userInfoData?.wxid.isNullOrEmpty()) "绑定微信" else "解绑微信"
+                tvUserPhoneName.text = "更换手机号码"
+                tvUserPhone.text = userInfoData?.phone
             }
-
             //昵称
             tvUserName?.text = if (nickName.isNullOrEmpty()) userInfoData?.name else nickName
             //用户头像
@@ -93,7 +99,20 @@ class UserInfoFragment : BaseActivity() {
                 })
 
             }
-            fullDialogFragment.show(supportFragmentManager, "full")
+            fullDialogFragment.show(supportFragmentManager, "fix_user_name")
+        }
+
+        //修改手机号
+        rlUserPhone.setOnClickListener {
+            //如果没有手机号则进行绑定否则进行更改手机号
+            if (userInfoData?.phone.isNullOrEmpty()) {
+                startActivityForResult<WxLoginBindPhoneActivity>(BIND_PHONE_RESULT)
+            } else {
+                startActivityForResult<WxLoginBindPhoneActivity>(
+                    BIND_PHONE_RESULT,
+                    Pair("isBindPhone", false)
+                )
+            }
         }
         rlBindAccount.setOnClickListener {
             if (userInfoData?.wxid.isNullOrEmpty()) {
@@ -107,7 +126,7 @@ class UserInfoFragment : BaseActivity() {
                         userInfoData?.wxid = ""
                         mineVm.getUserInfo().postValue(resourceUseInfo)
                         tvBindAccount.text = "绑定微信"
-                        SpUtils.clearName(LOGIN_NAME_SP)
+//                        SpUtils.clearName(LOGIN_NAME_SP)
                         showToast("解绑成功")
                     }, {})
                 })
@@ -161,6 +180,19 @@ class UserInfoFragment : BaseActivity() {
                 })
             }
 
+        } else if (resultCode == BIND_PHONE_RESULT) {
+            if (data != null) {
+                val isBind = data.getBooleanExtra("isBind", false)
+                val phone = data.getStringExtra("phone")
+                //如果是绑定手机号码
+                if (isBind) {
+                    tvUserPhoneName.text = "更换手机号码"
+                    tvUserPhone.text = userInfoData?.phone
+                } else {
+                    //更换手机号码
+                    tvUserPhone.text = userInfoData?.phone
+                }
+            }
         }
     }
 

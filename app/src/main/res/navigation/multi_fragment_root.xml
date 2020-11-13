@@ -214,5 +214,8 @@
     <dialog
         android:id="@+id/dialog_smart_tip"
         android:name="com.stxx.wyhvisitorandroid.view.dialog.SmartTipDialog" />
+    <fragment
+        android:id="@+id/fragment_update_phone"
+        android:name="com.stxx.wyhvisitorandroid.view.mine.UpdatePhoneFragment" />
 
 </navigation>

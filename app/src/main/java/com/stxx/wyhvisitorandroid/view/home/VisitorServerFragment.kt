@@ -91,7 +91,7 @@ class VisitorServerFragment : BaseFragment() {
                     }
                 }
                 4 -> {
-                    navigate(WebViewUrl.XRXW, R.string.visitor_server_xwqs)
+                    navigate(WebViewUrl.XRXW, R.string.visitor_server_xrxw)
                 }
                 5 -> {
                     navigate(WebViewUrl.ZAJB, R.string.visitor_server_zajb)
