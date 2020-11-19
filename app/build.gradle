@@ -10,8 +10,8 @@ apply from: 'tinker-support.gradle'
 def dc = rootProject.ext.defaultConfig
 def version = loadVersionProperty()
 bugly {
-    appId = "4fa626abc1" // 注册时分配的App ID
-    appKey = "3f33743e-1496-4531-9c7c-7f69e552e563" // 注册时分配的App Key
+    appId = "a2d9f005d6" // 注册时分配的App ID
+    appKey = "a9fa10c9-dea4-413a-8126-0d8ca46cb0c2" // 注册时分配的App Key
     appPackage = "com.stxx.wyhvisitorandroid"
 }
 android {
@@ -65,6 +65,7 @@ android {
         }
         debug {
             buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894\"")
+            buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
             // 单双引号的写法，不用转义
             buildConfigField('String', 'tileUrl', '"http://223.221.37.181:8082"')
             signingConfig signingConfigs.release

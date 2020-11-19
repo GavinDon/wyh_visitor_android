@@ -37,8 +37,8 @@ class MyApplication : MVVMBaseApplication() {
         RxJavaPlugins.setErrorHandler { }
         //腾讯bugly
 //        Bugly.setIsDevelopmentDevice(this, BuildConfig.DEBUG)
-        Bugly.init(this, "4fa626abc1", false)
-//        Bugly.init(this, "a2d9f005d6", BuildConfig.DEBUG)
+//        Bugly.init(this, "4fa626abc1", false)
+        Bugly.init(this, "a2d9f005d6", BuildConfig.DEBUG)
         initWebView()
         //腾讯x5
         initX5()

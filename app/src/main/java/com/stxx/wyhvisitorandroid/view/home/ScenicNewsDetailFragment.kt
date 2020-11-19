@@ -1,6 +1,7 @@
 package com.stxx.wyhvisitorandroid.view.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -60,6 +62,7 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject
 import com.tencent.mm.opensdk.openapi.IWXAPI
+import kotlinx.android.synthetic.main.activity_display.*
 import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.find
@@ -110,12 +113,12 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                     detailData.content ?: "",
                     detailData.gmt_modfy
                 )
-              /*  tv_menu?.text = "分享"
-                tv_menu?.visibility = View.VISIBLE
-                //初始化位置和微信sdk
-                registerApp()
-                //规划线路
-                loadLineGuide(detailData.id)*/
+                /*  tv_menu?.text = "分享"
+                  tv_menu?.visibility = View.VISIBLE
+                  //初始化位置和微信sdk
+                  registerApp()
+                  //规划线路
+                  loadLineGuide(detailData.id)*/
             }
             is LineRecommendResp -> {
                 //推荐路线
@@ -274,7 +277,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 searchRoute(it.body.data.points)
             }
         })
-
+        mapViewDispatch()
     }
 
     private val tRoutePlanResultListener = object : SimpleOnGetRoutePlanResultListener() {
@@ -343,6 +346,21 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
             val point = points[index]
             goWalkNav(point, marker.position)
             return@setOnMarkerClickListener true
+        }
+    }
+
+    /*解决mapView与ScrollView滑动冲突*/
+    @SuppressLint("ClickableViewAccessibility")
+    private fun mapViewDispatch() {
+        val view = mapView?.getChildAt(0)
+        view?.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                scrollView.requestDisallowInterceptTouchEvent(false)
+            } else {
+                scrollView.requestDisallowInterceptTouchEvent(true)
+            }
+            return@setOnTouchListener false
+
         }
     }
 

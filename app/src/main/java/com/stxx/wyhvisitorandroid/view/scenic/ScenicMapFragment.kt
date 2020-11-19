@@ -924,7 +924,7 @@ object SaveMapObj {
     var bottomState: Int = -1
 
     //onDestroyView时地图的绽放级别
-    var mapZoom = 16f
+    var mapZoom = 17f
 
     //onDestroyView时保存地图的中心点
     var target: LatLng = SCENIC_CENTER_LATLNG
