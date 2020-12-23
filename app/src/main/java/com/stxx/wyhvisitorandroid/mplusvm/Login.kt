@@ -221,10 +221,14 @@ class LoginModel(private val mComDis: CompositeDisposable) : MVVMBaseModel() {
                         val data = userInfo.data
                         //判断是否存在合法的phone
                         if (!Pattern.matches(phoneRegex, data.phone ?: "")) {
-                            //把微信的数据同步过去
-                            mineModel.updateNickName(it.nickname) {}
-                            http?.get(ApiService.UPDATE_ICON, listOf("imgurl" to it.headimgurl))
-                                ?.parse<BR<String>>(strType, { }, { })
+                            if (data.icon.isEmpty()) {
+                                http?.get(ApiService.UPDATE_ICON, listOf("imgurl" to it.headimgurl))
+                                    ?.parse<BR<String>>(strType, { }, { })
+                            }
+                            if (data.true_name.isNullOrEmpty()) {
+                                //把微信的数据同步过去
+                                mineModel.updateNickName(it.nickname) {}
+                            }
                         }
                         //使用微信登陆如果已经绑定手机号 防止卸载之后没有手机信息
                         put(LOGIN_NAME_SP, data.phone ?: "")

@@ -127,7 +127,7 @@ public class WalkingRouteOverlay extends OverlayManager {
         return null;
     }
     public int getLineColor() {
-        return 0;
+        return Color.parseColor("#f57f17");
     }
     /**
      * 覆写此方法以改变默认终点图标

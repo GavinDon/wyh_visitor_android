@@ -40,6 +40,10 @@ data class VisitGridData(
     //是否显示
     val hidden: Boolean? = false
 )
+data class NavigationData(
+    val name: String,
+    val navFuncName: String
+)
 
 
 

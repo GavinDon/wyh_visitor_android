@@ -162,7 +162,7 @@ class BaiDuAsrFragment : BaseFragment() {
             val clazz = ReflectUtil::class.java
             val method =
                 clazz.getDeclaredMethod(funName, NavController::class.java, String::class.java)
-            method.invoke(clazz.newInstance(), findNavController(), keyWord)
+            method.invoke(clazz.newInstance(), findNavController(), funName)
         } catch (e: Exception) {
             e.printStackTrace()
         }

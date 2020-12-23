@@ -3,10 +3,7 @@ package com.stxx.wyhvisitorandroid.view.asr
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
-import com.stxx.wyhvisitorandroid.BUNDLE_IS_ROBOT
-import com.stxx.wyhvisitorandroid.BUNDLE_IS_SUB_SCENIC
-import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.BUNDLE_SELECT_TAB
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 
 /**
@@ -122,16 +119,32 @@ class ReflectUtil {
     /**
      * 导航到停车场
      */
-    fun navSpark(navController: NavController, keyWord: String) {
+    fun navP1Park(navController: NavController, funcName: String) {
+//        navController.navigate(
+//            R.id.fragment_scenic,
+//            bundleOf(
+//                BUNDLE_SELECT_TAB to ScenicMApPointEnum.PARK.ordinal,
+//                BUNDLE_IS_ROBOT to true,
+//                BUNDLE_NAV_NAME to funcName
+//            ),
+//            navOptions { popUpTo(R.id.fragment_scenic) { inclusive = true } }
+//        )
+        navigation(navController,ScenicMApPointEnum.PARK.ordinal,funcName)
+    }
+
+    fun navigation(navController: NavController,tab:Int,funcName: String){
         navController.navigate(
             R.id.fragment_scenic,
             bundleOf(
-                BUNDLE_SELECT_TAB to ScenicMApPointEnum.PARK.ordinal,
-                BUNDLE_IS_ROBOT to true
+                BUNDLE_SELECT_TAB to tab,
+                BUNDLE_IS_ROBOT to true,
+                BUNDLE_NAV_NAME to funcName,
+                BUNDLE_IS_SUB_SCENIC to true
             ),
             navOptions { popUpTo(R.id.fragment_scenic) { inclusive = true } }
         )
     }
+
 
 
 }

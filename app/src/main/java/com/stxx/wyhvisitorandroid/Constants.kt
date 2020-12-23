@@ -56,6 +56,8 @@ const val BUNDLE_SELECT_TAB = "select_tab"
 //跳转到景点详情
 const val BUNDLE_SCENIC_DETAIL = "scenic_detail"
 const val BUNDLE_IS_ROBOT = "robot"
+const val BUNDLE_NAV_NAME = "nav_name"
+
 
 //机器人识别出是否是子景点名称
 const val BUNDLE_IS_SUB_SCENIC = "scenicItem"

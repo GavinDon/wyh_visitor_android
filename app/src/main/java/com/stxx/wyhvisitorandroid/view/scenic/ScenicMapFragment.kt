@@ -29,11 +29,13 @@ import com.baidu.mapapi.walknavi.params.WalkNaviLaunchParam
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.net.http
+import com.gavindon.mvvm_lib.utils.GsonUtil
 import com.gavindon.mvvm_lib.utils.NotificationUtil
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.utils.phoneWidth
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
@@ -42,7 +44,9 @@ import com.quyuanfactory.artmap.ArtMapMark
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.ScenicMapServerPointAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
+import com.stxx.wyhvisitorandroid.bean.NavigationData
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
+import com.stxx.wyhvisitorandroid.bean.VisitGridData
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
@@ -55,6 +59,10 @@ import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.toast
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.util.*
 
 
 /**
@@ -66,6 +74,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     BaiduMap.OnMapLoadedCallback {
 
 
+    private var robotNavData: List<NavigationData>? = null
     private val tabsText: Array<String> by lazy { resources.getStringArray(R.array.scenic_map) }
 
     override val layoutId: Int = R.layout.fragment_scenic
@@ -76,6 +85,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
     //跳转过来时应该选中的索引
     private var defaultSelectTab = 0
+    private var navFunName = ""
 
     //上一次选中tab的索引
     private var lastSelectTab: Int? = 0
@@ -109,6 +119,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 //        val filter = IntentFilter()
 //        filter.addAction(GeoBroadCast.fenceaction)
 //        this.context?.registerReceiver(GeoBroadCast, filter)
+        getNavData()
     }
 
     override fun onInit(savedInstanceState: Bundle?) {
@@ -120,6 +131,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         if (isRobot) {
             defaultSelectTab = arguments?.getInt(BUNDLE_SELECT_TAB, 0) ?: 0
             lastSelectTab = defaultSelectTab
+            navFunName = arguments?.getString(BUNDLE_NAV_NAME) ?: ""
         } else {
             //恢复选中的tab
             when {
@@ -134,7 +146,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     lastSelectTab = defaultSelectTab
                 }
             }
-
         }
         if (SaveMapObj.needSaveState?.second != null) {
             isFirstLoad = SaveMapObj.needSaveState?.second!!
@@ -329,6 +340,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     }
 
     private fun tabSelect(tab: TabLayout.Tab?) {
+
         fun executeSelect() {
             when (val index = tab?.position ?: 0) {
                 0, 1, 2, 3 -> {
@@ -369,25 +381,84 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         serverPointAdapter.isToilet = type == 0
         val value = mViewModel.pointLiveData.value
         if (type == lastType && value != null && value is SuccessSource) {
-            serverPointAdapter.setList(value.body.data.toMutableList())
-            createMarket(value.body.data)
+            val navItemObj = robotNavData?.filter { it.navFuncName == navFunName }
+            val newData: List<ServerPointResp>
+            newData = if (navFunName.isNotEmpty()) {
+                value.body.data
+            } else {
+                if (!navItemObj.isNullOrEmpty()) {
+                    value.body.data.filter { it.name.toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
+                        Locale.CHINA
+                    )
+                    }
+                } else {
+                    value.body.data
+                }
+            }
+            serverPointAdapter.setList(newData.toMutableList())
+            createMarket(newData)
+            //重置导航函数名
+            navFunName = ""
         } else {
             mViewModel.getServicePoint(type, url)
                 .observe(this, Observer {
                     handlerResponseData(it, { resp ->
-                        serverPointAdapter.setList(resp.data.toMutableList())
-                        createMarket(resp.data)
+                        val newData: List<ServerPointResp>
+                        newData = if (navFunName.isNotEmpty()) {
+                            val navItemObj =
+                                robotNavData?.filter { f -> f.navFuncName == navFunName }
+                            if (!navItemObj.isNullOrEmpty()) {
+                                resp.data.filter { f -> f.name.toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase( Locale.CHINA) }
+                            } else {
+                                resp.data
+                            }
+                        } else {
+                            resp.data
+                        }
+
+                        serverPointAdapter.setList(newData.toMutableList())
+                        createMarket(newData)
 
                     }, {
                         this.context?.showToast("暂无数据")
                     })
+                    //重置导航函数名
+                    navFunName = ""
                 })
         }
 
         //保存当前请求的type
         lastType = type
+
     }
 
+    /**
+     * 机器人对话导航关系表
+     */
+    private fun getNavData() {
+        var inputStream: InputStream? = null
+        var inputStreamReader: InputStreamReader? = null
+        var bufferedReader: BufferedReader? = null
+
+        try {
+            inputStream = resources.assets.open("json/navigation.json")
+            inputStreamReader = InputStreamReader(inputStream)
+            bufferedReader = BufferedReader(inputStreamReader)
+            var strJson = bufferedReader.readLine()
+            val stringBuilder = StringBuilder()
+            while (strJson != null) {
+                stringBuilder.append(strJson)
+                strJson = bufferedReader.readLine()
+            }
+            val type = object : TypeToken<List<NavigationData>>() {}.type
+            robotNavData = GsonUtil.str2Obj<List<NavigationData>>(stringBuilder.toString(), type)
+        } catch (ex: Exception) {
+        } finally {
+            inputStream?.close()
+            inputStreamReader?.close()
+            bufferedReader?.close()
+        }
+    }
 
     /**
      * 控制bottomSheet显示高度
