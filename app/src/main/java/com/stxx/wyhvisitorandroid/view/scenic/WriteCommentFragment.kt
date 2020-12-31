@@ -75,7 +75,8 @@ class WriteCommentFragment : ToolbarFragment() {
                 lifecycle.addObserver(mViewModel)
                 val param = listOf(
                     "score" to rating,
-                    "evaluate" to URLEncoder.encode(content, "UTF-8"),
+                    "evaluate" to content,
+//                    "evaluate" to URLEncoder.encode(content, "UTF-8"),
                     "shops_id" to id
                 )
                 mViewModel.upComment(param, files).observe(this, Observer {

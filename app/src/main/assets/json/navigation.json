@@ -2,5 +2,141 @@
   {
     "name": "P1停车场",
     "navFuncName": "navP1Park"
+  },
+  {
+    "name": "游园须知",
+    "navFuncName": "navNotice"
+  },
+  {
+    "name": "新闻资讯列表",
+    "navFuncName": "navNews"
+  },
+  {
+    "name": "玉湖",
+    "navFuncName": "navLake"
+  },
+  {
+    "name": "遐观悠悠",
+    "navFuncName": "navAlongview"
+  },
+  {
+    "name": "花溪锦田",
+    "navFuncName": "navHuaxiJintian"
+  },
+  {
+    "name": "礼弦桥",
+    "navFuncName": "navLixianbridge"
+  },
+  {
+    "name": "五柳观湖",
+    "navFuncName": "navWuLiuGuanHu"
+  },
+  {
+    "name": "东囿云稼",
+    "navFuncName": "navYunjiaintheEast"
+  },
+  {
+    "name": "柳岸长堤",
+    "navFuncName": "navWillowbanklevee"
+  },
+  {
+    "name": "草甸芳华",
+    "navFuncName": "navBeautifulmeadow"
+  },
+  {
+    "name": "曲河",
+    "navFuncName": "navMeanderingriver"
+  },
+  {
+    "name": "凭栏流水",
+    "navFuncName": "navRunningwaterbyrailing"
+  },
+  {
+    "name": "秋意广场",
+    "navFuncName": "navQiuyisquare"
+  },
+  {
+    "name": "望山阁",
+    "navFuncName": "navWangshanPavilion"
+  },
+  {
+    "name": "凤鸣台",
+    "navFuncName": "navFengmingplatfo"
+  },
+  {
+    "name": "朗昆自在书屋",
+    "navFuncName": "navLangkunziBookstore"
+  },
+  {
+    "name": "阳光沙滩",
+    "navFuncName": "navSunnyBeach"
+  },
+  {
+    "name": "飞凤谷",
+    "navFuncName": "navFeifenggu"
+  },
+  {
+    "name": "松云华盖",
+    "navFuncName": "navSongyunhuagai"
+  },
+  {
+    "name": "飞瀑叠翠",
+    "navFuncName": "navCascadingnana"
+  },
+  {
+    "name": "芸上梯田",
+    "navFuncName": "navTerrace"
+  },
+  {
+    "name": "蒹葭照水",
+    "navFuncName": "navJianjia"
+  },
+  {
+    "name": "玲珑望月",
+    "navFuncName": "navLooking"
+  },
+  {
+    "name": "林廊听鸟",
+    "navFuncName": "navForestcorridor"
+  },
+  {
+    "name": "芦苇码头",
+    "navFuncName": "navReedWharf"
+  },
+  {
+    "name": "沁湖",
+    "navFuncName": "navQinhuLake"
+  },
+  {
+    "name": "望芸台",
+    "navFuncName": "navWangyuntai"
+  },
+  {
+    "name": "雁鸣岛",
+    "navFuncName": "navYanmingIslandna"
+  },
+  {
+    "name": "鸢尾园",
+    "navFuncName": "navIrisGarden"
+  },
+  {
+    "name": "月影泉",
+    "navFuncName": "navMoonshadowna"
+  },
+  {
+    "name": "茑屋",
+    "navFuncName": "navThehouse"
+  },
+  {
+    "name": "游客服务",
+    "navFuncName": "navTouristservices"
+  },
+  {
+    "name": "游客服务中心",
+    "navFuncName": "navTouristServiceCenter"
+  },
+  {
+    "name": "望山咖啡",
+    "navFuncName": "navWangshancoffee"
   }
 ]

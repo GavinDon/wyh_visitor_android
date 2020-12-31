@@ -204,4 +204,6 @@ object WebViewUrl {
     //入园预约
     const val ENTER_BOOK_URL = "pages/authentication/authentication"
     const val LINE_WEB = "http://manage.wenyuriverpark.com:8082/iosMap/map/record.html?id="
+    //极光推送跳转h5 新闻详情页面
+    const val NEWS_DETAIL="pages/news/details/details?type=0&id="
 }

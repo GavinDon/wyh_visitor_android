@@ -381,19 +381,25 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         serverPointAdapter.isToilet = type == 0
         val value = mViewModel.pointLiveData.value
         if (type == lastType && value != null && value is SuccessSource) {
-            val navItemObj = robotNavData?.filter { it.navFuncName == navFunName }
-            val newData: List<ServerPointResp>
-            newData = if (navFunName.isNotEmpty()) {
-                value.body.data
-            } else {
+            val newData = if (navFunName.isNotEmpty()) {
+                val navItemObj =
+                    robotNavData?.filter { f -> f.navFuncName == navFunName }
                 if (!navItemObj.isNullOrEmpty()) {
-                    value.body.data.filter { it.name.toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
-                        Locale.CHINA
-                    )
+                   val  filterData= value.body.data.filter { f ->
+                        f.name.trim().toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
+                            Locale.CHINA
+                        )
+                    }
+                    if (filterData.isNullOrEmpty()) {
+                        value.body.data
+                    } else {
+                        filterData
                     }
                 } else {
                     value.body.data
                 }
+            } else {
+                value.body.data
             }
             serverPointAdapter.setList(newData.toMutableList())
             createMarket(newData)
@@ -403,22 +409,30 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             mViewModel.getServicePoint(type, url)
                 .observe(this, Observer {
                     handlerResponseData(it, { resp ->
-                        val newData: List<ServerPointResp>
-                        newData = if (navFunName.isNotEmpty()) {
+                        val newData = if (navFunName.isNotEmpty()) {
+                            //获取navigation.json中的和百度unit返回的函数名相同的对象数据
                             val navItemObj =
                                 robotNavData?.filter { f -> f.navFuncName == navFunName }
+                            //如果json文件中存在则进行过滤获取name相同的数据
                             if (!navItemObj.isNullOrEmpty()) {
-                                resp.data.filter { f -> f.name.toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase( Locale.CHINA) }
+                                val filterData = resp.data.filter { f ->
+                                    f.name.trim().toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
+                                        Locale.CHINA
+                                    )
+                                }
+                                if (filterData.isNullOrEmpty()) {
+                                    resp.data
+                                } else {
+                                    filterData
+                                }
                             } else {
                                 resp.data
                             }
                         } else {
                             resp.data
                         }
-
                         serverPointAdapter.setList(newData.toMutableList())
                         createMarket(newData)
-
                     }, {
                         this.context?.showToast("暂无数据")
                     })

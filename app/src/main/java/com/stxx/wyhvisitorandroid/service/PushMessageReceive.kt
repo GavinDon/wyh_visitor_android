@@ -1,15 +1,24 @@
 package com.stxx.wyhvisitorandroid.service
 
+import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.core.app.NotificationCompat
 import cn.jpush.android.api.*
 import cn.jpush.android.service.JPushMessageReceiver
+import com.gavindon.mvvm_lib.utils.GsonUtil
+import com.google.gson.reflect.TypeToken
+import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.WEB_VIEW_URL
+import com.stxx.wyhvisitorandroid.WebViewUrl
+import com.stxx.wyhvisitorandroid.bean.PushExtraData
+import com.stxx.wyhvisitorandroid.view.PushReceiveActivity
 import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
-import org.json.JSONException
 import org.json.JSONObject
+
 
 /**
  * description:
@@ -23,6 +32,9 @@ class PushMessageReceive : JPushMessageReceiver() {
         customMessage: CustomMessage
     ) {
         Log.e(TAG, "[onMessage] $customMessage")
+//        if (customMessage.extra.isNotEmpty()) {
+//            initChannel(context)
+//        }
         processCustomMessage(context, customMessage)
     }
 
@@ -31,18 +43,23 @@ class PushMessageReceive : JPushMessageReceiver() {
         message: NotificationMessage
     ) {
         Log.e(TAG, "[onNotifyMessageOpened] $message")
-        try { //打开自定义的Activity
-            val i =
-                Intent(context, MultiFragments::class.java)
-            val bundle = Bundle()
-            bundle.putString(JPushInterface.EXTRA_NOTIFICATION_TITLE, message.notificationTitle)
-            bundle.putString(JPushInterface.EXTRA_ALERT, message.notificationContent)
-            i.putExtras(bundle)
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            context.startActivity(i)
-        } catch (throwable: Throwable) {
+        val extral = message.notificationExtras
+        if (!extral.isNullOrEmpty()) {
+            val type = object : TypeToken<PushExtraData>() {}.type
+            val pushData = GsonUtil.str2Obj<PushExtraData>(extral, type)
+            val pushId = pushData?.data?.id
+            val linkUrl = "${WebViewUrl.NEWS_DETAIL}$pushId&title=${message.notificationTitle}"
+            try { //打开自定义的Activity
+                val i = Intent(context, PushReceiveActivity::class.java)
+                i.putExtra(WEB_VIEW_URL, linkUrl)
+                i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                context.startActivity(i)
+            } catch (throwable: Throwable) {
+                Logger.i(throwable.localizedMessage)
+            }
         }
+
+
     }
 
     override fun onMultiActionClicked(
@@ -72,6 +89,8 @@ class PushMessageReceive : JPushMessageReceiver() {
         context: Context?,
         message: NotificationMessage
     ) {
+        val extras = message.notificationExtras
+
         Log.e(TAG, "[onNotifyMessageArrived] $message")
     }
 
@@ -81,6 +100,7 @@ class PushMessageReceive : JPushMessageReceiver() {
     ) {
         Log.e(TAG, "[onNotifyMessageDismiss] $message")
     }
+
 
     override fun onRegister(
         context: Context?,
@@ -136,23 +156,25 @@ class PushMessageReceive : JPushMessageReceiver() {
         context: Context,
         customMessage: CustomMessage
     ) {
- /*       if (MainActivity.isForeground) {
-            val message = customMessage.message
-            val extras = customMessage.extra
-            val msgIntent =
-                Intent(MainActivity.MESSAGE_RECEIVED_ACTION)
-            msgIntent.putExtra(MainActivity.KEY_MESSAGE, message)
-            if (!ExampleUtil.isEmpty(extras)) {
-                try {
-                    val extraJson = JSONObject(extras)
-                    if (extraJson.length() > 0) {
-                        msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras)
-                    }
-                } catch (e: JSONException) {
-                }
-            }
-            LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent)
-        }*/
+
+
+        /*       if (MainActivity.isForeground) {
+                   val message = customMessage.message
+                   val extras = customMessage.extra
+                   val msgIntent =
+                       Intent(MainActivity.MESSAGE_RECEIVED_ACTION)
+                   msgIntent.putExtra(MainActivity.KEY_MESSAGE, message)
+                   if (!ExampleUtil.isEmpty(extras)) {
+                       try {
+                           val extraJson = JSONObject(extras)
+                           if (extraJson.length() > 0) {
+                               msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras)
+                           }
+                       } catch (e: JSONException) {
+                       }
+                   }
+                   LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent)
+               }*/
     }
 
     override fun onNotificationSettingsCheck(
@@ -162,6 +184,14 @@ class PushMessageReceive : JPushMessageReceiver() {
     ) {
         super.onNotificationSettingsCheck(context, isOn, source)
         Log.e(TAG, "[onNotificationSettingsCheck] isOn:$isOn,source:$source")
+    }
+
+    override fun isNeedShowNotification(
+        p0: Context?,
+        p1: NotificationMessage?,
+        p2: String?
+    ): Boolean {
+        return true
     }
 
 

@@ -8,3 +8,6 @@ data class OneKeyWifiResp(
     val name: String,
     val password: String
 )
+
+data class PushExtraData(val data: ExtralData)
+data class ExtralData(val id: String,val information:String)

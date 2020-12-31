@@ -225,39 +225,41 @@ class BaiDuAsrFragment : BaseFragment() {
                         logId = botResult?.result?.log_id
                         sessionId = botResult?.result?.session_id
                         //防止已经关闭页面时更新ui
-                        if (!this@BaiDuAsrFragment.isDetached)
+                        if (this@BaiDuAsrFragment.activity != null)
                             runOnUiThread {
                                 if (botResult?.error_code == 0) {
-                                    if (!botResult.result.response_list.isNullOrEmpty()) {
-
-                                        val actionResp =
-                                            botResult.result.response_list[0].action_list[0]
-                                        //如果unit设置的是函数名 解析函数名并进行执行函数
-                                        val action = actionResp.type.toUpperCase()
-                                        //需要对话
-                                        if (action == ActionTypeEnum.EVENT.name) {
-                                            //执行动作
-                                            val eventFun = actionResp.custom_reply
-                                            if (eventFun.isNotEmpty()) {
-                                                val funName = JSONObject(eventFun).getString("func")
-                                                mSpeechSynthesizer.speak("好的")
-                                                val keyWord =
-                                                    botResult.result.response_list[0].schema.slots[0].original_word
-                                                if (funName.isNotEmpty()) {
-                                                    rejectFun(funName, keyWord)
+                                    val responseList = botResult.result.response_list
+                                    if (!responseList.isNullOrEmpty()) {
+                                        if (!responseList[0].action_list.isNullOrEmpty()) {
+                                            val actionResp = responseList[0].action_list[0]
+                                            //如果unit设置的是函数名 解析函数名并进行执行函数
+                                            val action = actionResp.type.toUpperCase()
+                                            //需要对话
+                                            if (action == ActionTypeEnum.EVENT.name) {
+                                                //执行动作
+                                                val eventFun = actionResp.custom_reply
+                                                if (eventFun.isNotEmpty()) {
+                                                    val funName =
+                                                        JSONObject(eventFun).getString("func")
+                                                    mSpeechSynthesizer.speak("好的")
+//                                                val keyWord =
+//                                                    botResult.result.response_list[0].schema.slots[0]?.original_word
+                                                    if (funName.isNotEmpty()) {
+                                                        rejectFun(funName, "")
+                                                    }
                                                 }
+                                            } else {
+                                                //回复的话语
+                                                val say = actionResp.say
+                                                mSpeechSynthesizer.speak(if (say.isNotEmpty()) say else "好的")
+                                                val robotSayBean =
+                                                    DelegateMultiEntity().apply {
+                                                        chat = say
+                                                        itemType = DelegateMultiEntity.BOT_LEFT
+                                                    }
+                                                mBotChatAdapter.addData(robotSayBean)
+                                                rvBot.smoothScrollToPosition(mBotChatAdapter.data.size - 1)
                                             }
-                                        } else {
-                                            //回复的话语
-                                            val say = actionResp.say
-                                            mSpeechSynthesizer.speak(if (say.isNotEmpty()) say else "好的")
-                                            val robotSayBean =
-                                                DelegateMultiEntity().apply {
-                                                    chat = say
-                                                    itemType = DelegateMultiEntity.BOT_LEFT
-                                                }
-                                            mBotChatAdapter.addData(robotSayBean)
-                                            rvBot.smoothScrollToPosition(mBotChatAdapter.data.size - 1)
                                         }
                                     }
                                 }

@@ -107,10 +107,9 @@ public class MyJPushMessageReceiver extends BroadcastReceiver {
 
     //send msg to MainActivity
     private void processCustomMessage(Context context, Bundle bundle) {
-	/*	if (MultiFragments.isForeground) {
-			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+/*			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-			Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
+			Intent msgIntent = new Intent();
 			msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
 			if (!ExampleUtil.isEmpty(extras)) {
 				try {
@@ -122,8 +121,7 @@ public class MyJPushMessageReceiver extends BroadcastReceiver {
 
 				}
 
-			}*/
-//			LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
-//		}
+			}
+			LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);*/
     }
 }

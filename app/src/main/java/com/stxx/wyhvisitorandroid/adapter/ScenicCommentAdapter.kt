@@ -60,7 +60,8 @@ class ScenicCommentAdapter(layoutResId: Int, data: MutableList<ScenicCommentResp
         ImageLoader.with().load(item.icon).error(R.mipmap.default_icon)
             .transForm(PicassoCircleImage())
             .into(icon)
-        val decoderComment = URLDecoder.decode(item.evaluate, "UTF-8")
+//        val decoderComment = URLDecoder.decode(item.evaluate, "UTF-8")
+        val decoderComment = item.evaluate
         foldingLayout.setText(
             decoderComment, stateArray, holder.adapterPosition
         )

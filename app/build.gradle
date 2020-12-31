@@ -35,9 +35,10 @@ android {
         resConfigs "zh", "en"
         buildConfigField("int", "source", "0")
 //        buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
+        // a944e7e61ab3cf12f0106323  3b996eb25fe82acd2ad56915
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "5ab70a3331b4a48026a4cc5c", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_APPKEY : "a944e7e61ab3cf12f0106323", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
                 FILE_PROVIDER: "${applicationId}.FileProvider"
         ]
@@ -65,7 +66,8 @@ android {
         }
         debug {
             buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894\"")
-            buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
+//            buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
+//            buildConfigField("String", "baseUrl", "\"http://192.168.100.16:8890\"")
             // 单双引号的写法，不用转义
             buildConfigField('String', 'tileUrl', '"http://223.221.37.181:8082"')
             signingConfig signingConfigs.release
@@ -151,6 +153,8 @@ def loadVersionProperty() {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.12'
     implementation "com.google.android.material:material:1.2.0"
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
