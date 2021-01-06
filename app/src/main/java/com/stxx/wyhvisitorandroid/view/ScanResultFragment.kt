@@ -1,6 +1,8 @@
 package com.stxx.wyhvisitorandroid.view
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +10,17 @@ import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gyf.immersionbar.ImmersionBar
-import com.huawei.hms.hmsscankit.ScanUtil
-import com.huawei.hms.ml.scan.HmsScan
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WebViewUrl
 import com.stxx.wyhvisitorandroid.base.BaseFragment
+import com.stxx.wyhvisitorandroid.view.helpers.WebCameraHelper
+import com.stxx.wyhvisitorandroid.view.helpers.WebViewCameraHelper
+import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
-import kotlinx.android.synthetic.main.fragment_webview_primeval.*
+import kotlinx.android.synthetic.main.fragment_webview_primeval.progressBar
+import kotlinx.android.synthetic.main.fragment_webview_primeval.x5WebView
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
@@ -32,7 +36,7 @@ class ScanResultFragment : BaseFragment() {
         try {
             val url = arguments?.getString("url")
             x5WebView.webChromeClient = webChromeClient
-            x5WebView.webViewClient = webViewClient
+//            x5WebView.webViewClient = webViewClient
             if (url?.startsWith("http") == true) {
                 x5WebView.loadUrl(url)
             } else {
@@ -45,8 +49,19 @@ class ScanResultFragment : BaseFragment() {
                     findNavController().navigateUp()
                 }
             }
+            toolbar_close?.setOnClickListener {
+                findNavController().navigateUp()
+            }
+            x5WebView.addUrlListener {
+                //set集合中first数据和WebView当前展示的url相同则说明当前在第一页。应该隐藏关闭按钮
+                if (x5WebView.url == it.first()) {
+                    toolbar_close?.visibility = View.GONE
+                } else {
+                    toolbar_close?.visibility = View.VISIBLE
+                }
+            }
         } catch (e: Exception) {
-
+            println(e.stackTrace)
         }
     }
 
@@ -80,6 +95,16 @@ class ScanResultFragment : BaseFragment() {
             }
             super.onProgressChanged(p0, p1)
         }
+
+        override fun onShowFileChooser(
+            p0: WebView?,
+            uploadMsg: ValueCallback<Array<Uri>>,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean {
+            WebViewCameraHelper.mUploadCallbackAboveL = uploadMsg
+            WebViewCameraHelper.showOptions(this@ScanResultFragment.requireActivity())
+            return true
+        }
     }
 
     private val webViewClient = object : WebViewClient() {
@@ -88,13 +113,18 @@ class ScanResultFragment : BaseFragment() {
             val title = view?.title ?: "详情"
             app_tv_Title?.text = title
             app_tv_Title?.isFocusable = true
-
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+        WebCameraHelper.getInstance().onActivityResult(requestCode, resultCode, intent)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         val parent = x5WebView.parent
+        WebViewCameraHelper.cancelChoose()
         if (parent is ViewGroup) {
             parent.removeView(x5WebView)
             x5WebView.removeAllViews()
