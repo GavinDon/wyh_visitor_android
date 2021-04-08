@@ -65,8 +65,8 @@ android {
             buildConfigField('String', 'tileUrl', '"http://223.70.181.106:8082"')
         }
         debug {
-            buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894\"")
-//            buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
+//            buildConfigField("String", "baseUrl", "\"http://223.221.37.181:8894\"")
+            buildConfigField("String", "baseUrl", "\"https://tourist.wenyuriverpark.com:9894\"")
 //            buildConfigField("String", "baseUrl", "\"http://192.168.100.16:8890\"")
             // 单双引号的写法，不用转义
             buildConfigField('String', 'tileUrl', '"http://223.221.37.181:8082"')

@@ -248,7 +248,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             BdLocation2.startLocation.bdLocationListener {
                 //先移除围栏再添加围栏可使再次调用广播进行回调位置信息
                 mGeoFenceClient.removeGeoFence()
-                mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
+                mGeoFenceClient.addGeoFence("温榆河公园", "旅游景点", "北京", 1, " 0001")
                 //防止定位回调时 View已经注销
                 val map = mapView?.map
                 currentLatitude = it.latitude //获取纬度信息

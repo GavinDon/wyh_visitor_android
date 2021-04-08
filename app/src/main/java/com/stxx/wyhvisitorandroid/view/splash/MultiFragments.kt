@@ -140,7 +140,7 @@ class MultiFragments : BaseActivity() {
                     })
             }
         }
-        mGeoFenceClient.addGeoFence("沙子营湿地公园", "旅游景点", "北京", 1, " 0001")
+        mGeoFenceClient.addGeoFence("温榆河公园", "旅游景点", "北京", 1, " 0001")
         //初始化围栏(在位置回调中先进行移除再添加达到每隔6s回调一次)
         mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
         mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
