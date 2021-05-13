@@ -84,7 +84,7 @@ class HomeFragment : BaseFragment() {
         delegateAdapter.addAdapter(bannerAdapter)
 
         noticeAdapter = NoticeAdapter(R.layout.home_notice)
-        delegateAdapter.addAdapter(noticeAdapter)
+//        delegateAdapter.addAdapter(noticeAdapter)
 
         /*grid*/
         val gridLayoutHelper = GridLayoutHelper(4)
