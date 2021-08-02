@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.dreamdeck.wyhapp.UnityPlayerActivity
 import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.SuccessSource
+import com.gavindon.mvvm_lib.widgets.showToast
 import com.mario.baseadapter.holder.VBaseHolderHelper
 import com.squareup.picasso.Picasso
 import com.stxx.wyhvisitorandroid.*
@@ -298,7 +299,8 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
 
                 }
                 R.string.visitor_ai_budao -> {
-                    goAiBudaoPage(view)
+//                    goAiBudaoPage(view)
+                    view.context.showToast("该功能暂未开放")
                 }
                 R.string.grid_plant_wiki -> {
                     view.findNavController().navigate(

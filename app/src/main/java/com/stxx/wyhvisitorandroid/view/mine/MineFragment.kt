@@ -158,11 +158,12 @@ class MineFragment : BaseFragment() {
                 }
                 2 -> {
                     //调用人脸识别接口
-                    if (BuildConfig.DEBUG) {
+                 /*   if (BuildConfig.DEBUG) {
                         faceDistinguish()
                     } else {
                         faceDistinguish()
-                    }
+                    }*/
+                    context?.showToast("该功能暂未开放")
                 }
                 3 -> {
                     findNavController().navigate(R.id.fragment_setting, null, navOption)

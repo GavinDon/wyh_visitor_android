@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gavindon.mvvm_lib.utils.GsonUtil
+import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.orhanobut.logger.Logger
@@ -147,7 +148,8 @@ class VisitorServerFragment : BaseFragment() {
                 }
                 16 -> {
                     //步道
-                    goAiBudaoPage(this.requireView())
+//                    goAiBudaoPage(this.requireView())
+                    context?.showToast("该功能暂未开放")
                 }
                 17 -> {
                     navigate(WebViewUrl.DEVICE_QUERY, R.string.visitor_server_device)
