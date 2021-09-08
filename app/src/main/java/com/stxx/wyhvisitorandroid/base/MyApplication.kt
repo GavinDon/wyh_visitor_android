@@ -13,6 +13,7 @@ import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
+import com.umeng.commonsdk.UMConfigure
 import io.reactivex.plugins.RxJavaPlugins
 
 /**
@@ -45,6 +46,18 @@ class MyApplication : MVVMBaseApplication() {
         //极光推送
         JPushInterface.setDebugMode(BuildConfig.DEBUG)
         JPushInterface.init(this)
+        //UMENG
+        UMConfigure.preInit(
+            this, "613711b780454c1cbbbf6c23",
+            "wenyuhe"
+        )
+        UMConfigure.init(
+            this,
+            "613711b780454c1cbbbf6c23",
+            "wenyuhe",
+            UMConfigure.DEVICE_TYPE_PHONE,
+            null
+        )
 //        ArtMap.Init(this)
     }
 

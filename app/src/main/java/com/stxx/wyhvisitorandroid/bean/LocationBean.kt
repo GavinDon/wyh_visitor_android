@@ -9,6 +9,7 @@ import java.io.Serializable
 
 data class LocationBean(
     val id: String,
+    val detailId: Int,
     val name: String,
     val x: String = "0",
     val y: String = "0",

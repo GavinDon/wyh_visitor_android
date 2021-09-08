@@ -104,7 +104,7 @@ class ScenicRepositories(private val mComDis: CompositeDisposable) : MVVMBaseMod
         val t = object : TypeToken<BR<ServerPointResp>>() {}.type
         val param = listOf(Pair("id", id))
         mComDis.add(
-            http!!.getWithoutLoading(url, param)
+            http!!.get(url, param)
                 .parse2<BR<ServerPointResp>>(t, {
                     onSuccessT.invoke(it)
                 }, {

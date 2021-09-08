@@ -14,6 +14,7 @@ import com.baidu.mapapi.utils.CoordinateConverter
 import com.baidu.mapapi.utils.DistanceUtil
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.GsonUtil
+import com.gavindon.mvvm_lib.widgets.ToastUtil
 import com.google.gson.reflect.TypeToken
 import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.R
@@ -112,6 +113,7 @@ object BdLocation2 : LifecycleObserver {
      */
     private val listener = object : BDAbstractLocationListener() {
         override fun onReceiveLocation(location: BDLocation) {
+            Logger.d("chage")
             if (location.locType != BDLocation.TypeServerError &&
                 location.locType != BDLocation.TypeOffLineLocationFail &&
                 location.locType != BDLocation.TypeCriteriaException
@@ -127,7 +129,8 @@ object BdLocation2 : LifecycleObserver {
      * 计算最近的景点
      */
     private fun calculateNear(startLatLng: LatLng) {
-        mThread.run {
+        ToastUtil.instance?.show("cal", 0)
+        thread {
             locationObj?.forEach {
                 val distance = DistanceUtil.getDistance(
                     startLatLng,
@@ -135,13 +138,28 @@ object BdLocation2 : LifecycleObserver {
                 )
                 if (distance < 50) {
                     //如果已经弹出过提示则不在弹出对话框
-                    if (hasShowNameLst.contains(it.name)) return
+                    if (hasShowNameLst.contains(it.name)) return@forEach
                     distanceListener?.invoke(it)
                     hasShowNameLst.add(it.name)
                 }
 //                Logger.i(distance.toString())
             }
         }
+        /*      mThread.run {
+                  locationObj?.forEach {
+                      val distance = DistanceUtil.getDistance(
+                          startLatLng,
+                          convertBaidu(it.y.toDouble(), it.x.toDouble())
+                      )
+                      if (distance < 50) {
+                          //如果已经弹出过提示则不在弹出对话框
+                          if (hasShowNameLst.contains(it.name)) return
+                          distanceListener?.invoke(it)
+                          hasShowNameLst.add(it.name)
+                      }
+      //                Logger.i(distance.toString())
+                  }
+              }*/
 
 
     }

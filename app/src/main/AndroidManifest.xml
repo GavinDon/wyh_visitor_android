@@ -37,7 +37,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="HardcodedDebugMode"
-        tools:replace="android:icon, android:theme,android:allowBackup">
+        tools:replace="android:icon, android:theme,android:allowBackup,android:label">
         <activity android:name=".view.PushReceiveActivity"></activity>
         <activity
             android:name=".view.splash.PreviewWindow"
@@ -89,6 +89,9 @@
         <meta-data
             android:name="file_provider"
             android:value="${FILE_PROVIDER}" /> <!-- <activity android:name="com.huawei.hms.hmsscankit.ScanKitActivity" /> -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="613711b780454c1cbbbf6c23" />
         <!--
  在AndroidManifest.xml中增加内核首次加载时优化Service声明；
         该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束

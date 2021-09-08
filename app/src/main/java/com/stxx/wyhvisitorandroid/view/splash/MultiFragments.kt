@@ -30,6 +30,7 @@ import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
 import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment
 import com.stxx.wyhvisitorandroid.widgets.SuspensionDragView
+import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_multi_root.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.longToast
@@ -111,6 +112,7 @@ class MultiFragments : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mGeoFenceClient.removeGeoFence()
+        MobclickAgent.onKillProcess(this)
         try {
             if (WeChatRegister.broadcastReceiver != null)
                 this.unregisterReceiver(WeChatRegister.broadcastReceiver)

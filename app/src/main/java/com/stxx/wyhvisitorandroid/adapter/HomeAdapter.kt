@@ -17,7 +17,6 @@ import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.dreamdeck.wyhapp.UnityPlayerActivity
 import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.widgets.showToast
@@ -36,6 +35,7 @@ import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.graphics.ImageLoader
 import com.stxx.wyhvisitorandroid.transformer.RoundedCornersTransformation
 import com.stxx.wyhvisitorandroid.transformer.ScaleInOutTransformer
+import com.stxx.wyhvisitorandroid2.UnityPlayerActivity
 import com.zhpan.bannerview.BannerViewPager
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.constants.PageStyle

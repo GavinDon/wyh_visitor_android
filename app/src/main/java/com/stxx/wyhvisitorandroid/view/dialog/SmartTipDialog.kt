@@ -9,11 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.Navigator
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.gavindon.mvvm_lib.base.ViewModelProviders
+import com.gavindon.mvvm_lib.net.SuccessSource
 import com.gavindon.mvvm_lib.utils.phoneWidth
-import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.bean.LocationBean
+import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
 import kotlinx.android.synthetic.main.dialog_smart_tip.*
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.wrapContent
@@ -24,6 +32,8 @@ import org.jetbrains.anko.wrapContent
  */
 class SmartTipDialog : DialogFragment() {
 
+
+    private lateinit var mViewModel: ScenicVm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.halfDialog)
@@ -40,6 +50,7 @@ class SmartTipDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mViewModel = ViewModelProviders.of(this).get(ScenicVm::class.java)
         return layoutInflater.inflate(R.layout.dialog_smart_tip, null, false)
     }
 
@@ -51,5 +62,24 @@ class SmartTipDialog : DialogFragment() {
         btnConfirm.setOnClickListener {
             this.dismiss()
         }
+        tvGoDetail.setOnClickListener {
+            mViewModel.getServicePointById(locationBean.detailId, ApiService.SCENIC_MAP_POINT_ID)
+                .observe(this, Observer {
+                    if (it is SuccessSource) {
+                        findNavController().navigate(
+                            R.id.fragment_scenic_comment,
+                            bundleOf(
+                                BUNDLE_SCENIC_DETAIL to it.body.data,
+                                "end" to convertBaidu(
+                                    (it.body.data.y ?: "0").toDouble(),
+                                    ((it.body.data.x ?: "0").toDouble())
+                                )
+                            ),
+                            navOption
+                        )
+                    }
+                })
+        }
+
     }
 }
