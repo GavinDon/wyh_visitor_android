@@ -39,6 +39,7 @@ import com.gavindon.mvvm_lib.utils.getStatusBarHeight
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.BUNDLE_DETAIL
 import com.stxx.wyhvisitorandroid.R
@@ -66,6 +67,7 @@ import kotlinx.android.synthetic.main.activity_display.*
 import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.toast
 
 
 /**
@@ -243,6 +245,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                 currentLatitude = it.latitude //获取纬度信息
                 currentLongitude = it.longitude //获取经度信息
             }.setDistanceListener {
+                if (findNavController().currentDestination?.id == R.id.dialog_smart_tip) return@setDistanceListener
                 findNavController().navigate(R.id.dialog_smart_tip,
                     bundleOf("locationBean" to it),
                     navOptions {
@@ -253,6 +256,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
                             exit = R.anim.alpha_exit
                         }
                     })
+
             }
         }
         //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)

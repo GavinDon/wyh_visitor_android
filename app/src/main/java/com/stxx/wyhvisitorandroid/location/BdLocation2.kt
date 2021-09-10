@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken
 import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.SCENIC_CENTER_LATLNG
+import com.stxx.wyhvisitorandroid.base.MyApplication
 import com.stxx.wyhvisitorandroid.bean.LocationBean
 import com.stxx.wyhvisitorandroid.bean.VisitGridData
 import com.stxx.wyhvisitorandroid.convertBaidu
@@ -130,7 +131,7 @@ object BdLocation2 : LifecycleObserver {
      */
     private fun calculateNear(startLatLng: LatLng) {
         ToastUtil.instance?.show("cal", 0)
-        thread {
+/*        thread {
             locationObj?.forEach {
                 val distance = DistanceUtil.getDistance(
                     startLatLng,
@@ -144,14 +145,15 @@ object BdLocation2 : LifecycleObserver {
                 }
 //                Logger.i(distance.toString())
             }
-        }
-        /*      mThread.run {
+        }*/
+              mThread.run {
                   locationObj?.forEach {
                       val distance = DistanceUtil.getDistance(
                           startLatLng,
                           convertBaidu(it.y.toDouble(), it.x.toDouble())
                       )
-                      if (distance < 50) {
+
+                      if (distance < 200) {
                           //如果已经弹出过提示则不在弹出对话框
                           if (hasShowNameLst.contains(it.name)) return
                           distanceListener?.invoke(it)
@@ -159,7 +161,7 @@ object BdLocation2 : LifecycleObserver {
                       }
       //                Logger.i(distance.toString())
                   }
-              }*/
+              }
 
 
     }

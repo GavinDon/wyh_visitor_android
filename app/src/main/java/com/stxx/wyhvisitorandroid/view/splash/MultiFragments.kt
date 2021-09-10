@@ -130,6 +130,7 @@ class MultiFragments : BaseActivity() {
             android.Manifest.permission.CAMERA
         ) {
             BdLocation2.startLocation.setDistanceListener {
+                if (navController.currentDestination?.id == R.id.dialog_smart_tip) return@setDistanceListener
                 navController.navigate(R.id.dialog_smart_tip,
                     bundleOf("locationBean" to it),
                     navOptions {

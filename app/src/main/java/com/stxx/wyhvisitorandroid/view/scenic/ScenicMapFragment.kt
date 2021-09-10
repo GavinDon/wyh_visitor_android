@@ -58,6 +58,7 @@ import com.stxx.wyhvisitorandroid.widgets.*
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream
@@ -262,6 +263,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     .build()
                 map?.setMyLocationData(locationData)
             }.setDistanceListener {
+                if (findNavController().currentDestination?.id == R.id.dialog_smart_tip) return@setDistanceListener
                 findNavController().navigate(R.id.dialog_smart_tip,
                     bundleOf("locationBean" to it),
                     navOptions {
@@ -272,6 +274,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                             exit = R.anim.alpha_exit
                         }
                     })
+
             }
         }
         //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
@@ -385,7 +388,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 val navItemObj =
                     robotNavData?.filter { f -> f.navFuncName == navFunName }
                 if (!navItemObj.isNullOrEmpty()) {
-                   val  filterData= value.body.data.filter { f ->
+                    val filterData = value.body.data.filter { f ->
                         f.name.trim().toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
                             Locale.CHINA
                         )
@@ -416,7 +419,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                             //如果json文件中存在则进行过滤获取name相同的数据
                             if (!navItemObj.isNullOrEmpty()) {
                                 val filterData = resp.data.filter { f ->
-                                    f.name.trim().toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
+                                    f.name.trim()
+                                        .toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
                                         Locale.CHINA
                                     )
                                 }
