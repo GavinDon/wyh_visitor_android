@@ -5,13 +5,17 @@ import com.unity3d.player.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Process;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class UnityPlayerActivity extends Activity {
     protected UnityPlayer mUnityPlayer; // don't change the name of this variable; referenced from native code
@@ -23,8 +27,30 @@ public class UnityPlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         mUnityPlayer = new UnityPlayer(this);
+        //添加一个关闭按钮
+        ImageView closeIV = new ImageView(this);
+        closeIV.setImageResource(R.drawable.ic_close);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.END);
+        params.setMargins(0, (int) (dp2px("40")), (int) dp2px("40"), 0);
+        mUnityPlayer.addView(closeIV, params);
         setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
+        closeIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UnityPlayerActivity.this.finish();
+                Process.killProcess(Process.myPid());
+            }
+        });
+    }
+
+
+    private float dp2px(String value) {
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                Float.parseFloat(value),
+                this.getResources().getDisplayMetrics()
+        );
     }
 
     @Override
@@ -105,7 +131,7 @@ public class UnityPlayerActivity extends Activity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             this.finish();
-            System.exit(0);
+            Process.killProcess(Process.myPid());
             return true;
         }
         return super.dispatchKeyEvent(event);
