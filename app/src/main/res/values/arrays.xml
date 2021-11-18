@@ -13,6 +13,7 @@
     <string-array name="scenic_map">
         <item>主要景点</item>
         <item>特色景区</item>
+<!--        <item>交通游览设施</item>-->
         <item>景区植物</item>
         <item>商铺</item>
         <item>服务区</item>

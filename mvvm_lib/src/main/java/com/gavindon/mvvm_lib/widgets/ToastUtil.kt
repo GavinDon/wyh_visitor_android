@@ -4,15 +4,19 @@ import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import com.gavindon.mvvm_lib.R
+import org.jetbrains.anko.view
+import org.jetbrains.anko.windowManager
 
 
 /**
  * description: toast类使用自定义提示样式
  * Created by liNan on 2019/12/30 15:08
-
+ * 偶尔会出现bug
+ * 但是view没有销毁导致has already been added to the window manage
  */
 class ToastUtil private constructor(private val context: Context) {
 
@@ -49,7 +53,6 @@ class ToastUtil private constructor(private val context: Context) {
         if (txt == lastTxt) {
             toast?.cancel()
         }
-
         toast?.let {
             it.setGravity(Gravity.CENTER, 0, 0)
             it.duration = duration
