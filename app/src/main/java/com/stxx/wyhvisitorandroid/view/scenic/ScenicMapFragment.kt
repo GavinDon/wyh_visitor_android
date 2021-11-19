@@ -347,11 +347,11 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         fun executeSelect() {
             when (val index = tab?.position ?: 0) {
                 0, 1, 2, 3 -> {
-                    val enumType = ScenicMApPointEnum.values()[index].ordinal + 1
-                /*    //替换特色景点为交通游览设施
+                    var enumType = ScenicMApPointEnum.values()[index].ordinal + 1
+                    //替换特色景点为交通游览设施
                     if (enumType == 2) {
                         enumType = 8
-                    }*/
+                    }
                     //type 从1开始所以把index加1
                     loadData(
                         enumType,
