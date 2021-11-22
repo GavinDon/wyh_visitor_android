@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import com.stxx.wyhvisitorandroid.wxappid
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
@@ -18,13 +19,13 @@ object WeChatRegister {
     var wxApi: IWXAPI? = null
 
     fun register(context: Context) {
-        val appid = "wx697de48974c13c39"
-        wxApi = WXAPIFactory.createWXAPI(context, appid, true)
+//        val appid = "wx697de48974c13c39"
+        wxApi = WXAPIFactory.createWXAPI(context, wxappid, true)
         //建议动态监听微信启动广播进行注册到微信
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 // 将该app注册到微信
-                wxApi?.registerApp(appid)
+                wxApi?.registerApp(wxappid)
             }
         }
         context.registerReceiver(broadcastReceiver, IntentFilter(ConstantsAPI.ACTION_REFRESH_WXAPP))
