@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.ErrorSource
 import com.gavindon.mvvm_lib.net.HttpManager
 import com.gavindon.mvvm_lib.net.NotZeroSource
@@ -158,12 +159,14 @@ class MineFragment : BaseFragment() {
                 }
                 2 -> {
                     //调用人脸识别接口
-                 /*   if (BuildConfig.DEBUG) {
-                        faceDistinguish()
-                    } else {
-                        faceDistinguish()
-                    }*/
-                    context?.showToast("该功能暂未开放")
+                    /*   if (BuildConfig.DEBUG) {
+                           faceDistinguish()
+                       } else {
+                           faceDistinguish()
+                       }*/
+
+                    MVVMBaseApplication.appContext.showToast("该功能暂未开放")
+//                    toast("该功能暂未开放")
                 }
                 3 -> {
                     findNavController().navigate(R.id.fragment_setting, null, navOption)

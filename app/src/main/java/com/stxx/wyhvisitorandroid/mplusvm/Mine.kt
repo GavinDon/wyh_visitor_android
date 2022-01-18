@@ -287,4 +287,12 @@ class MineModel(private val mComDis: CompositeDisposable) : MVVMBaseModel() {
                 onFailed(it)
             })
     }
+
+    /**
+     * 注销帐号
+     */
+    fun writeOffAccount() {
+
+
+    }
 }

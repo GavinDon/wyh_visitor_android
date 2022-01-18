@@ -192,6 +192,10 @@
             android:name=".view.splash.WxLoginBindPhoneActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.webview.WebViewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <uses-library
             android:name="org.apache.http.legacy"

@@ -1,0 +1,9 @@
+R_DEF: Internal format may change without notice
+local
+drawable app_icon
+drawable ic_close
+string app_name
+string game_view_content_description
+style BaseUnityTheme
+style UnityThemeSelector
+style UnityThemeSelector.Translucent

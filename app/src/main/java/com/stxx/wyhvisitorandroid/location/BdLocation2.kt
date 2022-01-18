@@ -130,7 +130,7 @@ object BdLocation2 : LifecycleObserver {
      * 计算最近的景点
      */
     private fun calculateNear(startLatLng: LatLng) {
-        ToastUtil.instance?.show("cal", 0)
+//        ToastUtil.instance?.show("cal", 0)
 /*        thread {
             locationObj?.forEach {
                 val distance = DistanceUtil.getDistance(

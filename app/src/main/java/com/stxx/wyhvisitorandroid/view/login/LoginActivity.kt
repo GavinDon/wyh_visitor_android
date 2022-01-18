@@ -1,25 +1,35 @@
 package com.stxx.wyhvisitorandroid.view.login
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Html
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
+import android.view.View
 import androidx.lifecycle.Observer
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneRegex
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
-import com.stxx.wyhvisitorandroid.LOGIN_NAME_SP
-import com.stxx.wyhvisitorandroid.PASSWORD_SP
-import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.bean.WXLoginResp
 import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
 import com.stxx.wyhvisitorandroid.mplusvm.MineVm
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
 import com.stxx.wyhvisitorandroid.view.splash.WxLoginBindPhoneActivity
+import com.stxx.wyhvisitorandroid.view.webview.WebViewActivity
 import com.stxx.wyhvisitorandroid.wxapi.WXEntryActivity.WXAUTHDATA
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.dialog_protocol.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.support.v4.startActivity
 import java.util.regex.Pattern
 
 class LoginActivity : BaseActivity() {
@@ -41,6 +51,14 @@ class LoginActivity : BaseActivity() {
         }
         btnWxLogin.setOnClickListener {
             wakeWxApp()
+        }
+        val li =
+            """ <p style="text-align: center;vertical-align: middle; display: inline-block;"> 我已阅读并同意<a href=$FWXY>《服务条款》</a>和 <a href=$YSZC>《隐私政策》</a></p>"""
+        cbAgree.text = getClickableHtml(li)
+        cbAgree.isChecked = SpUtils.get(AGREE_PROTOCOL, false)
+        cbAgree.movementMethod = LinkMovementMethod.getInstance()
+        cbAgree.setOnCheckedChangeListener { _, isChecked ->
+            SpUtils.put(AGREE_PROTOCOL, isChecked)
         }
     }
 
@@ -88,7 +106,9 @@ class LoginActivity : BaseActivity() {
         loginVm = getViewModel()
         val loginName = inputLayoutAccount.editText?.text.toString().trim()
         val password = inputLayoutPassWord.editText?.text.toString().trim()
-        if (!Pattern.matches(phoneRegex, loginName)) {
+        if (!SpUtils.get(AGREE_PROTOCOL, false)) {
+            showToast("请勾选同意下方协议")
+        } else if (!Pattern.matches(phoneRegex, loginName)) {
             showToast("请输入正确的手机号")
         } else if (password.isBlank()) {
             showToast("请输入正确的密码")
@@ -114,9 +134,58 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun wakeWxApp() {
-        val req = SendAuth.Req()
-        req.scope = "snsapi_userinfo"
-        req.state = "wyh_wx_login"
-        WeChatRegister.wxApi?.sendReq(req)
+        if (!SpUtils.get(AGREE_PROTOCOL, false)) {
+            showToast("请勾选同意下方协议")
+        } else {
+            val req = SendAuth.Req()
+            req.scope = "snsapi_userinfo"
+            req.state = "wyh_wx_login"
+            WeChatRegister.wxApi?.sendReq(req)
+        }
+
+    }
+
+    private fun getClickableHtml(html: String?): CharSequence {
+        val spannedHtml: Spanned = Html.fromHtml(html)
+        val clickableHtmlBuilder = SpannableStringBuilder(spannedHtml)
+        val spans = clickableHtmlBuilder.getSpans(0, spannedHtml.length, URLSpan::class.java)
+        for (value in spans) {
+            setLinkClickable(clickableHtmlBuilder, value)
+        }
+
+        return clickableHtmlBuilder
+    }
+
+
+    /**
+     * 捕获<a>标签点击事件
+     */
+    private fun setLinkClickable(clickableHtmlBuilder: SpannableStringBuilder, urlSpan: URLSpan?) {
+        val start = clickableHtmlBuilder.getSpanStart(urlSpan)
+        val end = clickableHtmlBuilder.getSpanEnd(urlSpan)
+        val flags = clickableHtmlBuilder.getSpanEnd(urlSpan)
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(p0: View) {
+                val url = urlSpan?.url
+                //能够点击的关键在于removeSpan(urlSpan)
+                if (url?.contains("softwareService.html") == true) {
+                    startActivity<WebViewActivity>(Pair(WEB_VIEW_URL, FWXY))
+                } else if (url?.contains("userPrivacy.html") == true) {
+                    startActivity<WebViewActivity>(Pair(WEB_VIEW_URL, YSZC))
+                }
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                //设置颜色
+                ds.color = Color.parseColor("#FF9800")
+                //设置是否要下划线
+                ds.isUnderlineText = false
+            }
+
+        }
+        clickableHtmlBuilder.setSpan(clickableSpan, start, end, flags)
+        // its too important
+        clickableHtmlBuilder.removeSpan(urlSpan)
+
     }
 }

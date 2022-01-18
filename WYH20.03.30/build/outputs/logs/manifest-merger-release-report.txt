@@ -1,0 +1,181 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+	package
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:3:5-42
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:1-76:12
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:2:11-69
+supports-screens
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:5:5-10:40
+	android:largeScreens
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:7:9-36
+	android:smallScreens
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:9:9-36
+	android:normalScreens
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:8:9-37
+	android:xlargeScreens
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:10:9-37
+	android:anyDensity
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:6:9-34
+application
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:11:5-48:19
+	android:label
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:14:9-41
+	android:icon
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:12:9-42
+	android:isGame
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:13:9-31
+activity#com.stxx.wyhvisitorandroid2.UnityPlayerActivity
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:15:9-21:69
+	android:screenOrientation
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:21:13-57
+	android:label
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:19:13-45
+	android:launchMode
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:20:13-44
+	android:hardwareAccelerated
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:18:13-48
+	android:configChanges
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:17:13-186
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:16:13-75
+activity#com.google.ar.core.InstallActivity
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:22:9-28:80
+	android:excludeFromRecents
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:25:13-46
+	android:launchMode
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:27:13-43
+	android:exported
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:26:13-37
+	android:configChanges
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:24:13-74
+	android:theme
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:28:13-77
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:23:13-62
+meta-data#com.google.ar.core
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:30:9-32:40
+	android:value
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:32:13-37
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:31:13-46
+meta-data#com.google.ar.core.min_apk_version
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:33:9-35:41
+	android:value
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:35:13-38
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:34:13-62
+meta-data#unity.build-id
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:36:9-38:68
+	android:value
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:38:13-65
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:37:13-42
+meta-data#unity.splash-mode
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:39:9-41:33
+	android:value
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:41:13-30
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:40:13-45
+meta-data#unity.splash-enable
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:42:9-44:36
+	android:value
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:44:13-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:43:13-47
+meta-data#android.max_aspect
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:45:9-47:35
+	android:value
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:47:13-32
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:46:13-46
+uses-permission#android.permission.CAMERA
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:50:5-65
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:50:22-62
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:51:5-81
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:51:22-78
+uses-permission#android.permission.INTERNET
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:52:5-67
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:52:22-64
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:53:5-71
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:53:22-68
+uses-feature#0x00020000
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:55:5-54
+	android:glEsVersion
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:55:19-51
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:56:5-79
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:56:22-76
+uses-feature#android.hardware.camera
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:58:5-60:36
+	android:required
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:60:9-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:59:9-47
+uses-feature#android.hardware.camera.autofocus
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:61:5-63:36
+	android:required
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:63:9-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:62:9-57
+uses-feature#android.hardware.camera.front
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:64:5-66:36
+	android:required
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:66:9-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:65:9-53
+uses-feature#android.hardware.touchscreen
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:67:5-69:36
+	android:required
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:69:9-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:68:9-52
+uses-feature#android.hardware.touchscreen.multitouch
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:70:5-72:36
+	android:required
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:72:9-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:71:9-63
+uses-feature#android.hardware.touchscreen.multitouch.distinct
+ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:73:5-75:36
+	android:required
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:75:9-33
+	android:name
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml:74:9-72
+uses-sdk
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		ADDED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml
+		INJECTED from D:\work\Android\WorkSpace\wyh_visitor_android\WYH20.03.30\src\main\AndroidManifest.xml

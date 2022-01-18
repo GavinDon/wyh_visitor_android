@@ -31,6 +31,12 @@ open class MVVMBaseApplication : Application() {
             if (activityStack.empty()) return null
             return activityStack.lastElement()
         }
+
+        fun removeAllActivity() {
+            activityStack.forEach {
+                it.finish()
+            }
+        }
     }
 
     override fun onCreate() {

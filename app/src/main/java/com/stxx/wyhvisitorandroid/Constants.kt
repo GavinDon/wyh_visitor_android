@@ -33,6 +33,8 @@ const val PASSWORD_SP = "password"
 const val TOKEN = "token"
 const val FIRST_INSTALL = "first_install"
 const val HISTORY_SEARCH_SP = "search_history"
+const val AGREE_PROTOCOL = "agree_protocol"
+
 
 //是否显示机器人按钮
 const val OPEN_ROBOT_SP = "open_robot"
@@ -74,6 +76,9 @@ const val FACE_IDENTIFY = "face_identify"
 val SCENIC_CENTER_LATLNG = LatLng(40.082681, 116.477431)
 const val wxappid = "wx697de48974c13c39"
 const val wxSecret = "e8cdc89c4adfdf89bc1ddd814bd64515"
+
+const val FWXY = "https://tourist.wenyuriverpark.com/yinsi/softwareService.html"
+const val YSZC = "https://tourist.wenyuriverpark.com/yinsi/userPrivacy.html"
 
 /**
  * fragment转场设置

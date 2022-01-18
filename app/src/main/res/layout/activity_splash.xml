@@ -18,9 +18,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_120"
+        android:layout_marginBottom="@dimen/dp_5"
         android:scaleType="fitXY"
         android:src="@mipmap/splash_txt"
-        android:layout_marginBottom="@dimen/dp_5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -35,6 +35,7 @@
         android:paddingHorizontal="@dimen/dp_12"
         android:paddingVertical="@dimen/dp_4"
         android:text="跳过3s"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp_14"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

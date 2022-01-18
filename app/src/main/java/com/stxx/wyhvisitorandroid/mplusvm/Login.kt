@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.mplusvm
 
+import android.util.Log
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.base.MVVMBaseModel
 import com.gavindon.mvvm_lib.base.MVVMBaseViewModel
@@ -97,6 +98,15 @@ class LoginVm : MVVMBaseViewModel() {
         loginModel.forgetPwd(reqParam)
     }
 
+    fun writeOff(vCode: String, onSuccess: onSuccessBr, onFailed: onFailed) {
+        val reqParam = listOf("vcode" to vCode)
+        loginModel.writeOff(reqParam, onSuccess = {
+            onSuccess.invoke(it)
+        }, onFailed = {
+            onFailed.invoke(it)
+        })
+    }
+
     /**
      * 返回true代表处理成功
      */
@@ -179,6 +189,16 @@ class LoginModel(private val mComDis: CompositeDisposable) : MVVMBaseModel() {
         http?.get(ApiService.FORGET_PASSWORD, param)?.parse<BR<String>>(strType, {
             finish(param[0].second.toString(), it)
         }, {
+            handleException(it)
+        })
+
+    }
+
+    fun writeOff(param: Parameters, onSuccess: onSuccessBr, onFailed: onFailed) {
+        http?.get(ApiService.WRITE_OFF, param)?.parse<BR<String>>(strType, {
+            onSuccess.invoke(it)
+        }, {
+            onFailed.invoke(it)
             handleException(it)
         })
 

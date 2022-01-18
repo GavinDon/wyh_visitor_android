@@ -32,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:visibility="gone"
-        android:paddingVertical="@dimen/dp_14">
+        android:paddingVertical="@dimen/dp_14"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
+
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/toggleRobot"
         android:layout_width="match_parent"
@@ -121,6 +122,85 @@
             android:drawableRight="@drawable/ic_arrow_right"
             android:gravity="center_vertical"
             android:text="1.1"
+            android:textColor="@color/fontSecond"
+            android:textSize="@dimen/sp_16" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexfwxy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="服务协议"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:textColor="@color/fontSecond"
+            android:textSize="@dimen/sp_16" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexyszc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="隐私政策"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
+            android:textColor="@color/fontSecond"
+            android:textSize="@dimen/sp_16" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexWriteOff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dp_14"
+        app:dividerDrawable="@drawable/underline"
+        app:flexDirection="row"
+        app:justifyContent="space_between">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注销帐号"
+            android:textColor="@color/fontMajor"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center_vertical"
             android:textColor="@color/fontSecond"
             android:textSize="@dimen/sp_16" />
 

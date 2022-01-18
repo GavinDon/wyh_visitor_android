@@ -1,9 +1,11 @@
 package com.stxx.wyhvisitorandroid.view.splash
 
+import SmartTipDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gavindon.mvvm_lib.base.ViewModelProviders
 import com.gavindon.mvvm_lib.utils.SpUtils
+import com.stxx.wyhvisitorandroid.AGREE_PROTOCOL
 import com.stxx.wyhvisitorandroid.FIRST_INSTALL
 import com.stxx.wyhvisitorandroid.mplusvm.BaiDuAsr
 import org.jetbrains.anko.startActivity
@@ -22,15 +24,22 @@ class PreviewWindow : AppCompatActivity() {
 
     fun onInit() {
         val isFirstInstall = SpUtils.get(FIRST_INSTALL, true)
+        val isAgreeProto = SpUtils.get(AGREE_PROTOCOL, false)
 
-        if (isFirstInstall) {
-            startActivity<GuideActivity>()
-            this.finish()
+        if (!isAgreeProto) {
+            val dialog = SmartTipDialog()
+            dialog.show(supportFragmentManager, "protocol")
         } else {
-            Thread.sleep(1000)
-            startActivity<MultiFragments>()
-            this.finish()
+            if (isFirstInstall) {
+                startActivity<GuideActivity>()
+                this.finish()
+            } else {
+                Thread.sleep(1000)
+                startActivity<SplashActivity>()
+                this.finish()
+            }
         }
+
 
     }
 

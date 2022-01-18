@@ -142,6 +142,7 @@ class X5WebView : WebView {
             setAllowFileAccessFromFileURLs(true)
             setAllowUniversalAccessFromFileURLs(true)
             allowContentAccess = true
+            loadWithOverviewMode=true
         }
     }
 

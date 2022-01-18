@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingVertical="@dimen/dp_10">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:text="确认注销此帐号?"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_31"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="注销将会清除您的所有信息"
+        android:textColor="@color/color999"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+    <EditText
+        android:id="@+id/etResetPhone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:layout_marginHorizontal="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:enabled="false"
+        android:hint="@string/str_input_phone"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:paddingHorizontal="@dimen/dp_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSure" />
+
+    <com.stxx.wyhvisitorandroid.widgets.SendSmsView
+        android:id="@+id/sendSmsView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_42"
+        android:layout_marginHorizontal="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_16"
+        android:maxLength="6"
+        app:background="@drawable/underline"
+        app:etPhoneId="@id/etResetPhone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etResetPhone"
+        app:leftDrawable="@mipmap/ic_security" />
+
+
+    <com.gavindon.mvvm_lib.widgets.DonButton
+        android:id="@+id/btnCancel"
+        android:layout_width="80dp"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_52"
+        android:layout_marginTop="@dimen/dp_38"
+        android:layout_marginRight="@dimen/dp_52"
+        android:paddingHorizontal="@dimen/dp_10"
+        android:text="取消"
+        android:textSize="@dimen/sp_16"
+        app:circleRadius="@dimen/dp_2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btnConfirm"
+        app:layout_constraintTop_toBottomOf="@id/sendSmsView"
+        app:normalBackgroundColor="@color/color999"
+        app:normalTextColor="@color/white"
+        app:pressBackgroundColor="@color/color999"
+        app:pressTextColor="@color/white" />
+
+    <com.gavindon.mvvm_lib.widgets.DonButton
+        android:id="@+id/btnConfirm"
+        android:layout_width="80dp"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_52"
+        android:layout_marginTop="@dimen/dp_38"
+        android:layout_marginRight="@dimen/dp_52"
+        android:paddingHorizontal="@dimen/dp_10"
+        android:text="@string/confirm"
+        android:textSize="@dimen/sp_16"
+        app:circleRadius="@dimen/dp_2"
+        app:layout_constraintLeft_toRightOf="@id/btnCancel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sendSmsView"
+        app:normalBackgroundColor="#FDD655"
+        app:normalTextColor="@color/white"
+        app:pressBackgroundColor="#CDDC39"
+        app:pressTextColor="@color/white" />
+</androidx.constraintlayout.widget.ConstraintLayout>

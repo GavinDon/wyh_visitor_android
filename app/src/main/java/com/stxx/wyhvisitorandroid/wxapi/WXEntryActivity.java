@@ -11,6 +11,7 @@ import com.gavindon.mvvm_lib.base.MVVMBaseApplication;
 import com.gavindon.mvvm_lib.utils.GsonUtil;
 import com.gavindon.mvvm_lib.widgets.ToastUtil;
 import com.google.gson.reflect.TypeToken;
+import com.luck.picture.lib.tools.ToastUtils;
 import com.stxx.wyhvisitorandroid.bean.WXLoginResp;
 import com.stxx.wyhvisitorandroid.bean.WxOpenIdInfo;
 import com.stxx.wyhvisitorandroid.view.login.LoginActivity;
@@ -122,10 +123,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
             }
         } else {
-            ToastUtil toast = ToastUtil.Companion.getInstance();
-            if (toast != null) {
-                toast.show("登陆失败", 1);
-            }
+//            ToastUtil toast = ToastUtil.Companion.getInstance();
+//            if (toast != null) {
+//                toast.show("登陆失败", 1);
+//            }
+            ToastUtils.s(this,"登陆失败");
         }
         finish();
     }

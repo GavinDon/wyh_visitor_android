@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream
 object SpUtils {
     private lateinit var sp: SharedPreferences
     private const val SP_NAME = "WYH_SP"
+
     //set集合分割符
     private const val setSplitTag = ","
 
@@ -171,6 +172,18 @@ object SpUtils {
     fun clearName(name: String) = with(sp.edit()) {
         remove(name)
         apply()
+    }
+
+    /**
+     * 移除不包含记录“是否是第一次登录”之外的所有SP
+     */
+    fun clearAll() {
+        with(sp.edit()) {
+            sp.all.keys.forEach { keys ->
+                this.remove(keys)
+            }
+            apply()
+        }
     }
 
 }

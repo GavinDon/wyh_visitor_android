@@ -4,17 +4,12 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigator
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.gavindon.mvvm_lib.base.ViewModelProviders
 import com.gavindon.mvvm_lib.net.SuccessSource

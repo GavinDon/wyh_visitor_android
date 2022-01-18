@@ -22,6 +22,7 @@ object ApiService {
 
     //忘记密码
     const val FORGET_PASSWORD = "tsvserviceapp/user/forgetpassword"
+    const val WRITE_OFF = "tsvserviceapp/user/cancellationUser"
 
     //上传头像 (先upload再update)
     const val UPLOAD_ICON = "system/savefile/uploadFiles"
@@ -204,6 +205,7 @@ object WebViewUrl {
     //入园预约
     const val ENTER_BOOK_URL = "pages/authentication/authentication"
     const val LINE_WEB = "http://manage.wenyuriverpark.com:8082/iosMap/map/record.html?id="
+
     //极光推送跳转h5 新闻详情页面
-    const val NEWS_DETAIL="pages/news/details/details?type=0&id="
+    const val NEWS_DETAIL = "pages/news/details/details?type=0&id="
 }

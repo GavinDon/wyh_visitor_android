@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import com.gavindon.mvvm_lib.R
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.view
 import org.jetbrains.anko.windowManager
 
@@ -64,10 +65,13 @@ class ToastUtil private constructor(private val context: Context) {
 }
 
 fun Context.showToast(txt: String, duration: Int = Toast.LENGTH_SHORT) {
+    //现在会一直弹出 cal字符串不知道为什么
     ToastUtil.getInstance(this)?.show(txt, duration)
+//    toast(txt)
 }
 
 fun Context.showToast(txt: Int, duration: Int = Toast.LENGTH_SHORT) {
     ToastUtil.getInstance(this)?.show(txt.toString(), duration)
+//    toast(txt.toString())
 }
 

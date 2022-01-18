@@ -17,8 +17,10 @@ import cn.bingoogolapple.bgabanner.BGABanner
 import com.alibaba.android.vlayout.LayoutHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.SuccessSource
+import com.gavindon.mvvm_lib.widgets.ToastUtil
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.mario.baseadapter.holder.VBaseHolderHelper
 import com.squareup.picasso.Picasso
@@ -120,7 +122,7 @@ class BannerAdapter(
                                 is PM25Resp -> {
                                     tvNo.text = "${data.no}"
                                     tvPm25.text = "${data.pm25}"
-                                    tvHum.text = "${data.hum}%"
+                                    tvHum.text = "${data.hum ?: 0}%"
                                 }
                                 is RealPeopleNum -> {
                                     //入园人数
@@ -301,6 +303,7 @@ class GridAdapter(layoutId: Int, layoutHelper: LayoutHelper) :
                 R.string.visitor_ai_budao -> {
 //                    goAiBudaoPage(view)
                     view.context.showToast("该功能暂未开放")
+
                 }
                 R.string.grid_plant_wiki -> {
                     view.findNavController().navigate(

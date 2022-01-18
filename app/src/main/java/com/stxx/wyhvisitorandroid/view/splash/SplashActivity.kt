@@ -1,5 +1,6 @@
 package com.stxx.wyhvisitorandroid.view.splash
 
+import SmartTipDialog
 import android.os.Bundle
 import android.widget.ImageView
 import com.gavindon.mvvm_lib.net.RxScheduler
@@ -29,7 +30,6 @@ class SplashActivity : BaseActivity() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         val isFirstInstall = SpUtils.get(FIRST_INSTALL, true)
-
         requestPermiss()
         if (isFirstInstall) {
             startActivity<GuideActivity>()
@@ -72,6 +72,7 @@ class SplashActivity : BaseActivity() {
             android.Manifest.permission.ACCESS_FINE_LOCATION,
             android.Manifest.permission.ACCESS_WIFI_STATE
         ) {}
+
     }
 
     override fun setStatusBar() {

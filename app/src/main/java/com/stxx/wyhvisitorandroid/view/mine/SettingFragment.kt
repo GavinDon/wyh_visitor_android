@@ -3,26 +3,32 @@ package com.stxx.wyhvisitorandroid.view.mine
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import cn.jpush.android.api.JPushInterface
 import cn.jpush.android.api.JPushInterface.isPushStopped
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
-import com.gavindon.mvvm_lib.utils.NotificationUtil
-import com.gavindon.mvvm_lib.utils.SpUtils
+import com.gavindon.mvvm_lib.net.HttpManager
+import com.gavindon.mvvm_lib.utils.*
 import com.gavindon.mvvm_lib.utils.clearCache.LinCleanData
-import com.gavindon.mvvm_lib.utils.getStatusBarHeight
-import com.gavindon.mvvm_lib.utils.getVersionName
 import com.gavindon.mvvm_lib.widgets.TipDialog
+import com.gavindon.mvvm_lib.widgets.showToast
 import com.gyf.immersionbar.ImmersionBar
-import com.stxx.wyhvisitorandroid.OPEN_ROBOT_SP
-import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.ToolbarFragment
-import com.stxx.wyhvisitorandroid.navOption
+import com.stxx.wyhvisitorandroid.mplusvm.LoginVm
+import com.stxx.wyhvisitorandroid.mplusvm.MineVm
+import com.stxx.wyhvisitorandroid.view.dialog.TipInputDialog
 import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
+import com.stxx.wyhvisitorandroid.view.webview.WebViewActivity
+import com.stxx.wyhvisitorandroid.widgets.SendSmsView
 import com.tencent.bugly.beta.Beta
 import kotlinx.android.synthetic.main.fragment_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
+import java.util.regex.Pattern
 
 /**
  * description: 设置
@@ -30,6 +36,8 @@ import org.jetbrains.anko.support.v4.toast
  */
 class SettingFragment : ToolbarFragment() {
 
+    private lateinit var mineVm: MineVm
+    private lateinit var loginVm: LoginVm
 
     override val toolbarName: Int = R.string.setting
 
@@ -59,6 +67,8 @@ class SettingFragment : ToolbarFragment() {
         flexAboutUs.setOnClickListener {
             findNavController().navigate(R.id.fragment_about, null, navOption)
         }
+        fwxy()
+        writeOff()
     }
 
     override fun onResume() {
@@ -121,6 +131,37 @@ class SettingFragment : ToolbarFragment() {
             tvVersionNum.text = getVersionName()
             flexCheckVersion.setOnClickListener {
                 Beta.checkUpgrade(true, false)
+            }
+        }
+    }
+
+    /**
+     * 服务协议与隐私政策
+     */
+    private fun fwxy() {
+        flexfwxy.setOnClickListener {
+            startActivity<WebViewActivity>(Pair(WEB_VIEW_URL, FWXY))
+        }
+        flexyszc.setOnClickListener {
+            startActivity<WebViewActivity>(Pair(WEB_VIEW_URL, YSZC))
+        }
+    }
+
+    /**
+     * 注销帐号
+     */
+    private fun writeOff() {
+        mineVm = getViewModel()
+        val isLogin: Boolean? = mineVm.isLoginFinish.value
+//        flexWriteOff.visibility = if (isLogin == true) View.VISIBLE else View.GONE
+
+
+        flexWriteOff.setOnClickListener {
+            val phone = SpUtils.get(LOGIN_NAME_SP, "")
+            if (Pattern.matches(phoneRegex, phone)) {
+                TipInputDialog().show(this.childFragmentManager, "writeOff")
+            } else {
+                context?.showToast("您还未绑定过手机号码")
             }
         }
     }
