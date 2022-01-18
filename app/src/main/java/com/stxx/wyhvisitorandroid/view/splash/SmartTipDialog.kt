@@ -50,8 +50,8 @@ class SmartTipDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val li = """
-     <p> 在您使用温榆河app前，请您认真阅读并
-        了解 <a href=$FWXY>《服务条款》</a>和 <a href=$YSZC>《隐私政策》</a>。
+     <p> 在您使用畅游温榆APP前，请您认真阅读并
+        了解 <a href=$FWXY>《软件服务协议》</a>和 <a href=$YSZC>《用户隐私协议》</a>。
         点击“同意”即表示您已阅读并同意全部条款。</p>
 """.trimIndent()
 

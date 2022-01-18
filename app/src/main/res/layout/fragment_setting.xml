@@ -140,7 +140,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="服务协议"
+            android:text="软件服务协议"
             android:textColor="@color/fontMajor"
             android:textSize="@dimen/sp_16" />
 
@@ -166,7 +166,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="隐私政策"
+            android:text="用户隐私协议"
             android:textColor="@color/fontMajor"
             android:textSize="@dimen/sp_16" />
 
