@@ -3,7 +3,7 @@
 
     <item android:drawable="@color/colorWhite" />
     <item android:gravity="fill">
-        <bitmap android:src="@mipmap/splash_pic" />
+        <bitmap android:src="@mipmap/guide1" />
     </item>
 
 

@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity() {
             startActivity<GuideActivity>()
             this.finish()
         } else {
-            splash.setData(null, ImageView.ScaleType.CENTER_CROP, R.mipmap.splash_pic)
+            splash.setData(null, ImageView.ScaleType.CENTER_CROP, R.mipmap.guide1)
             compositeDisposable.add(
                 Observable.interval(1, TimeUnit.SECONDS)
                     .compose(RxScheduler.applyScheduler())
