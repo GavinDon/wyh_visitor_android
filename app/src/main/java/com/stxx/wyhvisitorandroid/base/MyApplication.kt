@@ -9,12 +9,15 @@ import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.HttpFrame
 import com.gavindon.mvvm_lib.net.HttpManager
 import com.stxx.wyhvisitorandroid.BuildConfig
+import com.stxx.wyhvisitorandroid.view.splash.MainActivity
+import com.stxx.wyhvisitorandroid.view.splash.MultiFragments
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.beta.Beta
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
 import com.umeng.commonsdk.UMConfigure
 import io.reactivex.plugins.RxJavaPlugins
+
 
 /**
  * description:
@@ -39,6 +42,8 @@ class MyApplication : MVVMBaseApplication() {
         //腾讯bugly
 //        Bugly.setIsDevelopmentDevice(this, BuildConfig.DEBUG)
 //        Bugly.init(this, "4fa626abc1", false)
+//        Beta.autoCheckUpgrade = false
+        Beta.canShowUpgradeActs.add(MultiFragments::class.java)
         Bugly.init(this, "a2d9f005d6", BuildConfig.DEBUG)
         initWebView()
         //腾讯x5
