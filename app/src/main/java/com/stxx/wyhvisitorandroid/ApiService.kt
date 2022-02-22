@@ -161,8 +161,11 @@ object WebViewUrl {
 
     //服务咨询
     const val FWZX = "pages/service/tourist/advisory"
+
+    //    const val KEFU =
+//        "http://robot.easemob.com/webim/im.html?tenantId=54807&robotId=4d0c23d9-9187-4b62-8956-bdbb92a1b5a7"
     const val KEFU =
-        "http://robot.easemob.com/webim/im.html?tenantId=54807&robotId=4d0c23d9-9187-4b62-8956-bdbb92a1b5a7"
+        "https://www.v5kf.com/public/chat/chat?sid=189667&entry=5&ref=link&accountid=2e4e303014657&theme=#F7D76B&delay=1-2"
 
     //景区天气
     const val WEATHER = "pages/service/weather/weather"
