@@ -13,15 +13,23 @@ import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI
 import com.baidu.geofence.GeoFenceClient
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.gavindon.mvvm_lib.net.BR
+import com.gavindon.mvvm_lib.net.RxScheduler
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneHeight
 import com.gavindon.mvvm_lib.utils.phoneWidth
 import com.gavindon.mvvm_lib.utils.rxRequestPermission
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.gson.gsonDeserializer
+import com.github.kittinunf.fuel.rx.rxResponseObject
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
+import com.stxx.wyhvisitorandroid.bean.MapDateResp
+import com.stxx.wyhvisitorandroid.bean.RealPeopleNum
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
@@ -34,6 +42,7 @@ import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.fragment_multi_root.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import java.lang.Exception
 
 /**
@@ -83,6 +92,7 @@ class MultiFragments : BaseActivity() {
                 moveTaskToBack(false)
             }
         }
+
     }
 
     /**
@@ -199,5 +209,8 @@ class MultiFragments : BaseActivity() {
 
     override fun permissionForResult() {
     }
+
+
+
 }
 

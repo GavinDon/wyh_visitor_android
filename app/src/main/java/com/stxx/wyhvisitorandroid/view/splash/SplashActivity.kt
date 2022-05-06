@@ -1,19 +1,23 @@
 package com.stxx.wyhvisitorandroid.view.splash
 
-import SmartTipDialog
 import android.os.Bundle
 import android.widget.ImageView
+import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.RxScheduler
 import com.gavindon.mvvm_lib.utils.SpUtils
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.gson.gsonDeserializer
+import com.github.kittinunf.fuel.rx.rxResponseObject
 import com.gyf.immersionbar.ImmersionBar
-import com.stxx.wyhvisitorandroid.FIRST_INSTALL
-import com.stxx.wyhvisitorandroid.R
+import com.orhanobut.logger.Logger
+import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseActivity
-import com.stxx.wyhvisitorandroid.mplusvm.SearchVm
+import com.stxx.wyhvisitorandroid.bean.MapDateResp
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
 
 /**
@@ -60,7 +64,7 @@ class SplashActivity : BaseActivity() {
                     })
             )
         }
-
+        getMapDate()  //瓦片图更新时间
     }
 
     private fun requestPermiss() {
@@ -89,10 +93,29 @@ class SplashActivity : BaseActivity() {
     override fun permissionForResult() {
     }
 
-    /**
-     * 生成用户id
-     */
-    fun generateOnlyId() {
-
+    private fun getMapDate() {
+        val dis = Fuel.get(ApiService.CLEAR_MAP)
+            .rxResponseObject(gsonDeserializer<BR<MapDateResp>>())
+            .subscribe({
+                Logger.i(it.data.code)
+                if (it.code == 0) {
+                    val mapDate = SpUtils.get(MAP_DATE_SP, "")
+                    if (mapDate.isNotEmpty()) {
+                        //如果地图更新日期不相等则清除地图缓存
+                        if (mapDate != it.data.code) {
+                            SpUtils.put(MAP_IS_CLEAR_SP, true)
+                        } else {
+                            SpUtils.put(MAP_IS_CLEAR_SP, false)
+                        }
+                    } else {
+                        //新版本增加接口。如果没有更新地图日期，则直接清除地图缓存
+                        SpUtils.put(MAP_IS_CLEAR_SP, true)
+                    }
+                    SpUtils.put(MAP_DATE_SP, it.data.code)
+                }
+            }, {
+                Logger.i(it.localizedMessage)
+            })
+        compositeDisposable.add(dis)
     }
 }

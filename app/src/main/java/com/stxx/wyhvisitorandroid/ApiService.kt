@@ -123,7 +123,7 @@ object ApiService {
     const val WX_USER_INFO = "https://api.weixin.qq.com/sns/userinfo"
 
     //绑定微信openId=xxx
-    const val BIND_WX = "/tsvserviceapp/user/bindWxOpenIdApp"
+    const val BIND_WX = "tsvserviceapp/user/bindWxOpenIdApp"
 
     //phone=xxx   &  vcode=xx
     const val BIND_PHONE = "tsvserviceapp/user/bindPhone"
@@ -137,6 +137,7 @@ object ApiService {
 
     //phone =xx &vcode=xx
     const val UPDATE_PHONE = "tsvserviceapp/user/updatePhone"
+    const val CLEAR_MAP = "map/util/findMapDate"
 
 }
 

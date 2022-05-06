@@ -3,10 +3,14 @@ package com.stxx.wyhvisitorandroid.widgets
 import android.content.Context
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
+import com.gavindon.mvvm_lib.utils.SpUtils
 import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.BuildConfig
+import com.stxx.wyhvisitorandroid.MAP_IS_CLEAR_SP
 import com.stxx.wyhvisitorandroid.SCENIC_CENTER_LATLNG
 import com.stxx.wyhvisitorandroid.location.BdUtil
+import org.jetbrains.anko.toast
 
 
 /**
@@ -84,4 +88,12 @@ val overLayOptions = TileOverlayOptions().apply {
     val southEast = LatLng(40.071822098761984, 116.46385409389569)
     tileProvider(urlTileProvider)
     //setPositionFromBounds(LatLngBounds.Builder().include(northEast).include(southEast).build())
+}
+
+fun TileOverlay.clear() {
+    val isNeedClear = SpUtils.get(MAP_IS_CLEAR_SP, false)
+    if (isNeedClear) {
+        val isClear = this.clearTileCache()
+        SpUtils.get(MAP_IS_CLEAR_SP, isClear)
+    }
 }

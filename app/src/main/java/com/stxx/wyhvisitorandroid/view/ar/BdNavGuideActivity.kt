@@ -36,6 +36,8 @@ import com.stxx.wyhvisitorandroid.view.helpers.SimpleOnGetRoutePlanResultListene
 import com.stxx.wyhvisitorandroid.view.overlayutil.WalkingRouteOverlay
 import com.stxx.wyhvisitorandroid.widgets.*
 import kotlinx.android.synthetic.main.fragment_scenic.*
+import kotlinx.android.synthetic.main.fragment_scenic.mapView
+import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
 import java.io.InputStream
 import java.nio.ByteBuffer
 
@@ -93,8 +95,7 @@ class BdNavGuideActivity : Activity() {
         val drawable = close.toDrawable(resources)
         drawable.alpha = 100
         option.setArNaviResources(
-            drawable.bitmap
-            , close, close
+            drawable.bitmap, close, close
         )
         return option
     }
@@ -107,7 +108,7 @@ class BdNavGuideActivity : Activity() {
         baiduMapView?.init()
         baiduMapView?.mapStatusBuild()
         baiduMapView?.customMap(this)
-        map?.addTileLayer(overLayOptions)
+        map?.addTileLayer(overLayOptions)?.clear()
         btnLocation?.setOnClickListener {
             baiduMapView?.fixedLocation2Center()
         }

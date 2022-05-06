@@ -4,7 +4,6 @@ import android.Manifest
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -46,7 +45,6 @@ import com.stxx.wyhvisitorandroid.adapter.ScenicMapServerPointAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
 import com.stxx.wyhvisitorandroid.bean.NavigationData
 import com.stxx.wyhvisitorandroid.bean.ServerPointResp
-import com.stxx.wyhvisitorandroid.bean.VisitGridData
 import com.stxx.wyhvisitorandroid.enums.ScenicMApPointEnum
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
@@ -58,7 +56,6 @@ import com.stxx.wyhvisitorandroid.widgets.*
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream
@@ -304,7 +301,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         mapView?.init()
         mapView?.mapStatusBuild(SaveMapObj.target, SaveMapObj.mapZoom)
         mapView?.customMap(this.requireContext())
-        map.addTileLayer(overLayOptions)
+        map.addTileLayer(overLayOptions).clear()
         map.setOnMapClickListener(object : BaiduMap.OnMapClickListener {
             override fun onMapClick(p0: LatLng?) {
                 hiddenSheet()

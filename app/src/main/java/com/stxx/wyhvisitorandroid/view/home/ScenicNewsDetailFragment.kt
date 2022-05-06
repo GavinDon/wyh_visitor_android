@@ -274,7 +274,7 @@ class ScenicNewsDetailFragment : ToolbarFragment() {
         mapView?.mapStatusBuild()
         mapView?.customMap(this.requireContext())
         ivMoveToScenicCenterLocation.setOnClickListener { mapView?.fixedLocation2Center() }
-        mapView?.map?.addTileLayer(overLayOptions)
+        mapView?.map?.addTileLayer(overLayOptions)?.clear()
 
         mViewModel.getLinePointById(id).observe(this, Observer {
             if (it is SuccessSource) {

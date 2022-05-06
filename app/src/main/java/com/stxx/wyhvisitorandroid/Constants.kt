@@ -34,6 +34,8 @@ const val TOKEN = "token"
 const val FIRST_INSTALL = "first_install"
 const val HISTORY_SEARCH_SP = "search_history"
 const val AGREE_PROTOCOL = "agree_protocol"
+const val MAP_DATE_SP = "map_date"
+const val MAP_IS_CLEAR_SP = "map_is_clear"
 
 
 //是否显示机器人按钮
