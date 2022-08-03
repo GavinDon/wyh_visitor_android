@@ -53,12 +53,12 @@ class LoginActivity : BaseActivity() {
             wakeWxApp()
         }
         val li =
-            """ <p style="text-align: center;vertical-align: middle; display: inline-block;"> 我已阅读并同意<a href=$FWXY>《服务条款》</a>和 <a href=$YSZC>《隐私政策》</a></p>"""
+            """ 我已阅读并同意<a href=$FWXY>《服务协议》</a>和 <a href=$YSZC>《隐私政策》</a>"""
         cbAgree.text = getClickableHtml(li)
-        cbAgree.isChecked = SpUtils.get(AGREE_PROTOCOL, false)
+        cbAgree.isChecked = SpUtils.get(AGREE_PROTOCOL_LOGIN, false)
         cbAgree.movementMethod = LinkMovementMethod.getInstance()
         cbAgree.setOnCheckedChangeListener { _, isChecked ->
-            SpUtils.put(AGREE_PROTOCOL, isChecked)
+            SpUtils.put(AGREE_PROTOCOL_LOGIN, isChecked)
         }
     }
 
@@ -106,8 +106,8 @@ class LoginActivity : BaseActivity() {
         loginVm = getViewModel()
         val loginName = inputLayoutAccount.editText?.text.toString().trim()
         val password = inputLayoutPassWord.editText?.text.toString().trim()
-        if (!SpUtils.get(AGREE_PROTOCOL, false)) {
-            showToast("请勾选同意下方协议")
+        if (!SpUtils.get(AGREE_PROTOCOL_LOGIN, false)) {
+            showToast("请阅读并勾选协议")
         } else if (!Pattern.matches(phoneRegex, loginName)) {
             showToast("请输入正确的手机号")
         } else if (password.isBlank()) {
@@ -134,7 +134,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun wakeWxApp() {
-        if (!SpUtils.get(AGREE_PROTOCOL, false)) {
+        if (!SpUtils.get(AGREE_PROTOCOL_LOGIN, false)) {
             showToast("请勾选同意下方协议")
         } else {
             val req = SendAuth.Req()

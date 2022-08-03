@@ -40,7 +40,6 @@ object BdLocation2 : LifecycleObserver {
     //已经提示过的景点不再提示
     private var hasShowNameLst = mutableSetOf<String>()
 
-
     private val mThread = Thread()
 
     private fun initOptions() {

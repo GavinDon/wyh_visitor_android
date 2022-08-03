@@ -34,8 +34,12 @@ const val TOKEN = "token"
 const val FIRST_INSTALL = "first_install"
 const val HISTORY_SEARCH_SP = "search_history"
 const val AGREE_PROTOCOL = "agree_protocol"
+const val AGREE_PROTOCOL_LOGIN = "agree_protocol_login"
 const val MAP_DATE_SP = "map_date"
 const val MAP_IS_CLEAR_SP = "map_is_clear"
+
+//弹出申请权限说明
+const val FIRST_PERMISSION = "first_permission"
 
 
 //是否显示机器人按钮
@@ -149,8 +153,7 @@ fun goAiBudaoPage(view: View) {
                                 bundleOf(
                                     "url" to "${WebViewUrl.AI_BUDAO}$phone",
                                     "title" to R.string.visitor_ai_budao
-                                )
-                                , navOption
+                                ), navOption
                             )
                         } else {
                             ctx.toast("请先进行人脸认证")

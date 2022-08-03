@@ -3,8 +3,6 @@ package com.stxx.wyhvisitorandroid.view.ar
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.content.res.AssetManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
@@ -13,7 +11,6 @@ import android.widget.ImageButton
 import androidx.core.graphics.drawable.toDrawable
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
-import com.baidu.mapapi.model.LatLngBounds
 import com.baidu.mapapi.search.route.PlanNode
 import com.baidu.mapapi.search.route.RoutePlanSearch
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption
@@ -27,7 +24,6 @@ import com.baidu.tts.client.TtsMode
 import com.gavindon.mvvm_lib.utils.requestPermission
 import com.gavindon.mvvm_lib.widgets.showToast
 import com.stxx.wyhvisitorandroid.R
-import com.stxx.wyhvisitorandroid.SCENIC_CENTER_LATLNG
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil.walkNavigateHelper
 import com.stxx.wyhvisitorandroid.view.asr.Auth
@@ -36,10 +32,7 @@ import com.stxx.wyhvisitorandroid.view.helpers.SimpleOnGetRoutePlanResultListene
 import com.stxx.wyhvisitorandroid.view.overlayutil.WalkingRouteOverlay
 import com.stxx.wyhvisitorandroid.widgets.*
 import kotlinx.android.synthetic.main.fragment_scenic.*
-import kotlinx.android.synthetic.main.fragment_scenic.mapView
 import kotlinx.android.synthetic.main.fragment_scenic_news_detail.*
-import java.io.InputStream
-import java.nio.ByteBuffer
 
 
 /**
@@ -211,7 +204,9 @@ class BdNavGuideActivity : Activity() {
         })
         walkNavigateHelper.setRouteGuidanceListener(
             this,
-            object : SimpleIWRouteGuidanceListener() {})
+            object : SimpleIWRouteGuidanceListener() {
+
+            })
     }
 
 

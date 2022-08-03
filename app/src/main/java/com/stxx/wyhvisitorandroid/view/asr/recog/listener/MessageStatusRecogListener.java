@@ -8,7 +8,7 @@ import com.baidu.speech.asr.SpeechConstant;
 import com.stxx.wyhvisitorandroid.view.asr.recog.RecogResult;
 
 /**
- * Created by fujiayi on 2017/6/16.
+ * Created by fujiayi on 2017/6/16. 在线语音合成
  */
 
 public class MessageStatusRecogListener extends StatusRecogListener {

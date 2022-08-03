@@ -39,7 +39,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import com.orhanobut.logger.Logger
-import com.quyuanfactory.artmap.ArtMapMark
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.adapter.ScenicMapServerPointAdapter
 import com.stxx.wyhvisitorandroid.base.BaseFragment
@@ -875,7 +874,9 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     /**
      * 使用第三方步行导航
      * @param latLng 终点经纬度
+     *
      */
+/*    @Deprecated("使用百度步行导航,artMap.aar可以删除", replaceWith = ReplaceWith("baiduWalkNav"))
     private fun customWalkNav(latLng: LatLng) {
         //40.08140775275331==116.47102257186532
         //松云华盖
@@ -885,7 +886,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         val intent = Intent(this.context, ArNavActivity2::class.java)
         intent.putExtra("stop", end)
         startActivity(intent)
-    }
+    }*/
 
     /**
      * 使用百度步行导航

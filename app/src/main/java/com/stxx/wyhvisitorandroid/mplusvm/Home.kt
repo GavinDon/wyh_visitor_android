@@ -14,6 +14,7 @@ import com.github.kittinunf.fuel.gson.gsonDeserializer
 import com.github.kittinunf.fuel.rx.rxResponseObject
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.ApiService
 import com.stxx.wyhvisitorandroid.bean.*
 import com.stxx.wyhvisitorandroid.judgeLogin
@@ -100,15 +101,15 @@ class HomeVm : MVVMBaseViewModel() {
             .rxResponseObject(gsonDeserializer<BR<RealPeopleNum>>()).toObservable()
         val pm25 = Fuel.get(ApiService.PM25).rxResponseObject(gsonDeserializer<BR<PM25Resp>>())
             .toObservable()
-        val banner =
-            Fuel.get(ApiService.BANNER)
-                .rxResponseObject(gsonDeserializer<BR<List<BannerResp>>>()).toObservable()
+//        val banner =
+//            Fuel.get(ApiService.BANNER)
+//                .rxResponseObject(gsonDeserializer<BR<List<BannerResp>>>()).toObservable()
 
 
         val source = mutableListOf<Resource<BR<*>>>()
         mCompositeDisposable.add(
             Observable.mergeArrayDelayError(
-                banner,
+//                banner,
                 weatherNow,
                 lifestyle,
                 nowPe,
@@ -116,10 +117,11 @@ class HomeVm : MVVMBaseViewModel() {
             ).compose(RxScheduler.applyScheduler())
                 .subscribe({
                     source.add(create(it))
-                    if (source.size == 5) {
+                    if (source.size == 4) {
                         liveDataBanner.value = source
                     }
                 }, {
+                    Logger.i(it.toString())
                 })
         )
         return liveDataBanner

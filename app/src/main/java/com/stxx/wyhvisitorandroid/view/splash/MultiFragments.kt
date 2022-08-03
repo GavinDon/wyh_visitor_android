@@ -1,9 +1,12 @@
 package com.stxx.wyhvisitorandroid.view.splash
 
+import PermissionTipDialog
 import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import androidx.activity.addCallback
@@ -11,25 +14,18 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI
+import cn.jpush.android.api.JPushInterface
 import com.baidu.geofence.GeoFenceClient
+import com.baidu.mapapi.SDKInitializer
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
-import com.gavindon.mvvm_lib.net.BR
-import com.gavindon.mvvm_lib.net.RxScheduler
 import com.gavindon.mvvm_lib.utils.SpUtils
 import com.gavindon.mvvm_lib.utils.phoneHeight
 import com.gavindon.mvvm_lib.utils.phoneWidth
-import com.gavindon.mvvm_lib.utils.rxRequestPermission
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.gson.gsonDeserializer
-import com.github.kittinunf.fuel.rx.rxResponseObject
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
-import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
-import com.stxx.wyhvisitorandroid.bean.MapDateResp
-import com.stxx.wyhvisitorandroid.bean.RealPeopleNum
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
@@ -38,12 +34,15 @@ import com.stxx.wyhvisitorandroid.view.home.HomeFragment
 import com.stxx.wyhvisitorandroid.view.mine.MineFragment
 import com.stxx.wyhvisitorandroid.view.scenic.ScenicMapFragment
 import com.stxx.wyhvisitorandroid.widgets.SuspensionDragView
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.beta.Beta
+import com.tencent.smtt.export.external.TbsCoreSettings
+import com.tencent.smtt.sdk.QbSdk
 import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 import kotlinx.android.synthetic.main.fragment_multi_root.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
-import java.lang.Exception
 
 /**
  * description: 多fragment根activity
@@ -65,7 +64,55 @@ class MultiFragments : BaseActivity() {
 
     private val mGeoFenceClient = GeoFenceClient(MVVMBaseApplication.appContext)
 
+    private fun initApp() {
+        SDKInitializer.initialize(MVVMBaseApplication.appContext)
+        Beta.canShowUpgradeActs.add(MultiFragments::class.java)
+        Bugly.init(this, "a2d9f005d6", BuildConfig.DEBUG)
+        initWebView()
+        //腾讯x5
+        initX5()
+        //极光推送
+        JPushInterface.setDebugMode(BuildConfig.DEBUG)
+        JPushInterface.init(this)
+        //UMENG
+        UMConfigure.preInit(
+            this, "613711b780454c1cbbbf6c23",
+            "wenyuhe"
+        )
+        UMConfigure.init(
+            this,
+            "613711b780454c1cbbbf6c23",
+            "wenyuhe",
+            UMConfigure.DEVICE_TYPE_PHONE,
+            null
+        )
+    }
+
+    private fun initX5() {
+        //多进程优化
+        val map = HashMap<String, Any>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
+        QbSdk.initX5Environment(this, null)
+    }
+
+    /**
+     * 兼容android P
+     * 不同进程不可使用同一webView数据目录
+     */
+    private fun initWebView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val processName = Application.getProcessName()
+            if (packageName != processName) {
+                android.webkit.WebView.setDataDirectorySuffix(processName)
+            }
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        initApp()
         super.onCreate(savedInstanceState)
         //创建围栏广播
         val filter = IntentFilter()
@@ -133,7 +180,27 @@ class MultiFragments : BaseActivity() {
     }
 
     private fun requestPermission() {
-        this.rxRequestPermission(
+        //只显示一次申请权限说明
+        val isFirstRequest = SpUtils.get(FIRST_PERMISSION, true)
+        if (isFirstRequest) {
+            val dialog = PermissionTipDialog()
+            dialog.show(supportFragmentManager, "permission")
+            SpUtils.put(FIRST_PERMISSION, false)
+        }
+        BdLocation2.startLocation.setDistanceListener {
+            if (navController.currentDestination?.id == R.id.dialog_smart_tip) return@setDistanceListener
+            navController.navigate(R.id.dialog_smart_tip,
+                bundleOf("locationBean" to it),
+                navOptions {
+                    launchSingleTop = true
+                    popUpTo(R.id.dialog_smart_tip) { inclusive = true }
+                    anim {
+                        enter = R.anim.alpha_enter
+                        exit = R.anim.alpha_exit
+                    }
+                })
+        }
+        /*this.rxRequestPermission(
             android.Manifest.permission.RECORD_AUDIO,
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -152,7 +219,7 @@ class MultiFragments : BaseActivity() {
                         }
                     })
             }
-        }
+        }*/
         mGeoFenceClient.addGeoFence("温榆河公园", "旅游景点", "北京", 1, " 0001")
         //初始化围栏(在位置回调中先进行移除再添加达到每隔6s回调一次)
         mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
@@ -209,7 +276,6 @@ class MultiFragments : BaseActivity() {
 
     override fun permissionForResult() {
     }
-
 
 
 }

@@ -1,6 +1,5 @@
 package com.stxx.wyhvisitorandroid.view.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.lifecycle.Observer
@@ -11,8 +10,6 @@ import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.alibaba.android.vlayout.layout.GridLayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.ErrorSource
 import com.gavindon.mvvm_lib.net.ExceptionHandle
@@ -22,14 +19,13 @@ import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ImmersionBar.getStatusBarHeight
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
-import com.stxx.wyhvisitorandroid.*
+import com.stxx.wyhvisitorandroid.R
+import com.stxx.wyhvisitorandroid.SCAN_CODE
 import com.stxx.wyhvisitorandroid.adapter.*
-import com.stxx.wyhvisitorandroid.base.BaseDelegateVH
 import com.stxx.wyhvisitorandroid.base.BaseFragment
-import com.stxx.wyhvisitorandroid.base.OnlyShowDelegateAdapter
 import com.stxx.wyhvisitorandroid.bean.*
 import com.stxx.wyhvisitorandroid.mplusvm.HomeVm
-import com.stxx.wyhvisitorandroid.view.PushReceiveActivity
+import com.stxx.wyhvisitorandroid.navOption
 import io.reactivex.exceptions.CompositeException
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.title_bar.*
@@ -132,7 +128,16 @@ class HomeFragment : BaseFragment() {
             })
         }
         ibScanQr.setOnClickListener {
-            ScanUtil.startScan(this.activity, SCAN_CODE, HmsScanAnalyzerOptions.Creator().create())
+            this.requestPermission2(
+                android.Manifest.permission.CAMERA
+            ) {
+                ScanUtil.startScan(
+                    this.activity,
+                    SCAN_CODE,
+                    HmsScanAnalyzerOptions.Creator().create()
+                )
+            }
+
         }
 
         loadData()

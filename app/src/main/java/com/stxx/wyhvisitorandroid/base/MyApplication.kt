@@ -36,9 +36,10 @@ class MyApplication : MVVMBaseApplication() {
             initHttp(HttpFrame.FUEL)
             baseUrl = BuildConfig.baseUrl
         }.build()
-        //百度地图
-        SDKInitializer.initialize(this)
+
         RxJavaPlugins.setErrorHandler { }
+     /*   //百度地图
+        SDKInitializer.initialize(this)
         //腾讯bugly
 //        Bugly.setIsDevelopmentDevice(this, BuildConfig.DEBUG)
 //        Bugly.init(this, "4fa626abc1", false)
@@ -62,7 +63,7 @@ class MyApplication : MVVMBaseApplication() {
             "wenyuhe",
             UMConfigure.DEVICE_TYPE_PHONE,
             null
-        )
+        )*/
 //        ArtMap.Init(this)
     }
 

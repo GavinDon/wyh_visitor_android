@@ -3,6 +3,7 @@ package com.gavindon.mvvm_lib.utils
 import android.content.Context
 import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.gavindon.mvvm_lib.R
 import com.gavindon.mvvm_lib.base.PermissionCode
@@ -45,6 +46,38 @@ fun Context.requestPermission(
         }.start()
 }
 
+fun Fragment.rxRequestPermission(
+    vararg permissions: String,
+    onDeniedAction: (() -> Unit)? = null,
+    onGrantedAction: () -> Unit
+) {
+    val grantedPermission = mutableListOf<String>()
+    val rxPermissions = RxPermissions(this)
+    val obj = rxPermissions.requestEach(
+        *permissions
+    ).subscribe({ permission ->
+        when {
+            permission.granted -> {
+                //把已经授权的权限添加到新集合
+                grantedPermission.add(permission.name)
+                //全部授权
+                if (grantedPermission.size == permissions.size) {
+                    onGrantedAction()
+                }
+            }
+            else -> {
+                onDeniedAction?.invoke()
+            }
+        }
+
+
+    }, {
+
+    })
+
+}
+
+
 fun FragmentActivity.rxRequestPermission(
     vararg permissions: String,
     onDeniedAction: (() -> Unit)? = null,
@@ -66,16 +99,16 @@ fun FragmentActivity.rxRequestPermission(
             }
             else -> {
                 //获取需要的总权限和已授权差集便是未授权的集合
-                val subtract = permissions.subtract(grantedPermission)
-//                val denidPerission2 = permissions.union(grantedPermission)
-//                val intersect = permissions.intersect(grantedPermission)
-                val permissionNames: List<String?> =
-                    Permission.transformText(this, subtract.toList())
-                val message = this.getString(
-                    R.string.message_permission_always_failed,
-                    TextUtils.join("\n", permissionNames)
-                )
-                showDeniedPermission(this, message)
+                /*             val subtract = permissions.subtract(grantedPermission)
+             //                val denidPerission2 = permissions.union(grantedPermission)
+             //                val intersect = permissions.intersect(grantedPermission)
+                             val permissionNames: List<String?> =
+                                 Permission.transformText(this, subtract.toList())
+                             val message = this.getString(
+                                 R.string.message_permission_always_failed,
+                                 TextUtils.join("\n", permissionNames)
+                             )
+                             showDeniedPermission(this, message)*/
                 onDeniedAction?.invoke()
             }
         }

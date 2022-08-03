@@ -1,7 +1,12 @@
 package com.stxx.wyhvisitorandroid.view.splash
 
+import android.app.Application
+import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
+import cn.jpush.android.api.JPushInterface
+import com.baidu.mapapi.SDKInitializer
+import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.net.BR
 import com.gavindon.mvvm_lib.net.RxScheduler
 import com.gavindon.mvvm_lib.utils.SpUtils
@@ -13,11 +18,15 @@ import com.orhanobut.logger.Logger
 import com.stxx.wyhvisitorandroid.*
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.bean.MapDateResp
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.beta.Beta
+import com.tencent.smtt.export.external.TbsCoreSettings
+import com.tencent.smtt.sdk.QbSdk
+import com.umeng.commonsdk.UMConfigure
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
 
 /**
@@ -34,7 +43,7 @@ class SplashActivity : BaseActivity() {
 
     override fun onInit(savedInstanceState: Bundle?) {
         val isFirstInstall = SpUtils.get(FIRST_INSTALL, true)
-        requestPermiss()
+//        initApp()
         if (isFirstInstall) {
             startActivity<GuideActivity>()
             this.finish()
@@ -67,7 +76,7 @@ class SplashActivity : BaseActivity() {
         getMapDate()  //瓦片图更新时间
     }
 
-    private fun requestPermiss() {
+/*    private fun requestPermiss() {
         requestPermission(
             this,
             android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -77,7 +86,7 @@ class SplashActivity : BaseActivity() {
             android.Manifest.permission.ACCESS_WIFI_STATE
         ) {}
 
-    }
+    }*/
 
     override fun setStatusBar() {
         ImmersionBar.with(this)
@@ -118,4 +127,52 @@ class SplashActivity : BaseActivity() {
             })
         compositeDisposable.add(dis)
     }
+
+
+    private fun initApp() {
+        SDKInitializer.initialize(MVVMBaseApplication.appContext)
+        Beta.canShowUpgradeActs.add(MultiFragments::class.java)
+        Bugly.init(this, "a2d9f005d6", BuildConfig.DEBUG)
+        initWebView()
+        //腾讯x5
+        initX5()
+        //极光推送
+        JPushInterface.setDebugMode(BuildConfig.DEBUG)
+        JPushInterface.init(this)
+        //UMENG
+        UMConfigure.preInit(
+            this, "613711b780454c1cbbbf6c23",
+            "wenyuhe"
+        )
+        UMConfigure.init(
+            this,
+            "613711b780454c1cbbbf6c23",
+            "wenyuhe",
+            UMConfigure.DEVICE_TYPE_PHONE,
+            null
+        )
+    }
+
+    private fun initX5() {
+        //多进程优化
+        val map = HashMap<String, Any>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
+        QbSdk.initX5Environment(this, null)
+    }
+
+    /**
+     * 兼容android P
+     * 不同进程不可使用同一webView数据目录
+     */
+    private fun initWebView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val processName = Application.getProcessName()
+            if (packageName != processName) {
+                android.webkit.WebView.setDataDirectorySuffix(processName)
+            }
+        }
+    }
+
 }

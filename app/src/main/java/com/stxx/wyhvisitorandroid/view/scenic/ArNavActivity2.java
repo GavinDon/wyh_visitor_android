@@ -1,3 +1,4 @@
+/*
 package com.stxx.wyhvisitorandroid.view.scenic;
 
 import android.Manifest;
@@ -496,3 +497,4 @@ public class ArNavActivity2 extends AppCompatActivity {
     }
 
 }
+*/

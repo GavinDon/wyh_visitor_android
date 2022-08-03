@@ -14,6 +14,7 @@ abstract class SimpleIWRouteGuidanceListener : IWRouteGuidanceListener {
     override fun onRoutePlanYawing(p0: CharSequence?, p1: Drawable?) {
     }
 
+
     override fun onRouteGuideKind(p0: RouteGuideKind?) {
     }
 

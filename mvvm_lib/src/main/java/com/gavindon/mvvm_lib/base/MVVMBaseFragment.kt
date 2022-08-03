@@ -107,9 +107,9 @@ abstract class MVVMBaseFragment : Fragment(), IView {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    /**
+/*    *//**
      * 权限请求
-     */
+     *//*
     protected fun requestPermission(
         vararg permission: String,
         onGrantedAction: () -> Unit
@@ -137,7 +137,7 @@ abstract class MVVMBaseFragment : Fragment(), IView {
                     showDeniedPermission(message)
                 }
             }.start()
-    }
+    }*/
 
     protected fun requestPermission2(
         vararg permissions: String,

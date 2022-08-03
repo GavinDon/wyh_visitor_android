@@ -64,10 +64,16 @@ val viewOutlineProvider = object : ViewOutlineProvider() {
     }
 }
 
-fun convertBaidu(lat: Double, lng: Double): LatLng = CoordinateConverter()
-    .from(CoordinateConverter.CoordType.GPS)
-    .coord(LatLng(lat, lng))
-    .convert()
+fun convertBaidu(lat: Double, lng: Double): LatLng {
+    return try {
+        CoordinateConverter()
+            .from(CoordinateConverter.CoordType.GPS)
+            .coord(LatLng(lat, lng))
+            .convert()
+    } catch (ex: java.lang.Exception) {
+        LatLng(0.0, 0.0)
+    }
+}
 
 fun readAssets(context: Context, dir: String): String {
 

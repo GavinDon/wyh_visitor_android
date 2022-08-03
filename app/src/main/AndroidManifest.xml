@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -38,7 +38,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="HardcodedDebugMode"
         tools:replace="android:icon, android:theme,android:allowBackup,android:label">
-        <activity android:name=".view.PushReceiveActivity"></activity>
+        <activity android:name=".view.PushReceiveActivity" />
         <activity
             android:name=".view.splash.PreviewWindow"
             android:theme="@style/AppStartLoadTranslucent">
@@ -58,6 +58,10 @@
         <activity android:name=".view.login.RegisterActivity" />
         <activity android:name="com.huawei.hms.hmsscankit.ScanKitActivity" />
         <activity android:name=".view.splash.MainActivity" /> <!-- 适配华为刘海屏 -->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
         <meta-data
             android:name="android.notch_support"
             android:value="true" /> <!-- 适配小米刘海屏 -->
@@ -172,8 +176,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.splash.DisPlayActivity" />
-        <activity android:name=".view.scenic.ArNavActivity" />
-        <activity android:name=".view.scenic.ArNavActivity2" />
         <activity
             android:name=".view.mine.UserInfoFragment"
             android:launchMode="singleTask" />

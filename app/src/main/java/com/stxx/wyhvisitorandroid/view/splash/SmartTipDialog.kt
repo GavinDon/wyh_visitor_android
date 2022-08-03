@@ -8,6 +8,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,9 @@ class SmartTipDialog : DialogFragment() {
         super.onStart()
         dialog?.window?.setLayout(phoneWidth - dip(80), wrapContent)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setOnKeyListener { dialog, keyCode, event ->
+            keyCode == KeyEvent.KEYCODE_BACK
+        }
     }
 
     override fun onCreateView(
@@ -51,7 +55,7 @@ class SmartTipDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val li = """
      <p> 在您使用畅游温榆APP前，请您认真阅读并
-        了解 <a href=$FWXY>《软件服务协议》</a>和 <a href=$YSZC>《用户隐私协议》</a>。
+        了解 <a href=$FWXY>《软件服务协议》</a>和 <a href=$YSZC>《用户隐私政策》</a>。
         点击“同意”即表示您已阅读并同意全部条款。</p>
 """.trimIndent()
 
