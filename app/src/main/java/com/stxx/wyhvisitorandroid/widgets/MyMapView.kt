@@ -78,7 +78,8 @@ val urlTileProvider = object : UrlTileProvider() {
     override fun getTileUrl(): String {
 //        return "http://223.70.181.106:8082/mapTiles/{z}/tile{x}_{y}.png"
 //        return "http://223.221.37.181:8082/tiles/{z}/tile{x}_{y}.png"
-        return "${BuildConfig.tileUrl}/tiles/{z}/tile{x}_{y}.png"
+        return "${BuildConfig.tileUrl}/tiles/{z}/tile{x}_{y}.png" //正式
+//        return "${BuildConfig.tileUrl}/{z}/tile{x}_{y}.png"
 
     }
 }
