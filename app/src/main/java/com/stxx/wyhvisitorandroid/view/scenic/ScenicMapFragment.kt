@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.baidu.geofence.GeoFence
 import com.baidu.geofence.GeoFenceClient
+import com.baidu.geofence.model.DPoint
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.model.LatLngBounds
@@ -49,12 +50,14 @@ import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
+import com.stxx.wyhvisitorandroid.service.GeoFenceService
 import com.stxx.wyhvisitorandroid.service.PlaySoundService
 import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil
 import com.stxx.wyhvisitorandroid.widgets.*
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
+import org.jetbrains.anko.support.v4.startService
 import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream
@@ -200,7 +203,6 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             })
         }
         initMap()
-        initLocation2()
         //每次都需要重新创建否则从返回到该页面时添加的callback无效
         bottomSheetBehavior = BottomSheetBehavior3.from(scrollBottom)
 
@@ -239,13 +241,15 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     }
 
     private fun initLocation2() {
+        Logger.i("=========")
         //开始定位
         requestPermission2(Manifest.permission.ACCESS_FINE_LOCATION) {
             mapView.map?.isMyLocationEnabled = true
             BdLocation2.startLocation.bdLocationListener {
-                //先移除围栏再添加围栏可使再次调用广播进行回调位置信息
-                mGeoFenceClient.removeGeoFence()
-                mGeoFenceClient.addGeoFence("温榆河公园", "旅游景点", "北京", 1, " 0001")
+//                //先移除围栏再添加围栏可使再次调用广播进行回调位置信息
+//                mGeoFenceClient.removeGeoFence()
+//                mGeoFenceClient.addGeoFence("北京温榆河公园朝阳一期", "公园", "北京", 5, " 0003")
+
                 //防止定位回调时 View已经注销
                 val map = mapView?.map
                 currentLatitude = it.latitude //获取纬度信息
@@ -273,10 +277,11 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
 
             }
         }
-        //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
-        mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
-        mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
+
+//        //初始化围栏(在位置回调中先进行移除再添加达到每隔2s回调一次)
+//        mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
+//        mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+//        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN_OUT)
         showLocationInMap()
     }
 
@@ -325,6 +330,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
             hiddenSheet()
             showUpArrow()
         }
+        initLocation2()
     }
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -846,7 +852,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
         pointData: ServerPointResp,
         latLng: LatLng
     ) {
-        if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN) {
+        if (GeoBroadCast.status == GeoFence.STATUS_IN || GeoBroadCast.status == GeoFence.INIT_STATUS_IN || GeoBroadCast.status == GeoFence.STATUS_STAYED) {
             //进入园区则使用园区导航
             requestPermission2(
                 Manifest.permission.ACCESS_FINE_LOCATION,

@@ -16,6 +16,7 @@ import androidx.navigation.*
 import androidx.navigation.ui.NavigationUI
 import cn.jpush.android.api.JPushInterface
 import com.baidu.geofence.GeoFenceClient
+import com.baidu.geofence.model.DPoint
 import com.baidu.mapapi.SDKInitializer
 import com.gavindon.mvvm_lib.base.MVVMBaseApplication
 import com.gavindon.mvvm_lib.utils.SpUtils
@@ -28,6 +29,7 @@ import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.base.BaseActivity
 import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
+import com.stxx.wyhvisitorandroid.service.GeoFenceService
 import com.stxx.wyhvisitorandroid.view.helpers.WeChatRegister
 import com.stxx.wyhvisitorandroid.view.helpers.WebViewCameraHelper
 import com.stxx.wyhvisitorandroid.view.home.HomeFragment
@@ -174,6 +176,7 @@ class MultiFragments : BaseActivity() {
             if (WeChatRegister.broadcastReceiver != null)
                 this.unregisterReceiver(WeChatRegister.broadcastReceiver)
             this.unregisterReceiver(GeoBroadCast)
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -220,11 +223,15 @@ class MultiFragments : BaseActivity() {
                     })
             }
         }*/
-        mGeoFenceClient.addGeoFence("温榆河公园", "旅游景点", "北京", 1, " 0001")
-        //初始化围栏(在位置回调中先进行移除再添加达到每隔6s回调一次)
+
+//        startService(Intent(this, GeoFenceService::class.java))
+        mGeoFenceClient.addGeoFence("北京温榆河公园朝阳一期", "公园", "北京", 5, "0001")
+//
+//        //初始化围栏(在位置回调中先进行移除再添加达到每隔6s回调一次)
         mGeoFenceClient.createPendingIntent(GeoBroadCast.fenceaction)
         mGeoFenceClient.setTriggerCount(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN)
+        mGeoFenceClient.setActivateAction(GeoFenceClient.GEOFENCE_IN_OUT)
+
 
     }
 

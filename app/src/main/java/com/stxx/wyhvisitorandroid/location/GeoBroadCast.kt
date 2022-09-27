@@ -11,6 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.baidu.geofence.GeoFence
 import com.stxx.wyhvisitorandroid.NOTIFY_ID_FENCE
 import com.stxx.wyhvisitorandroid.R
+import java.util.logging.Logger
 
 /**
  * description:监听是否进入园区或者离开园区
@@ -42,7 +43,7 @@ object GeoBroadCast : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-
+        com.orhanobut.logger.Logger.i("onReceive")
         if (intent.action == fenceaction) {
             val bundle = intent.extras
             status = bundle?.getInt(GeoFence.BUNDLE_KEY_FENCESTATUS)

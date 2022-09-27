@@ -58,19 +58,19 @@ object BdLocation2 : LifecycleObserver {
         mLocationClient.registerLocationListener(listener)
 
         //设置位置提醒，参数:纬度、精度、半径、坐标类型LatLng(40.082681, 116.474134)
-        bdNotifyLister.SetNotifyLocation(
-            40.085884758824925,
-            116.473419535023,
-            1000f,
-            mLocationClient.locOption.coorType
-        )
+//        bdNotifyLister.SetNotifyLocation(
+//            40.085884758824925,
+//            116.473419535023,
+//            1000f,
+//            mLocationClient.locOption.coorType
+//        )
 //        bdNotifyLister.SetNotifyLocation(
 //            40.076847185822174,
 //            116.46784880133484,
 //            1000f,
 //            mLocationClient.locOption.coorType
 //        )
-        mLocationClient.registerNotify(bdNotifyLister)
+//        mLocationClient.registerNotify(bdNotifyLister)
 
     }
 
