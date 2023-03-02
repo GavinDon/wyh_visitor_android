@@ -1,7 +1,9 @@
 package com.stxx.wyhvisitorandroid.view.splash
 
 import SmartTipDialog
+import android.app.ActivityManager
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.gavindon.mvvm_lib.base.ViewModelProviders
 import com.gavindon.mvvm_lib.utils.SpUtils
@@ -42,6 +44,7 @@ class PreviewWindow : AppCompatActivity() {
 
 
     }
+
 
     private fun getAsrToken() {
         val asrViewModel = ViewModelProviders.of(this).get(BaiDuAsr::class.java)

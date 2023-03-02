@@ -1,8 +1,10 @@
 package com.stxx.wyhvisitorandroid.view.webview
 
+import android.app.ActivityManager
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.stxx.wyhvisitorandroid.R
 import com.stxx.wyhvisitorandroid.WEB_VIEW_URL
@@ -49,6 +51,7 @@ class WebViewActivity : AppCompatActivity() {
             x5WebView.destroy()
         }
     }
+
 
     override fun onBackPressed() {
         if (x5WebView.canGoBack()) {

@@ -1,6 +1,7 @@
 package com.gavindon.mvvm_lib.base
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -110,6 +111,26 @@ abstract class MVVMBaseActivity : AppCompatActivity(), IView {
         super.onDestroy()
         permissionDialog?.dismiss()
     }
+
+/*    override fun onPause() {
+        super.onPause()
+        var topActivityPackage = ""
+        val activityManager: ActivityManager =
+            (getSystemService(android.content.Context.ACTIVITY_SERVICE)) as ActivityManager
+        val runningTaskInfos: List<ActivityManager.RunningTaskInfo> = activityManager
+            .getRunningTasks(1)
+        if (runningTaskInfos != null) {
+            val f = runningTaskInfos[0].topActivity
+            topActivityPackage = f.packageName
+            if (topActivityPackage == packageName) {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("警告")
+                builder.setPositiveButton("检测到窗口被劫持", null)
+                builder.show()
+            }
+        }
+
+    }*/
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

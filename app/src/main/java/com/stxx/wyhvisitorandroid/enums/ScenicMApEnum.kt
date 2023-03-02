@@ -20,7 +20,9 @@ enum class ScenicMApPointEnum {
     //厕所
     TOILET,
     //停车场
-    PARK
+    PARK,
+    //热力图
+    HotMap
 
 }
 

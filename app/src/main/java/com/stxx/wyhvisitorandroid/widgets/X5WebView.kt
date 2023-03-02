@@ -97,7 +97,6 @@ class X5WebView : WebView {
                     return false
                 }
                 else -> {
-//                    view.loadUrl(url)
                     return false
                 }
             }

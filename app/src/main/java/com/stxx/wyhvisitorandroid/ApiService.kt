@@ -139,6 +139,10 @@ object ApiService {
     const val UPDATE_PHONE = "tsvserviceapp/user/updatePhone"
     const val CLEAR_MAP = "map/util/findMapDate"
 
+    //热力图
+    const val HOT_DOT =
+        "http://manage.wenyuriverpark.com:8888/centralizedManagement/passengerFlowAnalysisConfig/tableData"
+
 }
 
 object WebViewUrl {
@@ -182,6 +186,7 @@ object WebViewUrl {
 
     //公交出行
     const val GJCX = "pages/service/traffic/bus?device=1"
+    const val BAIDUCHE = "pages/user/scenicService/parkNotes?type=1"
 
     //停车场预约
     const val SMART_PARK = "pages/trip/home"

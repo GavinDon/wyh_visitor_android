@@ -139,4 +139,11 @@
     "iconRes": "ic_park",
     "index": 20
   }
+,
+  {
+    "name": "摆渡车",
+    "showType": 1,
+    "iconRes": "ic_baiduche",
+    "index": 22
+  }
 ]

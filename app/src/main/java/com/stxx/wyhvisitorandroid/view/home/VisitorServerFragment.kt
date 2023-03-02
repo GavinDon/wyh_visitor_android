@@ -166,6 +166,9 @@ class VisitorServerFragment : BaseFragment() {
                 21 -> {
                     findNavController().navigate(R.id.fragment_one_key_wifi, null, navOption)
                 }
+                22 -> {
+                    navigate(WebViewUrl.BAIDUCHE, R.string.visitor_server_baiduche)
+                }
             }
         }
 
@@ -183,8 +186,7 @@ class VisitorServerFragment : BaseFragment() {
     private fun navigateMap(index: Int) {
         findNavController().navigate(
             R.id.fragment_scenic,
-            bundleOf(BUNDLE_IS_ROBOT to true, BUNDLE_SELECT_TAB to index)
-            , navOption
+            bundleOf(BUNDLE_IS_ROBOT to true, BUNDLE_SELECT_TAB to index), navOption
         )
     }
 

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -20,7 +21,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.baidu.geofence.GeoFence
 import com.baidu.geofence.GeoFenceClient
-import com.baidu.geofence.model.DPoint
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.model.LatLngBounds
@@ -50,14 +50,12 @@ import com.stxx.wyhvisitorandroid.location.BdLocation2
 import com.stxx.wyhvisitorandroid.location.GeoBroadCast
 import com.stxx.wyhvisitorandroid.location.showWakeApp
 import com.stxx.wyhvisitorandroid.mplusvm.ScenicVm
-import com.stxx.wyhvisitorandroid.service.GeoFenceService
 import com.stxx.wyhvisitorandroid.service.PlaySoundService
 import com.stxx.wyhvisitorandroid.view.ar.WalkNavUtil
 import com.stxx.wyhvisitorandroid.widgets.*
 import kotlinx.android.synthetic.main.fragment_scenic.*
 import kotlinx.android.synthetic.main.title_bar.*
 import org.jetbrains.anko.support.v4.dip
-import org.jetbrains.anko.support.v4.startService
 import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream
@@ -91,6 +89,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     private var lastSelectTab: Int? = 0
     private val toiletTabIndex = 5
     private val parkTabIndex = 6
+    private val hotMapTabIndex = 7
 
     //第一次加载进来默认隐藏bottomSheet,再次选中tab时需要显示bottomSheet
     private var isFirstLoad = true
@@ -101,6 +100,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     //当前经纬度
     private var currentLatitude: Double? = null
     private var currentLongitude: Double? = null
+
+    private var heatMap: HeatMap? = null
 
     //上一次请求的type类型
     private var lastType = -10
@@ -345,8 +346,8 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
     }
 
     private fun tabSelect(tab: TabLayout.Tab?) {
-
         fun executeSelect() {
+            heatMap?.removeHeatMap()
             when (val index = tab?.position ?: 0) {
                 0, 1, 2, 3 -> {
                     var enumType = ScenicMApPointEnum.values()[index].ordinal + 1
@@ -375,6 +376,44 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     //停车场
                     loadData(-1, ApiService.PARK_LST_URL)
                 }
+                hotMapTabIndex -> {
+                    mapView?.map?.clear()
+                    mViewModel.getHotMapDot().observe(this, Observer { t ->
+                        handlerResponseData(t, {
+                            val weightDots = it.data.map { i ->
+                                WeightedLatLng(
+                                    convertBaidu(
+                                        i.y.toDouble(),
+                                        i.x.toDouble()
+                                    ),
+                                    if (i.flowInNum / i.threshold > 1) 1.0 else (i.flowInNum / i.threshold).toDouble()
+                                )
+                            }
+                            //设置渐变颜色值
+                            val defaultGradientColors =
+                                intArrayOf(
+                                    Color.rgb(0, 0, 225),
+                                    Color.rgb(102, 225, 0)
+                                )
+                            //设置渐变颜色起始值
+                            val defaultGradientStartPoints = floatArrayOf(0.2f, 1f)
+                            //构造颜色渐变对象
+                            val gradient =
+                                Gradient(defaultGradientColors, defaultGradientStartPoints)
+                            heatMap =
+                                HeatMap.Builder().weightedData(weightDots).radius(20)
+                                    .opacity(0.7)
+                                    .gradient(gradient)
+                                    .build()
+                            mapView?.map?.addHeatMap(heatMap)
+
+                        }, {
+                            this.context?.showToast("暂无数据")
+                        })
+                    })
+                     //保证切换tab时图标不会错乱。
+                    lastType = ScenicMApPointEnum.values()[index].ordinal + 1
+                }
             }
         }
         executeSelect()
@@ -396,9 +435,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                     robotNavData?.filter { f -> f.navFuncName == navFunName }
                 if (!navItemObj.isNullOrEmpty()) {
                     val filterData = value.body.data.filter { f ->
-                        f.name.trim().toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
-                            Locale.CHINA
-                        )
+                        f.name.trim().equals(navItemObj[0].name, ignoreCase = true)
                     }
                     if (filterData.isNullOrEmpty()) {
                         value.body.data
@@ -426,10 +463,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                             //如果json文件中存在则进行过滤获取name相同的数据
                             if (!navItemObj.isNullOrEmpty()) {
                                 val filterData = resp.data.filter { f ->
-                                    f.name.trim()
-                                        .toLowerCase(Locale.CHINA) == navItemObj[0].name.toLowerCase(
-                                        Locale.CHINA
-                                    )
+                                    f.name.trim().equals(navItemObj[0].name, ignoreCase = true)
                                 }
                                 if (filterData.isNullOrEmpty()) {
                                     resp.data
@@ -687,6 +721,7 @@ class ScenicMapFragment : BaseFragment(), TabLayout.OnTabSelectedListener,
                 tv.text = "${data.residue}/${data.sum}"
                 return BitmapDescriptorFactory.fromView(markerView)
             }
+
             else -> {
                 return BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_market)
             }
